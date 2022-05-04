@@ -14,7 +14,7 @@ export const mocksAuth = [
           status: 200,
           data: {
             name: 'TestUser',
-            email: 'test@example.com'
+            sync: true
           }
         })
       )
@@ -40,6 +40,7 @@ export const mocksAuth = [
       ctx.status(200),
       ctx.cookie('ACCESS', ''),
       ctx.cookie('REFRESH', ''),
+      ctx.cookie('LOCALLY', ''),
       ctx.json({
         status: 200,
         message: 'success'
@@ -47,10 +48,26 @@ export const mocksAuth = [
     );
   }),
 
+  rest.post('/api/v1/auth/use-no-sync', (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.cookie('LOCALLY', 'VALID-LOCALLY-TOKEN'),
+      ctx.cookie('ACCESS', 'VALID-ACCESS-TOKEN'),
+      ctx.json({
+        status: 200,
+        data: {
+          name: 'Anonymous',
+          sync: false
+        }
+      })
+    )
+  }),
+
   rest.post('/api/v1/auth/create-refresh-token', (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.cookie('ACCESS', ''),
+      ctx.cookie('LOCALLY', ''),
       ctx.cookie('REFRESH', 'VALID-REFRESH-TOKEN'),
       ctx.json({
         status: 200,
@@ -59,8 +76,21 @@ export const mocksAuth = [
     )
   }),
 
+  rest.post('/api/v1/auth/create-locally-token', (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.cookie('ACCESS', ''),
+      ctx.cookie('REFRESH', ''),
+      ctx.cookie('LOCALLY', 'VALID-LOCALLY-TOKEN'),
+      ctx.json({
+        status: 200,
+        message: 'success'
+      })
+    )
+  }),
+
   rest.post('/api/v1/auth/refresh', (req: RestRequest<any, any>, res, ctx) => {
-    const { REFRESH } = parseCookies();
+    const { REFRESH, LOCALLY } = parseCookies();
 
     if (REFRESH === 'VALID-REFRESH-TOKEN') {
       return res(
@@ -71,7 +101,22 @@ export const mocksAuth = [
           status: 200,
           data: {
             name: 'TestUser',
-            email: 'test@example.com'
+            sync: true
+          }
+        })
+      )
+    }
+
+    if (LOCALLY === 'VALID-LOCALLY-TOKEN') {
+      return res(
+        ctx.status(200),
+        ctx.cookie('ACCESS', 'VALID-ACCESS-TOKEN'),
+        ctx.cookie('REFRESH', 'VALID-REFRESH-TOKEN'),
+        ctx.json({
+          status: 200,
+          data: {
+            name: 'Anonymous',
+            sync: false
           }
         })
       )

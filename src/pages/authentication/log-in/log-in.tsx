@@ -1,61 +1,24 @@
 import axios from "axios";
-import { Button, makeStyles, Paper, TextField, Grid, Typography, Box } from "@material-ui/core";
-import { forwardRef, useEffect, useState } from "react";
+import { Grid, Typography, Box } from "@mui/material";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useOpenPage } from 'animated-router-react';
 import { useForm } from 'react-hook-form'
 import { useAppDispatch } from "../../../redux/store";
 import { hideLoginPage, setUserData } from "../../../redux/slices/users/user";
-
-const useStyles = makeStyles({
-  TextField: {
-    marginTop: 25,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  },
-
-  Link: {
-    cursor: 'pointer',
-  }
-});
+import { StyledForm, StyledPaper } from "./log-in.styles";
+import { Button, Link, TextField } from "../../../components/styles/styles";
 
 type Option = {
   email: string;
   password: string;
 };
 
-export const LogIn = forwardRef<HTMLElement>((_, ref) => {
-  const classes = useStyles();
+export const LogIn = forwardRef<HTMLDivElement>((_, ref) => {
+  const abortController = useRef(new AbortController());
   const [ error, setError ] = useState('');
   const { register, handleSubmit } = useForm<Option>();
   const openPage = useOpenPage();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    axios({ url: '/api/v1/auth/refresh', method: 'POST', signal: abortController.signal })
-    .then(res => res.data.data)
-    .then(data => {
-      dispatch(setUserData({...data, synchronize: true }));
-      dispatch(hideLoginPage());
-      openPage('/', { updateHistory: true });
-    })
-    .catch(() => {});
-
-    return () => abortController.abort();
-  }, [dispatch, openPage]);
 
   const onSubmit = handleSubmit(({ email, password }) => {
     setError(``);
@@ -65,29 +28,33 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
       return;
     }
 
-    axios({ url: '/api/v1/auth/log-in', method: 'POST', data: { email, password }})
-    .then(res => res.data.data)
-    .then(data => {
-      dispatch(setUserData({...data, synchronize: true }));
-      dispatch(hideLoginPage());
-      openPage('/', { updateHistory: true });
-    })
-    .catch((error) => {
-      setError(error.response?.data?.message ?? 'Logging in failed');
-    })
+    axios.post('/api/v1/auth/log-in', { email, password }, { signal: abortController.current.signal })
+      .then(res => res.data.data)
+      .then(data => {
+        dispatch(setUserData({...data }));
+        dispatch(hideLoginPage());
+        openPage('/', { updateHistory: true });
+      })
+      .catch((error) => {
+        if (error.message !== 'canceled') {
+          setError(error.response?.data?.message ?? 'Logging in failed');
+        }
+      })
   });
 
+  useEffect(() => () => abortController.current.abort(), []);
+
   return (
-    <Paper ref={ref} elevation={10} style={{ margin: '2.5%' }}>
-      <form noValidate autoComplete="off" onSubmit={onSubmit} style={{ padding: '10% 10% 5% 10%' }}>
+    <StyledPaper ref={ref} elevation={10}>
+      <StyledForm noValidate autoComplete="off" onSubmit={onSubmit}>
         <Typography
           variant="h5" 
           component={"h2"}
           align="center"
+          padding="0 0 20px 0"
         >Write your email and password below</Typography>
 
         <TextField
-          className={classes.TextField}
           type="email"
           label="Email"
           variant="outlined"
@@ -97,23 +64,22 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
           {...register('email')}
         />
 
-        <Grid container>
+        <Grid container padding="5px 0 20px 0">
           <Grid item xs={8} sm={8} md={8} >
             <Typography
               align="center"
               variant="body2"
-              style={{padding: '10px 0'}}
+              padding="10px 0"
             >You don't have account?</Typography>
           </Grid>
 
           <Grid item xs={4} sm={4} md={4}>
-            <Typography
-              className={classes.Link}
+            <Link
               color="primary"
               align="center"
               variant="body2"
               onClick={() => openPage('/register', { updateHistory: true })}
-            >Click here</Typography>
+            >Click here</Link>
             
             <Typography
               align="center"
@@ -123,7 +89,6 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
         </Grid>
 
         <TextField
-          className={classes.TextField}
           type="password"
           label="Password"
           variant="outlined"
@@ -133,8 +98,8 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
           {...register('password')}
         />
 
-        <Grid container>
-          <Grid item xs={8} sm={8} md={8} >
+        <Grid container padding="5px 0 0 0">
+          <Grid item xs={8} sm={8} md={8}>
             <Typography
               variant="body2"
               align="center"
@@ -143,13 +108,12 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
           </Grid>
 
           <Grid item xs={4} sm={4} md={4}>
-            <Typography
-              className={classes.Link}
+            <Link
               variant="body2"
               color="primary"
               align="center"
               onClick={() => openPage('/send-email', { updateHistory: true })}
-            >Click here</Typography>
+            >Click here</Link>
 
             <Typography
               variant="body2"
@@ -162,7 +126,8 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
           variant="body2"
           align="right"
           color="error"
-          style={{ padding: '10px 0 20px 0', fontWeight: 'bold'}}
+          padding="10px 0 20px 0"
+          fontWeight="bold"
         >{error}</Typography>
 
         <Box
@@ -172,13 +137,12 @@ export const LogIn = forwardRef<HTMLElement>((_, ref) => {
           minHeight="20px"
         >
           <Button
-            style={{ width: '120px', paddingTop: '10px' }}
             type="submit"
             color="primary"
             variant="contained"
           >Log in</Button>
         </Box>
-      </form>
-    </Paper>
+      </StyledForm>
+    </StyledPaper>
   );
 });

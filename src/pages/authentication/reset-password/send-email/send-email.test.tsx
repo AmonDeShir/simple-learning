@@ -3,16 +3,13 @@ import { TestingContainer } from "../../testing-container";
 import { SendEmail } from "./send-email";
 
 describe('SendEmail', () => {
-  it(`should open the registration page if the user clicks the 'Click here to register' link`, () => {
-    const { navigationActions, wrapper } = TestingContainer();
+  it(`should open the registration page if the user clicks the 'Click here to register' link`, async () => {
+    const { wrapper } = TestingContainer();
     render(<SendEmail />, { wrapper });
 
     fireEvent.click(screen.getAllByText('Click here')[0]);
 
-    expect(navigationActions['SELECT'].payload).toEqual({
-      path: "/register",
-      updateHistory: true,
-    });
+    expect(await screen.findByText('Register page')).toBeInTheDocument();
   });
 
   it(`should display an error if the email textfield is empty`, async () => {
@@ -55,7 +52,7 @@ describe('SendEmail', () => {
   });
 
   it(`should open the 'authenticate-your-email' page after successful registration`, async () => {
-    const { wrapper, navigationActions } = TestingContainer();
+    const { wrapper } = TestingContainer();
     render(<SendEmail />, { wrapper });
 
     const email = screen.getByTestId("email-text-field");
@@ -64,11 +61,6 @@ describe('SendEmail', () => {
     
     fireEvent.click(screen.getByText('Done'));
 
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    expect(navigationActions['SELECT'].payload).toEqual({
-      path: "/receive-email",
-      updateHistory: true,
-    });
+    expect(await screen.findByText('Receive email page')).toBeInTheDocument();
   })
 })

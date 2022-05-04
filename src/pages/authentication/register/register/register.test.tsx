@@ -4,16 +4,13 @@ import { Register } from "./register";
 
 describe(`register`, () => {
   describe(`routing`, () => {
-    it(`should open the 'log in' page if the user clicks the 'Click here to log in' link`, () => {
-      const { navigationActions, wrapper } = TestingContainer();
+    it(`should open the 'log in' page if the user clicks the 'Click here to log in' link`, async () => {
+      const { wrapper } = TestingContainer();
       render(<Register />, { wrapper });
 
       fireEvent.click(screen.getAllByText('Click here')[0]);
-
-      expect(navigationActions['SELECT'].payload).toEqual({
-        path: "/log-in",
-        updateHistory: true,
-      });
+      
+      expect(await screen.findByText('Log in page')).toBeInTheDocument();
     });
   })
 
@@ -119,7 +116,7 @@ describe(`register`, () => {
     });
 
     it(`should open the 'authenticate-your-email' page after successful registration`, async () => {
-      const { wrapper, navigationActions } = TestingContainer();
+      const { wrapper } = TestingContainer();
       render(<Register />, { wrapper });
 
       const name = screen.getByTestId("name-text-field");
@@ -139,13 +136,9 @@ describe(`register`, () => {
       fireEvent.change(repeatPassword, { target: { value: 'password' }});
 
       fireEvent.click(screen.getByText('Register'));
+      await screen.findByText('Authenticate your email page');
 
-      await new Promise(resolve => setTimeout(resolve, 200));
-
-      expect(navigationActions['SELECT'].payload).toEqual({
-        path: "/authenticate-your-email",
-        updateHistory: true,
-      });
+      expect(screen.getByText('Authenticate your email page')).toBeInTheDocument();
     })
 
     it(`should display an error if the registration process was unsuccessful`, async () => {

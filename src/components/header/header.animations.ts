@@ -1,0 +1,31 @@
+import { animation } from '../../utils/animation/animation';
+
+type Items = { bar: HTMLElement | null, icons: HTMLElement | null };
+
+export const enterFullscreenMode = animation<Items>((tl, { bar, icons }) => {
+  tl
+    .set(bar, { position: 'fixed', top: '0px' })
+    .to(bar, { borderRadius: '0px', duration: 0.25 })
+    .set(icons, {
+      position: 'fixed',
+      top: '0px',
+      height: '50px',
+      width: 'calc(100% - 20px)',
+      alpha: 0,
+    },  `<`)
+    .to(icons, { alpha: 1, duration: 0.75 }, `<`)
+})
+
+export const exitFullscreenMode = animation<string, Items>((tl, { bar, icons }, borderRadius) => {
+  tl
+    .set(bar, { position: 'static', top: 'none' })
+    .to(bar, { borderRadius: borderRadius, duration: 0.25 })
+    .set(icons, {
+      position: 'static',
+      top: 'none',
+      height: '100%',
+      width: 'none',
+      alpha: 0,
+    }, `<`)
+    .to(icons, { alpha: 1, duration: 0.75 }, `<`)
+});

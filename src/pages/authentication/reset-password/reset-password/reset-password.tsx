@@ -1,54 +1,17 @@
 import axios from "axios";
-import { Button, makeStyles, Paper, TextField, Typography, Box } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { forwardRef, useState } from "react";
 import { useOpenPage, useNavigationArgument } from 'animated-router-react';
 import { useForm } from 'react-hook-form'
-
-const useStyles = makeStyles({
-  TextField: {
-    marginTop: 25,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  },
-
-  TextField2: {
-    marginTop: 0,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  }
-});
+import { Button } from "../../../../components/styles/styles";
+import { ButtonContainer, StyledForm, StyledPaper, StyledTextField } from "./reset-password.styles";
 
 type Option = {
   password: string;
   repeatPassword: string;
 };
 
-export const ResetPassword = forwardRef<HTMLElement>((_, ref) => {
-  const classes = useStyles();
+export const ResetPassword = forwardRef<HTMLDivElement>((_, ref) => {
   const [ error, setError ] = useState('');
   const token = useNavigationArgument<string>();
   const { register, handleSubmit } = useForm<Option>();
@@ -81,16 +44,16 @@ export const ResetPassword = forwardRef<HTMLElement>((_, ref) => {
   });
 
   return (
-    <Paper ref={ref} onSubmit={onSubmit} elevation={10} style={{ margin: '2.5%', minWidth: '400px' }}>
-      <form noValidate autoComplete="off" style={{ padding: '10% 10% 5% 10%' }} >
+    <StyledPaper ref={ref} onSubmit={onSubmit} elevation={10}>
+      <StyledForm noValidate autoComplete="off">
         <Typography
           variant="h5" 
           component={"h2"}
           align="center"
         >Write your new password below</Typography>
       
-        <TextField
-          className={classes.TextField}
+        <StyledTextField
+          margin="dense"
           type="password"
           label="Password"
           variant="outlined"
@@ -103,11 +66,11 @@ export const ResetPassword = forwardRef<HTMLElement>((_, ref) => {
         <Typography
           variant="body1"
           align="center"
-          style={{padding: '10px 0'}}
+          padding="0 0 10px 0"
         >Repeat your password below</Typography>
       
-        <TextField
-          className={classes.TextField2}
+        <StyledTextField
+          margin="normal"
           type="password"
           label="Password"
           variant="outlined"
@@ -121,23 +84,18 @@ export const ResetPassword = forwardRef<HTMLElement>((_, ref) => {
           variant="body2"
           align="right"
           color="error"
-          style={{ padding: '10px 0 20px 0', fontWeight: 'bold'}}
+          padding="10px 0 20px 0"
+          fontWeight="bold"
         >{error}</Typography>
       
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="20px"
-        >
+        <ButtonContainer>
           <Button
-            style={{ width: '120px', paddingTop: '10px' }}
             type="submit"
             color="primary"
             variant="contained"
           >Done</Button>
-        </Box>
-      </form>
-    </Paper>
+        </ButtonContainer>
+      </StyledForm>
+    </StyledPaper>
   );
 });

@@ -4,5 +4,9 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 import { MockServer } from './api/mock-server/server';
+import { matchers } from '@emotion/jest';
+
+jest.disableAutomock();
 
 MockServer.listen();
+expect.extend(matchers);

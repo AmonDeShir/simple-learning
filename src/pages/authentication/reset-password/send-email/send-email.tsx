@@ -1,40 +1,16 @@
 import axios from "axios";
-import { Button, makeStyles, Paper, TextField, Grid, Typography, Box } from "@material-ui/core";
+import {Grid, Typography } from "@mui/material";
 import { useOpenPage } from 'animated-router-react';
 import { forwardRef, useState } from "react";
 import { useForm } from 'react-hook-form'
-
-const useStyles = makeStyles({
-  TextField: {
-    marginTop: 25,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  },
-
-  Link: {
-    cursor: 'pointer',
-  }
-});
+import { Button, TextField } from "../../../../components/styles/styles";
+import { ButtonContainer, StyledForm, StyledPaper } from "./send-email.styles";
 
 type Option = {
   email: string;
 };
 
-
-export const SendEmail = forwardRef<HTMLElement>((_, ref) => {
-  const classes = useStyles();
+export const SendEmail = forwardRef<HTMLDivElement>((_, ref) => {
   const [ error, setError ] = useState('');
   const { register, handleSubmit } = useForm<Option>();
   const openPage = useOpenPage();
@@ -57,16 +33,16 @@ export const SendEmail = forwardRef<HTMLElement>((_, ref) => {
   });
 
   return (
-    <Paper ref={ref} elevation={10} style={{ margin: '2.5%', minWidth: '400px' }}>
-      <form noValidate onSubmit={onSubmit} autoComplete="off" style={{ padding: '10% 10% 5% 10%' }} >
+    <StyledPaper ref={ref} elevation={10}>
+      <StyledForm noValidate onSubmit={onSubmit} autoComplete="off">
         <Typography
           variant="h5" 
           component={"h2"}
           align="center"
+          padding="0 0 20px 0"
         >Write your email below</Typography>
 
         <TextField
-          className={classes.TextField}  
           label="Email"
           variant="outlined"
           color="primary"
@@ -75,12 +51,12 @@ export const SendEmail = forwardRef<HTMLElement>((_, ref) => {
           {...register("email")}
         />
 
-        <Grid container>
+        <Grid container padding="5px 0 0 0">
           <Grid item xs={8} sm={8} md={8} >
             <Typography
               align="center"
               variant="body2"
-              style={{padding: '10px 0'}}
+              padding="10px 0"
             >You don't have account?</Typography>
           </Grid>
           
@@ -103,24 +79,18 @@ export const SendEmail = forwardRef<HTMLElement>((_, ref) => {
           variant="body2"
           align="right"
           color="error"
-          style={{ padding: '10px 0 20px 0', fontWeight: 'bold'}}
+          padding="10px 0 20px 0"
+          fontWeight="bold"
         >{error}</Typography>
 
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="20px"
-          style={{"marginTop": "10px"}}
-        >
+        <ButtonContainer>
           <Button
-            style={{ width: '120px', paddingTop: '10px' }}
             type="submit"
             color="primary"
             variant="contained"
           >Done</Button>
-        </Box>
-      </form>
-    </Paper>
+        </ButtonContainer>
+      </StyledForm>
+    </StyledPaper>
   );
 });

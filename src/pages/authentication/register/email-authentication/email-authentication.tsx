@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { Button, Paper, Typography, Box } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { forwardRef, useState, useEffect } from "react";
 import { useOpenPage, useNavigationArgument } from 'animated-router-react';
+import { ButtonContainer, StyledForm, StyledPaper } from './email-authentication.styles';
+import { Button } from '../../../../components/styles/styles';
 
-export const EmailAuthentication = forwardRef<HTMLElement>((_, ref) => {
+export const EmailAuthentication = forwardRef<HTMLDivElement>((_, ref) => {
   const [ message, setMessage ] = useState('');
   const token = useNavigationArgument<string>();
   const openPage = useOpenPage();
@@ -16,38 +18,35 @@ export const EmailAuthentication = forwardRef<HTMLElement>((_, ref) => {
       setMessage('Your account has been confirmed. You can now log in.');
     })
     .catch((error) => {
-      setMessage(error.response?.data?.message ?? 'Authentication failed.');
+      if (error.message !== 'canceled') {
+        setMessage(error.response?.data?.message ?? 'Authentication failed.');
+      }
     })
 
     return () => abortController.abort();
   }, [token]);
 
   return (
-    <Paper ref={ref} elevation={10} style={{ margin: '10%' }}>
-      <form noValidate autoComplete="off" style={{ padding: '5% 5% 3% 5%' }} >
+    <StyledPaper ref={ref} elevation={10}>
+      <StyledForm noValidate autoComplete="off">
         <Typography
           variant="h6" 
           component={"h2"}
           align="center"
-        >{ message.length > 0 ? message : 'Please wait, your email address is now being authenticated...'}</Typography>
+        >
+          { message.length > 0 ? message : 'Please wait, your email address is now being authenticated...'}
+        </Typography>
         
         { message.length > 0 && 
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="20px"
-            style={{"marginTop": "25px"}}
-          >
+          <ButtonContainer>
             <Button
-              style={{ width: '120px', paddingTop: '10px' }}
               color="primary"
               variant="contained"
               onClick={() => openPage('/log-in', { updateHistory: true })}
             >Ok</Button>
-          </Box>
+          </ButtonContainer>
         }
-      </form>
-    </Paper>
+      </StyledForm>
+    </StyledPaper>
   );
 })

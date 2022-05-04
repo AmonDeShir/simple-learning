@@ -38,7 +38,7 @@ describe('ResetPassword', () => {
   });
 
   it(`should open the 'reset-password-message' page if the password was changed successfully`, async () => {
-    const { wrapper, navigationActions } = TestingContainer('VALID-RESET-PASSWORD-TOKEN');
+    const { wrapper } = TestingContainer('VALID-RESET-PASSWORD-TOKEN');
     render(<ResetPassword />, { wrapper });
 
     const password = screen.getByTestId("password-text-field");
@@ -50,17 +50,14 @@ describe('ResetPassword', () => {
     fireEvent.change(repeatPassword, { target: { value: 'password' }});
 
     fireEvent.click(screen.getByText('Done'));
+    await screen.findByText('Reset password message page');
 
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    expect(navigationActions['SELECT'].payload).toEqual({
-      path: "/reset-password-message/Your%20password%20was%20changed%20successfully.",
-      updateHistory: false,
-    });
+    expect(screen.getByText('Reset password message page')).toBeInTheDocument();
+    expect(screen.getByText('Your password was changed successfully.')).toBeInTheDocument();
   })
 
   it(`should open the 'reset-password-message' page if the password change operation was unsuccessful`, async () => {
-    const { wrapper, navigationActions } = TestingContainer('INVALID-TOKEN');
+    const { wrapper } = TestingContainer('INVALID-TOKEN');
     render(<ResetPassword />, { wrapper });
 
     const password = screen.getByTestId("password-text-field");
@@ -72,13 +69,10 @@ describe('ResetPassword', () => {
     fireEvent.change(repeatPassword, { target: { value: 'password' }});
 
     fireEvent.click(screen.getByText('Done'));
+    await screen.findByText('Reset password message page');
 
-    expect(await screen.findByText('Your token has expired.')).toBeInTheDocument();
-
-    expect(navigationActions['SELECT'].payload).toEqual({
-      path: "/reset-password-message/Your%20token%20has%20expired.",
-      updateHistory: false,
-    });
+    expect(screen.getByText('Reset password message page')).toBeInTheDocument();
+    expect(screen.getByText('Your token has expired.')).toBeInTheDocument();
   })
 
   it(`should display the 'Operation failed' text as any error text if the result of the reset password process is invalid`, async () => {
@@ -94,8 +88,6 @@ describe('ResetPassword', () => {
     fireEvent.change(repeatPassword, { target: { value: 'password' }});
 
     fireEvent.click(screen.getByText('Done'));
-
-    await new Promise(resolve => setTimeout(resolve, 200));
 
     expect(await screen.findByText('Operation failed')).toBeInTheDocument();
   });

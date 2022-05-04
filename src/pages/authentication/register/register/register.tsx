@@ -1,50 +1,10 @@
 import axios from "axios";
-import { Button, makeStyles, Paper, TextField, Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import { forwardRef, useState } from "react";
 import { useOpenPage } from "animated-router-react";
 import { useForm } from 'react-hook-form'
-
-const useStyles = makeStyles({
-  TextField: {
-    marginTop: 25,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  },
-
-  TextField2: {
-    marginTop: 0,
-    marginBottom: 10,
-    "& .MuiOutlinedInput-root": {
-      '& fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-      '&:hover fieldset': {
-        borderColor: '#f0956e',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ba6642',
-        borderWidth: '0.2em'
-      },
-    }
-  },
-
-  Link: {
-    cursor: 'pointer',
-  }
-});
+import { StyledPaper, StyledForm, StyledTextField, ButtonContainer } from "./register.styles";
+import { Button, Link } from "../../../../components/styles/styles";
 
 type Option = {
   name: string;
@@ -53,9 +13,7 @@ type Option = {
   repeatPassword: string;
 };
 
-
-export const Register = forwardRef<HTMLElement>((_, ref) => {
-  const classes = useStyles();
+export const Register = forwardRef<HTMLDivElement>((_, ref) => {
   const [ error, setError ] = useState('');
   const { register, handleSubmit } = useForm<Option>();
   const openPage = useOpenPage();
@@ -83,16 +41,16 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
   });
 
   return (
-    <Paper ref={ref} elevation={10} style={{ margin: '2.5%' }}>
-      <form noValidate autoComplete="off" onSubmit={onSubmit} style={{ padding: '10% 10% 5% 10%' }} >
+    <StyledPaper ref={ref} elevation={10}>
+      <StyledForm noValidate autoComplete="off" onSubmit={onSubmit}>
         <Typography
           variant="h5" 
           component={"h2"}
           align="center"
         >Write your email and password below</Typography>
 
-        <TextField
-          className={classes.TextField}  
+        <StyledTextField
+          margin="dense" 
           label="Name"
           variant="outlined"
           color="primary"
@@ -101,8 +59,8 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
           {...register('name')}
         />
 
-        <TextField
-          className={classes.TextField}
+        <StyledTextField
+          margin="dense" 
           type="email"
           label="Email"
           variant="outlined"
@@ -117,18 +75,17 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
             <Typography
               align="center"
               variant="body2"
-              style={{padding: '10px 0'}}
+              padding="10px 0"
             >Do you have account?</Typography>
           </Grid>
             
           <Grid item xs={4} sm={4} md={4}>
-            <Typography
-              className={classes.Link}
+            <Link
               color="primary"
               align="center"
               variant="body2"
               onClick={() => openPage('/log-in', { updateHistory: true })}
-            >Click here</Typography>
+            >Click here</Link>
             
             <Typography
               align="center"
@@ -138,8 +95,8 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
         </Grid>
 
 
-        <TextField
-          className={classes.TextField}
+        <StyledTextField
+          margin="dense" 
           type="password"
           label="Password"
           variant="outlined"
@@ -155,8 +112,8 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
           style={{padding: '10px 0'}}
         >Repeat your password below</Typography>
 
-        <TextField
-          className={classes.TextField2}
+        <StyledTextField
+          margin="normal" 
           type="password"
           label="Password"
           variant="outlined"
@@ -170,23 +127,18 @@ export const Register = forwardRef<HTMLElement>((_, ref) => {
           variant="body2"
           align="right"
           color="error"
-          style={{ padding: '10px 0 20px 0', fontWeight: 'bold'}}
+          padding="10px 0 20px 0"
+          fontWeight="bold"
         >{error}</Typography>
 
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="20px"
-        >
+        <ButtonContainer>
           <Button
-            style={{ width: '120px', paddingTop: '10px' }}
             type="submit"
             color="primary"
             variant="contained"
           >Register</Button>
-        </Box>
-      </form>
-    </Paper>
+        </ButtonContainer>
+      </StyledForm>
+    </StyledPaper>
   );
 });

@@ -2,9 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const DefaultState = {
   name: 'Anonym',
-  email: '',
-  synchronize: false,
   loginPage: true,
+  sync: false,
 }
 
 type State = typeof DefaultState;
@@ -15,8 +14,7 @@ const userSlice = createSlice({
   reducers: {
     setUserData: (state, action: PayloadAction<Omit<State, "loginPage">>) => {
       state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.synchronize = action.payload.synchronize;
+      state.sync = action.payload.sync;
     },
 
     openLoginPage: (state) => {
@@ -29,7 +27,5 @@ const userSlice = createSlice({
   }
 });
 
-const userReducer = userSlice.reducer;
-
+export const userReducer = userSlice.reducer;
 export const { setUserData, openLoginPage, hideLoginPage } = userSlice.actions;
-export default userReducer;
