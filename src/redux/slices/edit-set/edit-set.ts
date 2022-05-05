@@ -29,7 +29,7 @@ const DefaultState: State = {
   isProtected: false,
   progress: {
     mode: 'loading',
-    state: 'loading',
+    state: 'success',
     message: ''
   },
 }
@@ -148,9 +148,11 @@ const editSetSlice = createSlice({
     },
 
     clear(state) {
+      state.id  = DefaultState.id;
       state.title = DefaultState.title;
       state.words = DefaultState.words;
       state.progress = DefaultState.progress;
+      state.isProtected = DefaultState.isProtected;
     }
   },
   extraReducers: (builder) => {

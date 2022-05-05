@@ -38,7 +38,7 @@ export type WordData = {
 
 export const ViewSet = () => {
   const { setId } = useParams();
-  const [ set, setSet ] = useState<SetData>({ id: '', title: '', words: [] });
+  const [ set, setSet ] = useState<SetData>({ id: '', title: '', protected: false, words: [] });
   const [ loading, setLoading ] = useState<RegisterLoading>({ state: 'loading', message: '' });
   const matchesPC = useMediaQuery('(min-width:1024px)');
 

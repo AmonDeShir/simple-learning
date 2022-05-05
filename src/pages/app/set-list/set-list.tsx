@@ -13,7 +13,7 @@ import { SuperMemoPhase } from "../../../super-memo/super-memo.types";
 import { CenterPage, CreateNewSetContainer, StyledTypography } from "./set-list.styles";
 import { AnimatedIcon } from "../../../components/animated-icon/animated-icon";
 import { useAppDispatch } from "../../../redux/store";
-import { editSet } from "../../../redux/slices/edit-set/edit-set";
+import { clear, editSet } from "../../../redux/slices/edit-set/edit-set";
 import { YesNoDialog } from "../../../components/yes-no-dialog/yes-no-dialog";
 import { useYesNoDialog } from "../../../components/yes-no-dialog/use-yes-no-dialog";
 import { Loading, RegisterLoading } from "../../../components/loading/loading";
@@ -59,6 +59,11 @@ const SetList = () => {
 
   const editHandler = (item: MasonryItem) => {
     dispatch(editSet(item.id));
+    navigate(`/edit-set`);
+  }
+
+  const createSet = () => {
+    dispatch(clear());
     navigate(`/edit-set`);
   }
 
@@ -109,7 +114,7 @@ const SetList = () => {
           type="submit"
           color="primary"
           variant="contained"
-          onClick={() => navigate('/edit-set')}
+          onClick={() => createSet()}
         >New set</Button>
       </CreateNewSetContainer>
 

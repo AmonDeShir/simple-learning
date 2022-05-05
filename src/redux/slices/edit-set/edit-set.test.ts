@@ -58,7 +58,7 @@ describe(`editSetSlice`, () => {
         isProtected: false,
         progress: {
           mode: 'loading',
-          state: 'loading',
+          state: 'success',
           message: '',
         },
       });
@@ -73,7 +73,7 @@ describe(`editSetSlice`, () => {
           isProtected: false,
           progress: {
             mode: 'loading',
-            state: 'loading',
+            state: 'success',
             message: '',
           },
         });
@@ -110,7 +110,7 @@ describe(`editSetSlice`, () => {
           }],
           progress: {
             mode: 'loading',
-            state: 'loading',
+            state: 'success',
             message: '',
           },
         });
@@ -239,7 +239,7 @@ describe(`editSetSlice`, () => {
           words: [],
           progress: {
             mode: 'loading',
-            state: 'loading',
+            state: 'success',
             message: '',
           },
         });
