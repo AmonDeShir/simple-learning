@@ -33,6 +33,12 @@ export const EditSet = () => {
     setHasError(!words.every(({ error }) => Object.keys(error).length === 0))
   }, [words]);
 
+  useEffect(() => {
+    if (progress.mode === 'loading' && progress.state === 'success') {
+      document.body.scrollTo(0, document.body.scrollHeight);
+    }
+  }, [progress])
+
   const handleSave = () => {
     dispatch(createSet());
   }

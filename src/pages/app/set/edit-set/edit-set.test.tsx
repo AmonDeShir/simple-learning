@@ -39,21 +39,25 @@ describe(`EditSet`, () => {
   let audio: MockAudio;
   let deleteIcon: MockIcon;
   let closeIcon: MockIcon;
+  let scrollSpy = jest.fn();
 
   beforeAll(() => {
     audio = mockAudio();
     deleteIcon = mockIcon(DeleteIcon, 'delete icon');
     closeIcon = mockIcon(CloseIcon, 'close icon');
+    document.body.scrollTo = scrollSpy;
   });
 
   beforeEach(() => {
     audio.mockClear();
+    scrollSpy.mockClear();
   });
 
   afterAll(() => {
     audio.mockRestore();
     deleteIcon.mockRestore();
     closeIcon.mockRestore();
+    (document.body.scrollTo as any) = undefined;
   });
 
   it(`should render page title`, async () => {
@@ -74,6 +78,15 @@ describe(`EditSet`, () => {
     expect(screen.getByText('word 1')).toBeInTheDocument();
     expect(screen.getByText('word 2')).toBeInTheDocument();
   });
+
+  it(`should navigate to the bottom of the page`, async () => {
+    const { wrapper } = TestingContainer(undefined, state);
+    render(<EditSet />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(scrollSpy).toHaveBeenCalledWith(0, document.body.scrollHeight);
+  })
 
   it(`should show an YesNoDialog if the EditWord's component DeleteIcon is clicked`, async () => {
     const { wrapper } = TestingContainer(undefined, state);
