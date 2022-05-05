@@ -17,14 +17,14 @@ import { editSet } from "../../../redux/slices/edit-set/edit-set";
 import { YesNoDialog } from "../../../components/yes-no-dialog/yes-no-dialog";
 import { useYesNoDialog } from "../../../components/yes-no-dialog/use-yes-no-dialog";
 import { Loading, RegisterLoading } from "../../../components/loading/loading";
-import { handleLoadingErrors } from "../../../utils/load-data/load-data";
-import { loadAdvancedData } from "../../../utils/load-data/load-advanced-data";
+import { handleLoadingErrors, loadData } from "../../../utils/load-data/load-data";
 
 type Set = {
   id: string;
   title: string;
   progress: { [key in SuperMemoPhase]: number };
   words?: Word[];
+  protected: boolean;
 }
 
 type Word = {
@@ -33,14 +33,9 @@ type Word = {
   meaning: string,
 }
 
-type ServerResponse = {
-  sets: Set[];
-  userWords?: Word[];
-}
-
 
 const SetList = () => {
-  const [ data, setData ] = useState<ServerResponse>({ sets: [] });
+  const [ data, setData ] = useState<Set[]>([]);
   const [ loading, setLoading ] = useState<RegisterLoading>({ state: 'loading', message: '' });
   const [ search, setSearch ] = useState('');
   const abortController = useRef(new AbortController());
@@ -58,7 +53,7 @@ const SetList = () => {
     setLoading({ state: 'loading', message: '' })
 
     fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), dispatch)
-      .then(res => loadAdvancedData(res, ({ sets }: ServerResponse) => sets, (sets, data) => ({...data, sets}), setData, setLoading))
+      .then(res => loadData(res, setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
   }, [dispatch, search]);
 
@@ -73,7 +68,7 @@ const SetList = () => {
     await fetchData(() => axios.delete(`/api/v1/sets/${item.id}`, { signal: abortController.current.signal }), dispatch)
     
     await fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), dispatch)
-      .then(res => loadAdvancedData(res, ({ sets }: ServerResponse) => sets, (sets, data) => ({...data, sets}), setData, setLoading))
+      .then(res => loadData(res, setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
   }
 
@@ -94,12 +89,12 @@ const SetList = () => {
 
       <Loading timeout={10000} {...loading}>
         <SetsMasonry 
-          sets={data.sets} 
+          sets={data} 
           onClick={(set) => navigate(`/set/${set.id}`)}
           icons={
             (item) => [
               <AnimatedIcon size={25} onClick={() => editHandler(item)} Icon={EditIcon} key="0" />,
-              <AnimatedIcon size={25} onClick={() => showDeleteDialog(item)} Icon={DeleteIcon} key="1" />
+              ...( item.protected ? [] : [<AnimatedIcon size={25} onClick={() => showDeleteDialog(item)} Icon={DeleteIcon} key="1" />])
             ]
           }
         />

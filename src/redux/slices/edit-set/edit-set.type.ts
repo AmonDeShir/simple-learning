@@ -36,4 +36,5 @@ export type SetData = {
   id: string;
   title: string;
   words: WordData[];
+  protected: boolean;
 }

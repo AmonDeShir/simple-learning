@@ -4,10 +4,7 @@ import { setData } from './data/set.data';
 import { setSearchData } from './data/sets-search.data';
 import { setsData } from './data/sets.data';
 
-const searchItems = {
-  sets: [ ...setSearchData.sets ],
-  userWords: { ...setSearchData.userWords },
-}
+let searchItems = [ ...setSearchData ]
 
 export const mocksSets = [
   rest.get('/api/v1/sets/progress', (req, res, ctx) => {
@@ -50,6 +47,16 @@ export const mocksSets = [
     )
   }),
 
+  rest.get(`/api/v1/sets/set_id_2`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        status: 200,
+        data: setData,
+      })
+    )
+  }),
+
 
   rest.get(`/api/v1/sets/error`, (req, res, ctx) => {
     return res(
@@ -69,6 +76,7 @@ export const mocksSets = [
         data: {
           "id": "empty",
           "title": "Empty Set",
+          "protected": false,
           "progress": {
             "learning": 0,
             "relearning": 0,
@@ -106,10 +114,7 @@ export const mocksSets = [
       ctx.status(200),
       ctx.json({
         status: 200,
-        data: {
-          'sets': [],
-          'userWords': undefined,
-        },
+        data: [],
       })
     )
   }),
@@ -126,7 +131,7 @@ export const mocksSets = [
   }),
 
   rest.delete(`/api/v1/sets/set_id_0`, (req, res, ctx) => {
-    searchItems.sets = searchItems.sets.filter(item => item.id !== 'set_id_0')
+    searchItems = searchItems.filter(item => item.id !== 'set_id_0')
 
     return res(
       ctx.status(404),
@@ -148,8 +153,7 @@ export const mocksSets = [
   }),
 
   rest.get(`/api/v1/sets/restoreSearchData`, (req, res, ctx) => {
-    searchItems.sets = [ ...setSearchData.sets ]
-    searchItems.userWords = { ...setSearchData.userWords }
+    searchItems = [ ...setSearchData ];
 
     return res(
       ctx.status(200),

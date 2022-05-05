@@ -13,14 +13,14 @@ export type MasonryItem = {
   }[];
 }
 
-type Props = {
-  sets: MasonryItem[],
-  icons?: (item: MasonryItem) => JSX.Element[],
-  onClick?: (item: MasonryItem) => void,
+type Props<Item extends MasonryItem> = {
+  sets: Item[],
+  icons?: (item: Item) => JSX.Element[],
+  onClick?: (item: Item) => void,
 }
 
-export const SetsMasonry = ({ sets, icons, onClick }: Props) => {
-  const handleClick = (set: MasonryItem) => {
+export function SetsMasonry<Item extends MasonryItem>({ sets, icons, onClick }: Props<Item>) {
+  const handleClick = (set: Item) => {
     if(onClick) {
       return () => onClick(set);
     }
@@ -29,14 +29,14 @@ export const SetsMasonry = ({ sets, icons, onClick }: Props) => {
   return (
     <Masonry itemWidth={450}>
       {
-        sets.map(({ title, words, progress, id }) => (
+        sets.map((set) => (
           <SetCard 
-            key={id}
-            title={title}
-            progress={progress} 
-            data={words}
-            icons={icons ? icons({ title, words, progress, id }) : []}
-            onClick={handleClick({ title, words, progress, id })}
+            key={set.id}
+            title={set.title}
+            progress={set.progress} 
+            data={set.words}
+            icons={icons ? icons(set) : []}
+            onClick={handleClick(set)}
           />
         ))
       }
