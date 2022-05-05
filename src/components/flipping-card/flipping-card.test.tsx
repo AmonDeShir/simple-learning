@@ -38,7 +38,7 @@ describe(`FlippingCard`, () => {
   });
 
   it(`should render an empty card`, () => {
-    render(<FlippingCard onFlip={() => {}}/>);
+    render(<FlippingCard/>);
 
     expect(screen.getByTestId('card-front')).toBeInTheDocument();
     expect(screen.getByTestId('card-back')).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe(`FlippingCard`, () => {
   });
 
   it(`should render the card data`, () => {
-    render(<FlippingCard data={data} onFlip={() => {}}/>);
+    render(<FlippingCard data={data}/>);
 
     expect(screen.getByTestId('card-front')).toContainElement(screen.getByText('Front'));
     expect(screen.getByTestId('card-back')).toContainElement(screen.getByText('Back'));
@@ -57,7 +57,7 @@ describe(`FlippingCard`, () => {
   });
 
   it(`should render the inverted card data`, () => {
-    render(<FlippingCard data={{...data, invert: true }} onFlip={() => {}}/>);
+    render(<FlippingCard data={{...data, invert: true }}/>);
 
     expect(screen.getByTestId('card-front')).toContainElement(screen.getByText('Back'));
     expect(screen.getByTestId('card-back')).toContainElement(screen.getByText('Front'));
@@ -82,7 +82,7 @@ describe(`FlippingCard`, () => {
   });
 
   it(`should play an audio track from the data after render`, () => {
-    render(<FlippingCard data={data} onFlip={() => {}}/>);
+    render(<FlippingCard data={data}/>);
     act(() => { audio.loaded() });
 
     expect(audio.play).toBeCalledTimes(1);
@@ -90,14 +90,14 @@ describe(`FlippingCard`, () => {
   });
 
   it(`shouldn't play an audio track from the data after render if it's an inverted card`, () => {
-    render(<FlippingCard data={{...data, invert: true }} onFlip={() => {}}/>);
+    render(<FlippingCard data={{...data, invert: true }}/>);
     act(() => { audio.loaded() });
 
     expect(audio.play).not.toBeCalled();
   });
 
   it(`should play an audio track if card was flipped to the back side`, () => {
-    render(<FlippingCard data={data} onFlip={() => {}}/>);
+    render(<FlippingCard data={data}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getByText('Front'));
@@ -105,4 +105,26 @@ describe(`FlippingCard`, () => {
     expect(audio.play).toBeCalledTimes(2);
     expect(audio.play).toBeCalledWith(data.audio);
   });
+
+  it(`should render icons`, () => {
+    render(<FlippingCard data={data} icons={[
+      <div key="0">icon 1</div>,
+      <div key="1">icon 2</div>
+    ]}/>);
+
+    expect(screen.getByTestId('card-front')).toContainElement(screen.getAllByText('icon 1')[0]);
+    expect(screen.getByTestId('card-front')).toContainElement(screen.getAllByText('icon 2')[0]);
+
+    expect(screen.getByTestId('card-back')).toContainElement(screen.getAllByText('icon 1')[1]);
+    expect(screen.getByTestId('card-back')).toContainElement(screen.getAllByText('icon 2')[1]);
+  })
+
+  it(`should set the width of the card's container to the width parameter`, () => {
+    render(<FlippingCard data={data} width="200px" />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const container = screen.getByTestId('card-front').parentElement;
+ 
+    expect(container).toHaveStyle('width: 200px;');
+  })
 });

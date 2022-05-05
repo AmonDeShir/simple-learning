@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { MonthListData } from './data/month-list.data';
 import { wordSearchResult } from './data/words-search.data';
 
 export const mocksWords = [
@@ -22,7 +23,6 @@ export const mocksWords = [
     )
   }),
 
-
   rest.get(`/api/v1/words/search/empty`, (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -42,4 +42,14 @@ export const mocksWords = [
       })
     )
   }),
+
+  rest.get(`/api/v1/words/month-list`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        status: 200,
+        data: MonthListData,
+      })
+    )
+  })
 ];

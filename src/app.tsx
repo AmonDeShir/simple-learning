@@ -9,7 +9,7 @@ import { Dictionary } from './pages/app/dictionary/dictionary';
 import { NewWord } from './pages/app/set/new-word/new-word';
 import { ViewSet } from './pages/app/set/view-set/view-set';
 import { Game } from './pages/app/games/game';
-
+import { ShowDailyList } from './pages/app/daily-list/show-daily-list/show-daily-list';
 
 export const App = () => {
   const openLoginPage = useAppSelector(({ user }) => user.loginPage);
@@ -22,6 +22,11 @@ export const App = () => {
         <Route 
           path='/'
           element={<Main />}
+        />
+
+        <Route 
+          path='/daily-list'
+          element={<ShowDailyList />}
         />
 
         <Route 

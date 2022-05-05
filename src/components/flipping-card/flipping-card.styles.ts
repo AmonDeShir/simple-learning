@@ -1,11 +1,15 @@
 import { styled } from "@mui/material";
 
-export const FlippingContainer = styled('div')`
+export const FlippingContainer = styled('div')<{width: string}>`
   position: relative;
   transform-style: preserve-3d;
   perspective: 800px;
   height: 300px;
-  width: 90vw;
+  width: ${({ width }) => width};
+
+  & .MuiCardContent-root:last-child {
+    padding: 0;
+  }
 `;
 
 export const Side = styled('div')<{ side: 'front' | 'back' }>`

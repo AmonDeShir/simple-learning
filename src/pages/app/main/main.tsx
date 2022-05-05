@@ -63,20 +63,22 @@ const Main = () => {
       <ProgressChart />
       
       <LearnEditContainer>
-        <StyledTypography align="center" variant="h6">Learn your daily list or edit it</StyledTypography>
+        <StyledTypography align="center" variant="h6">Learn your daily list</StyledTypography>
 
         <LearnEditSecondContainer>
           <Button
             type="submit"
             color="primary"
             variant="contained"
+            onClick={() => navigate('/learn')}
           >Learn</Button>
 
           <Button
             type="submit"
             color="primary"
             variant="contained"
-          >Edit</Button>
+            onClick={() => navigate('/daily-list')}
+          >Show</Button>
         </LearnEditSecondContainer>
       </LearnEditContainer>
 

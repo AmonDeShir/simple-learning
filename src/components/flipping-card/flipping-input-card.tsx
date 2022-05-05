@@ -77,7 +77,7 @@ export const FlippingInputCard = ({ data, onAnswer }: Props) => {
   }, [audio, data?.invert, data?.mode]);
 
   return (
-    <FlippingContainer ref={containerRef}>
+    <FlippingContainer ref={containerRef} width="90vw">
       <Side side="front" {...{ "data-testid": 'card-front' }}>
         <Card 
           title={translation}

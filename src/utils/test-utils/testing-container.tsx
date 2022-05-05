@@ -125,6 +125,16 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
                   element={<Page path={"/game/:mode/:setId"} />}
                 />
 
+                <Route 
+                  path="/daily-list"
+                  element={<Page path={"/daily-list"} />}
+                />
+
+                <Route 
+                  path="/learn"
+                  element={<Page path={"/learn"} />}
+                />
+
                 <Route path={`/test${args}`} element={<div><FormMock onSubmit={submitSpy}>{children}</FormMock></div>} />
                 <Route path="/" element={<div>Main Page</div>} />   
               </Routes>
