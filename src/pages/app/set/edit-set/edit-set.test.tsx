@@ -15,6 +15,7 @@ const state = {
       message: '',
     },
     title: 'Set Title',
+    isProtected: false,
     words: [
       {
         type: 'create' as const,
@@ -116,6 +117,16 @@ describe(`EditSet`, () => {
 
     expect(reduxActions['editSet/removeWord']).toEqual(undefined)
   });
+
+  it(`shouldn't display tex set title textbox if the edited set is protected`, async () => {
+    const { wrapper } = TestingContainer(undefined, { editSet: { ...state.editSet, isProtected: true }});
+    render(<EditSet />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.queryByText(`Edit set's title`)).not.toBeInTheDocument();
+    expect(screen.queryByDisplayValue(`Set Title`)).not.toBeInTheDocument();
+  })
 
   it(`should dispatch the setTitle action if the Set title textbox is edited`, async () => {
     const { wrapper, reduxActions } = TestingContainer(undefined, state);
@@ -229,6 +240,7 @@ describe(`EditSet`, () => {
           state: 'success' as const,
           message: '',
         },
+        isProtected: false,
         title: 'Set Title',
         words: [
           {

@@ -7,6 +7,7 @@ export const setData = {
     "relearning": 0,
     "graduated": 0
   },
+  "protected": false,
   "words": [
     {
       "id": "62654ed22b1dda1589570b7d",

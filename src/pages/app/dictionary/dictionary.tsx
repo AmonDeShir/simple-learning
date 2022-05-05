@@ -8,7 +8,7 @@ import { WordCard } from '../../../components/word-card/word-card';
 import { CenterPage, StyledTypography } from './dictionary.styles';
 import { Masonry } from '../../../components/masonry/masonry';
 import { SearchFrom } from '../../../components/search-from/search-form';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchData } from '../../../api/fetchData';
 import { Loading, RegisterLoading } from '../../../components/loading/loading';
 import { handleLoadingErrors, loadData } from '../../../utils/load-data/load-data';
@@ -42,6 +42,7 @@ export type WordDataSets = WordData & {
 
 export const Dictionary = () => {
   const params = useParams();
+  const abortController = useRef(new AbortController());
   const [ search, setSearch ] = useState(params.word);
   const [ diki, setDiki ] = useState<WordData[]>([]);
   const [ words, setWords ] = useState<WordDataSets[]>([]);
@@ -53,22 +54,31 @@ export const Dictionary = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    
+  useEffect(() => {    
     setLoadingDiki({ state: 'loading', message: '' });
     setLoadingSet({ state: 'loading', message: '' });
 
-    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), dispatch)
       .then((res) => loadData(res, setWords, setLoadingSet))
       .catch((e) => handleLoadingErrors(e, setLoadingSet));
 
-    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.current.signal }), dispatch)
       .then((res) => loadData(res, setDiki, setLoadingDiki))
       .catch((e) => handleLoadingErrors(e, setLoadingDiki));
 
-      return () => abortController.abort();
   }, [dispatch, search]);
+
+  
+  const saveWord = async (word: WordData) => {
+    setLoadingSet({ state: 'loading', message: '' });
+
+    await fetchData(() => axios.post(`../api/v1/user/save-word`, { word }, { signal: abortController.current.signal }), dispatch);
+    await fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), dispatch)
+      .then((res) => loadData(res, setWords, setLoadingSet))
+      .catch((e) => handleLoadingErrors(e, setLoadingSet));
+  };
+
+  useEffect(() => () => abortController.current.abort(), [])
 
   return (
     <CenterPage>
@@ -115,7 +125,7 @@ export const Dictionary = () => {
             diki.map((word, index) => (
               <WordCard
                 key={`${word.word}-${word.meaning}-${index}`}
-                icons={[<AnimatedIcon key="0" Icon={AddRoundedIcon} size={35} />]}
+                icons={[<AnimatedIcon onClick={() => saveWord(word)} key="0" Icon={AddRoundedIcon} size={35} />]}
                 data={word}   
               />
             ))

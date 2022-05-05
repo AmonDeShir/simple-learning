@@ -5,6 +5,7 @@ import { WordDataConstructor } from "./edit-set.type";
 const state = {
   id: undefined,
   title: 'New set',
+  isProtected: false,
   words: [
     {
       id: "0_1",
@@ -54,6 +55,7 @@ describe(`editSetSlice`, () => {
         id: undefined,
         title: 'New set',
         words: [],
+        isProtected: false,
         progress: {
           mode: 'loading',
           state: 'loading',
@@ -68,6 +70,7 @@ describe(`editSetSlice`, () => {
           id: undefined,
           title: `new title`,
           words: [],
+          isProtected: false,
           progress: {
             mode: 'loading',
             state: 'loading',
@@ -93,6 +96,7 @@ describe(`editSetSlice`, () => {
         expect(editSetReducer(undefined, { type: `editSet/addWord`, payload: word })).toEqual({
           id: undefined,
           title: 'New set',
+          isProtected: false,
           words: [{
             id: expect.any(String),
             type: 'create',
@@ -118,6 +122,7 @@ describe(`editSetSlice`, () => {
         expect(editSetReducer(state, { type: `editSet/removeWord`, payload: '0_2' })).toEqual({
           id: undefined,
           title: 'New set',
+          isProtected: false,
           words: [
             {
               id: "0_1",
@@ -230,6 +235,7 @@ describe(`editSetSlice`, () => {
         expect(editSetReducer(state, { type: `editSet/clear` })).toEqual({
           id: undefined,
           title: 'New set',
+          isProtected: false, 
           words: [],
           progress: {
             mode: 'loading',
@@ -279,6 +285,7 @@ describe(`editSetSlice`, () => {
       const fetchedState = {
         id: 'set_id',
         title: 'Loaded Set',
+        protected: false,
         words: [
           {
             id: "0_6",
@@ -294,7 +301,6 @@ describe(`editSetSlice`, () => {
         ],
       }
       
-
       it(`should set the progress to loading`, () => {
         expect(editSetReducer(state, { type: `editSet/editSet/pending` })).toEqual({
           ...state,
@@ -327,6 +333,7 @@ describe(`editSetSlice`, () => {
           },
           id: 'set_id',
           title: 'Loaded Set',
+          isProtected: false,
           words: [
             {
               id: "0_6",
@@ -337,6 +344,8 @@ describe(`editSetSlice`, () => {
                 example: 'example 6',
                 translation: 'translation 6',
               },
+              secondExample: undefined,
+              usedIn: undefined,
               error: {}
             },
           ],

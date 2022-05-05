@@ -18,7 +18,7 @@ import { generateUsedInText, UsedInInfoIcon } from '../../../../components/used-
 export const EditSet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { title, words, progress } = useAppSelector(({ editSet }) => editSet);
+  const { isProtected, title, words, progress } = useAppSelector(({ editSet }) => editSet);
   const [ hasError, setHasError ] = useState(false);
 
   useEffect(() => {
@@ -85,22 +85,26 @@ export const EditSet = () => {
       <Header title={title} />
       <Container>
         <Loading timeout={10000} noBackground {...progress}>
-          <StyledTypography align="center" variant="h6">
-            Edit set's title
-          </StyledTypography>
+          
+          { !isProtected && (
+            <>
+              <StyledTypography align="center" variant="h6">
+                Edit set's title
+              </StyledTypography>
 
-          <TextField
-              style={{ width: '100%' }}
-              type="text"
-              label="Set title"
-              variant="outlined"
-              color="primary"
-              fullWidth
-              value={title}
-              onChange={(e) => dispatch(setTitle(e.target.value))}
-          />
-
-
+              <TextField
+                  style={{ width: '100%' }}
+                  type="text"
+                  label="Set title"
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  value={title}
+                  onChange={(e) => dispatch(setTitle(e.target.value))}
+              />
+            </>
+          )}
+          
           { words.map((word) => (
             <EditWord 
               key={word.id}

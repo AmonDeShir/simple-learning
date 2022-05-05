@@ -7,6 +7,7 @@ type State = {
   id?: string;
   title: string;
   words: WordData[];
+  isProtected: boolean;
   progress: {
     mode: 'saving' | 'loading';
     state: 'loading' | 'error' | 'success';
@@ -25,6 +26,7 @@ const DefaultState: State = {
   id: undefined,
   title: 'New set',
   words: [],
+  isProtected: false,
   progress: {
     mode: 'loading',
     state: 'loading',
@@ -200,6 +202,7 @@ const editSetSlice = createSlice({
       };
       state.id = action.payload.id;
       state.title = action.payload.title;
+      state.isProtected = action.payload.protected;
       state.words = action.payload.words.map(word => ({
         id: word.id,
         word: word.word,
