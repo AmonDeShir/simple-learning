@@ -9,5 +9,8 @@ export type LearnItem = {
   invert: boolean;
   progress: SuperMemoOutput;
   set: string;
+  inGameId: string;
   mode: 'flashcard' | 'writing' | 'information';
 }
+
+export type LoadResult = Omit<LearnItem, "inGameId">[];
