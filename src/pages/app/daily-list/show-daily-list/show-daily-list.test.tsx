@@ -58,6 +58,26 @@ describe('ShowDailyList', () => {
     expect(screen.getByText('There was an error. Please try again')).toBeInTheDocument();
   });
 
+  it(`should display empty message if there is no items for today`, async () => {
+    axiosGet.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        days: [[]],
+        date: 1651808437105,
+        isLastPage: false
+      }
+    });
+
+    const { wrapper } = TestingContainer();
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    
+    expect(screen.getByText("Today")).toBeInTheDocument();
+    expect(screen.getByText('There is nothing to learn for today')).toBeInTheDocument();
+  });
+
+
   it(`should render the next days`, async () => {
     const { wrapper } = TestingContainer();
     render(<ShowDailyList />, { wrapper });
@@ -131,5 +151,84 @@ describe('ShowDailyList', () => {
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
 
     expect(screen.getByText("Set page")).toBeInTheDocument();
+  });
+
+  it(`should open the /daily-list page if the page param is less than zero`, async () => {
+    const { wrapper } = TestingContainer({ page: "-1" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.getByText("Daily list page")).toBeInTheDocument();
+  })
+
+  it(`shouldn't render the toady list if the page param is greater than zero`, async () => {
+    const { wrapper } = TestingContainer({ page: "1" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.queryByText("Daily list page")).not.toBeInTheDocument();
+    expect(screen.getByText("7th May")).toBeInTheDocument();
+    expect(screen.getByText("Item 1")).toBeInTheDocument();
+    expect(screen.getByText("Item 2")).toBeInTheDocument();
+
+    expect(screen.getByText("8th May")).toBeInTheDocument();
+    expect(screen.getByText("Item 3")).toBeInTheDocument();
+    expect(screen.getByText("Item 4")).toBeInTheDocument();
+
+    expect(screen.getByText("9th May")).toBeInTheDocument();
+    expect(screen.getByText("Item 5")).toBeInTheDocument();
+    expect(screen.getByText("Item 6")).toBeInTheDocument();
+  })
+
+  it(`should open the "learn" page if the learn button is clicked`, async () => {
+    const { wrapper } = TestingContainer();
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText("Learn"));
+
+    expect(screen.getByText("Learn page")).toBeInTheDocument();
+  })
+
+  it(`should open the previous daily list page if the previous button is clicked`, async () => {
+    const { wrapper } = TestingContainer({ page: "1" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText("Previous"));
+
+    expect(screen.getByText("Daily list page")).toBeInTheDocument();
+    expect(screen.getByText("0")).toBeInTheDocument();
+  })
+
+  it(`should open the next daily list page if the next button is clicked`, async () => {
+    const { wrapper } = TestingContainer({ page: "0" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText("Next"));
+
+    expect(screen.getByText("Daily list page")).toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+  })
+
+  it(`should disable the previous button if the page param is equal to zero`, async () => {
+    const { wrapper } = TestingContainer({ page: "0" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.getByText("Previous")).toBeDisabled();
+  });
+
+  it(`should disable the next button if the current page is the last page`, async () => {
+    const { wrapper } = TestingContainer({ page: "1" });
+    render(<ShowDailyList />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.getByText("Next")).toBeDisabled();
   });
 })

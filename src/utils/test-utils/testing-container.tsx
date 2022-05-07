@@ -131,6 +131,11 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
                 />
 
                 <Route 
+                  path="/daily-list/:page"
+                  element={<Page path={"/daily-list"} />}
+                />
+
+                <Route 
                   path="/learn"
                   element={<Page path={"/learn"} />}
                 />
