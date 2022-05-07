@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const DefaultState = {
-  name: 'Anonym',
-  loginPage: true,
-  sync: false,
+type State = {
+  name: string;
+  loginPage: boolean;
+  sync: boolean;
+  pageBefore404?: string;
 }
 
-type State = typeof DefaultState;
+const DefaultState: State = {
+  name: 'Anonym',
+  loginPage: true,
+  pageBefore404: undefined,
+  sync: false,
+}
 
 const userSlice = createSlice({
   name: 'user',
@@ -23,9 +29,13 @@ const userSlice = createSlice({
 
     hideLoginPage: (state) => {
       state.loginPage = false;
+    },
+
+    setPageBefore404: (state, action: PayloadAction<string | undefined>) => {
+      state.pageBefore404 = action.payload;
     }
   }
 });
 
 export const userReducer = userSlice.reducer;
-export const { setUserData, openLoginPage, hideLoginPage } = userSlice.actions;
+export const { setUserData, openLoginPage, hideLoginPage, setPageBefore404 } = userSlice.actions;
