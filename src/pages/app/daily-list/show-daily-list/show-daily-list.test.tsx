@@ -183,7 +183,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`should open the "learn" page if the learn button is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer({ page: "0" });
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());

@@ -47,7 +47,10 @@ export const ShowDailyList = () => {
       .then(res => loadAdvancedData(res, (data: ServerResponse) => data.days, (days, data) => ({ ...data, days }), setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
 
-    return () => abortController.abort();
+    return () => { 
+      abortController.abort();
+      setData({ date: 0, days: [[]], isLastPage: false });
+    };
   }, [dispatch, page]);
 
   const openSetPage = (word: LearnItem) => {
@@ -80,7 +83,7 @@ export const ShowDailyList = () => {
                 data.days[0].map((word) => (
                   <FlippingCard 
                     data={{...word, inGameId: ''}} 
-
+                    key={word.id} 
                     width="90%" 
                     muteOnMount
                     icons={[

@@ -12,6 +12,8 @@ import { UseWithoutAccount } from "./use-without-account/use-without-account";
 import { enterRight, exitRight } from './animations';
 import { EmailAuthentication } from './register/email-authentication/email-authentication';
 import { useEffect } from 'react';
+import { useAppDispatch } from '../../redux/store';
+import { setPageBefore404 } from '../../redux/slices/users/user';
 
 const Background = styled(Box)`
   display: flex;
@@ -25,10 +27,12 @@ const Background = styled(Box)`
 
 const Page404 = () => {
   const openPage = useOpenPage();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    openPage('/', { updateHistory: true });
-  }, [openPage]);
+    dispatch(setPageBefore404(document.location.pathname))
+    openPage('/', { updateHistory: false });
+  }, [openPage, dispatch]);
 
   return (
     <>404</>
