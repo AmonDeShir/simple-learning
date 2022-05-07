@@ -63,4 +63,8 @@ export const StyledCard = emotion.styled(Card)<CardProps>`
   & .MuiCardContent-root {
     padding: 0;
   }
+
+  & .MuiCardContent-root:last-child {
+    padding: 0;
+  }
 `;

@@ -1,3 +1,4 @@
+import { Tooltip } from "@mui/material";
 import { forwardRef, PropsWithChildren } from "react";
 import { StyledCard, StyledCardContent, Header, Title, Icons, Content } from './card.styles';
 
@@ -34,9 +35,11 @@ export const Card = forwardRef<HTMLDivElement, Props>(({
   >
     <StyledCardContent>
       <Header invert={invert} {...{ "data-testid": 'card-header' }}>
-        <Title variant="h5" align="center" gutterBottom noWrap >
-          {title}
-        </Title>
+        <Tooltip title={title}>
+          <Title variant="h5" align="center" gutterBottom noWrap >
+            {title}
+          </Title>
+        </Tooltip>
         <Icons>
           {icons}
         </Icons>

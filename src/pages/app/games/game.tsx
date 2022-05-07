@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { ButtonContainer, CardContainer, CenterPage, ProgressContainer } from "./game.styles";
 import { FlippingInputCard } from "../../../components/flipping-card/flipping-input-card";
 import { TextGameItemMode } from "../../../redux/slices/game/game.type";
-import { StatisticsCard } from "../../../components/statistics-card/statistics-card";
+import { GameStatisticsCard } from "../../../components/game-statistics-card/game-statistics-card";
 import { Loading, RegisterLoading } from "../../../components/loading/loading";
 
 export const Game = () => {
@@ -26,11 +26,11 @@ export const Game = () => {
     dispatch(loadSet({ id: params.setId, mode: params.mode }));
   }, [dispatch, params.mode, params.setId]);
 
-  const handleAnswer = async (value: boolean) => {
+  const handleAnswer = async (value: number) => {
     setShowButtons(false);
 
     setTimeout(() => {
-      dispatch(answer(value));
+      dispatch(answer(value === 1));
     }, 250)
   }
 
@@ -73,7 +73,7 @@ export const Game = () => {
               <SlideUpdate id={progress === 'done' ? 'done' : inputData.inGameId}>
                 {progress === 'done' 
                   ? (
-                    <StatisticsCard
+                    <GameStatisticsCard
                       onClick={() => navigate(`/set/${setId}`)}
                       all={items.length}
                       corrects={statistics.correct.map((item) => ({ id: item.id, title: item.text, value: item.translation }))}
@@ -92,11 +92,11 @@ export const Game = () => {
 
           <ButtonContainer>
             <Grow in={showButtons} timeout={250}>
-              <SquareButton variant="contained" items={2} onClick={() => handleAnswer(true)}>Good</SquareButton>
+              <SquareButton variant="contained" items={2} onClick={() => handleAnswer(1)}>Good</SquareButton>
             </Grow>
 
             <Grow in={showButtons} timeout={250}>
-              <SquareButton variant="contained" items={2} onClick={() => handleAnswer(false)}>Again</SquareButton>
+              <SquareButton variant="contained" items={2} onClick={() => handleAnswer(0)}>Again</SquareButton>
             </Grow>
           </ButtonContainer>
         </>

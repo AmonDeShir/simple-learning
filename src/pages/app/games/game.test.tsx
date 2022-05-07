@@ -306,7 +306,7 @@ describe('Game', () => {
     fireEvent.click(screen.getByText('item 3'));
     act(() => { jest.advanceTimersByTime(250)});
 
-    expect(answerSpy).toBeCalledWith(true);
+    expect(answerSpy).toBeCalledWith(false);
     flippingCardSpy.mockRestore();
   });
 

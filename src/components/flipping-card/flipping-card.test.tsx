@@ -37,15 +37,6 @@ describe(`FlippingCard`, () => {
     tl.mockRestore();
   });
 
-  it(`should render an empty card`, () => {
-    render(<FlippingCard/>);
-
-    expect(screen.getByTestId('card-front')).toBeInTheDocument();
-    expect(screen.getByTestId('card-back')).toBeInTheDocument();
-
-    expect(screen.queryByText('AudioIcon')).not.toBeInTheDocument();
-  });
-
   it(`should render the card data`, () => {
     render(<FlippingCard data={data}/>);
 
@@ -73,12 +64,12 @@ describe(`FlippingCard`, () => {
     fireEvent.click(screen.getByText('Front'));
 
     expect(onFlip).toBeCalledTimes(1);
-    expect(onFlip).toBeCalledWith('back');
+    expect(onFlip).toBeCalledWith('back', data);
 
     fireEvent.click(screen.getByText('Back'));
 
     expect(onFlip).toBeCalledTimes(2);
-    expect(onFlip).toBeCalledWith('front');
+    expect(onFlip).toBeCalledWith('front', data);
   });
 
   it(`should play an audio track from the data after render`, () => {
@@ -87,6 +78,13 @@ describe(`FlippingCard`, () => {
 
     expect(audio.play).toBeCalledTimes(1);
     expect(audio.play).toBeCalledWith(data.audio);
+  });
+
+  it(`shouldn't play an audio track from the data after render if it the muteOnMount parameter is defined`, () => {
+    render(<FlippingCard data={data} muteOnMount/>);
+    act(() => { audio.loaded() });
+
+    expect(audio.play).not.toBeCalled();
   });
 
   it(`shouldn't play an audio track from the data after render if it's an inverted card`, () => {

@@ -6,10 +6,6 @@ export const FlippingContainer = styled('div')<{width: string}>`
   perspective: 800px;
   height: 300px;
   width: ${({ width }) => width};
-
-  & .MuiCardContent-root:last-child {
-    padding: 0;
-  }
 `;
 
 export const Side = styled('div')<{ side: 'front' | 'back' }>`
