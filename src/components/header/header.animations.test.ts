@@ -18,7 +18,7 @@ describe('Header animations', () => {
 
   describe('enterFullscreenMode', () => {
     it('should return a cleanup function', () => {
-      const result = enterFullscreenMode({ bar: null, icons: null }, () => {});
+      const result = enterFullscreenMode({ bar: null, icons: null, userMenu: null }, () => {});
       expect(result).toBeInstanceOf(Function);
     });
 
@@ -26,8 +26,9 @@ describe('Header animations', () => {
       const onDone = jest.fn();
       const bar = document.createElement('div');
       const icons = document.createElement('div');
+      const userMenu = document.createElement('div');
 
-      const result = enterFullscreenMode({ bar, icons }, onDone);
+      const result = enterFullscreenMode({ bar, icons, userMenu }, onDone);
       result();
 
       expect(onDone).toHaveBeenCalled();
@@ -36,7 +37,7 @@ describe('Header animations', () => {
 
   describe('exitFullscreenMode', () => {
     it('should return a cleanup function', () => {
-      const result = exitFullscreenMode({ bar: null, icons: null }, "0 0 0 0", () => {});
+      const result = exitFullscreenMode({ bar: null, icons: null, userMenu: null }, "0 0 0 0", () => {});
       expect(result).toBeInstanceOf(Function);
     });
 
@@ -44,8 +45,9 @@ describe('Header animations', () => {
       const onDone = jest.fn();
       const bar = document.createElement('div');
       const icons = document.createElement('div');
+      const userMenu = document.createElement('div');
 
-      const result = exitFullscreenMode({ bar, icons }, "0 0 0 0", onDone);
+      const result = exitFullscreenMode({ bar, icons, userMenu }, "0 0 0 0", onDone);
       result();
 
       expect(onDone).toHaveBeenCalled();

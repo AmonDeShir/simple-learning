@@ -21,6 +21,7 @@ export const Header = ({ title }: Props) => {
   
   const barRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const height = matchesPC ? 350 : 200;
   const barBorderRadius = matchesTablet ? '0' : '25px 25px 0 0';
 
@@ -38,11 +39,17 @@ export const Header = ({ title }: Props) => {
   }, [barBorderRadius, fullscreen, height]);
 
   useEffect(() => {
+    const items = {
+      bar: barRef.current, 
+      icons: iconsRef.current, 
+      userMenu: userMenuRef.current
+    }
+
     if (fullscreen) {
-      return enterFullscreenMode({ bar: barRef.current, icons: iconsRef.current});
+      return enterFullscreenMode(items);
     }
     else {
-      return exitFullscreenMode({ bar: barRef.current, icons: iconsRef.current}, barBorderRadius);
+      return exitFullscreenMode(items, barBorderRadius);
     }
   }, [fullscreen, barBorderRadius])
 
@@ -63,7 +70,13 @@ export const Header = ({ title }: Props) => {
             ? <AnimatedIcon Icon={ArrowBackIcon} onClick={navigate} /> 
             : <div></div>
           }
-          <UserMenu item="" user={userName} />
+          
+          <UserMenu 
+            item="" 
+            user={userName} 
+            ref={userMenuRef}
+          />
+          
         </Icons>
       </IconsContainer>
 

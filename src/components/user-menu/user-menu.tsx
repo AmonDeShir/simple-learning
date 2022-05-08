@@ -1,5 +1,5 @@
 import { capitalize } from "@mui/material";
-import { useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { hideAnimation, showAnimation } from "./user-menu.animations";
 import { Container, MenuLeft, MenuRight, StyledAvatar, Text } from "./user-menu.styles";
 
@@ -9,7 +9,7 @@ type Props = {
   onItemClick?: () => void;
 }
 
-export const UserMenu = ({ user, item, onItemClick }: Props ) => {
+export const UserMenu = forwardRef<HTMLDivElement, Props>(({ user, item, onItemClick }, ref) => {
   const name = user.split(' ').map(capitalize).map(part => part[0]).join('');
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState<boolean>(false);
@@ -40,7 +40,7 @@ export const UserMenu = ({ user, item, onItemClick }: Props ) => {
   }
   
   return (
-    <Container>
+    <Container ref={ref}>
       <StyledAvatar ref={avatar} onClick={toggleMenu} alt={user}>{name}</StyledAvatar>
       <MenuRight ref={menuRight} />
       <MenuLeft ref={menuLeft} onClick={onItemClick}>
@@ -48,4 +48,4 @@ export const UserMenu = ({ user, item, onItemClick }: Props ) => {
       </MenuLeft>
     </Container>
   );
-};
+});
