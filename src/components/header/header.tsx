@@ -6,7 +6,11 @@ import { BackgroundBox } from '../styles/styles';
 import { Bar, barHeight, Icons, IconsContainer, Title } from './header.styles';
 import { enterFullscreenMode, exitFullscreenMode } from './header.animations';
 import { UserMenu } from "../user-menu/user-menu";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { openLoginPage } from "../../redux/slices/users/user";
+import { fetchData } from "../../api/fetchData";
+import axios from "axios";
 
 type Props = {
   title: string;
@@ -14,7 +18,7 @@ type Props = {
 
 export const Header = ({ title }: Props) => {
   const [ fullscreen, setFullscreen ] = useState(false);
-  const userName = useAppSelector(state => state.user.name);
+  const { name, sync } = useAppSelector(state => state.user);
 
   const matchesPC = useMediaQuery('(min-width:1024px)');
   const matchesTablet = useMediaQuery('(min-width:768px)');
@@ -22,8 +26,14 @@ export const Header = ({ title }: Props) => {
   const barRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const abortController = useRef(new AbortController());
+
   const height = matchesPC ? 350 : 200;
   const barBorderRadius = matchesTablet ? '0' : '25px 25px 0 0';
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const callback = () => {
@@ -53,9 +63,21 @@ export const Header = ({ title }: Props) => {
     }
   }, [fullscreen, barBorderRadius])
 
-  const navigate = () => {
+  const openPreviousPage = () => {
     window.history.back();
   }
+
+  const handleUserMenuClick = async () => {
+    if (sync) {
+      dispatch(openLoginPage());
+      window.location.pathname = '/';
+      await fetchData(() => axios.post('/api/v1/auth/log-out', {}, { signal: abortController.current.signal }), navigate);
+    }
+    else {
+      dispatch(openLoginPage());
+      window.location.pathname = '/register';
+    }
+  };
 
   return (
     <BackgroundBox
@@ -67,14 +89,15 @@ export const Header = ({ title }: Props) => {
       <IconsContainer height={height}>
         <Icons ref={iconsRef} height={height}>
           { window.location.pathname !== '/' 
-            ? <AnimatedIcon Icon={ArrowBackIcon} onClick={navigate} /> 
+            ? <AnimatedIcon Icon={ArrowBackIcon} onClick={openPreviousPage} /> 
             : <div></div>
           }
           
           <UserMenu 
-            item="" 
-            user={userName} 
             ref={userMenuRef}
+            user={name}
+            item={ sync ? 'Log out' : 'Register' }
+            onItemClick={handleUserMenuClick}
           />
           
         </Icons>

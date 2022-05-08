@@ -77,7 +77,7 @@ const SetList = () => {
       .catch(e => handleLoadingErrors(e, setLoading));
   }
 
-  useEffect(() => () => abortController.current.abort(), [dispatch]);
+  useEffect(() => () => abortController.current.abort(), []);
 
   return (
     <CenterPage>
