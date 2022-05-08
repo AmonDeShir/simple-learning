@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { UserMenu } from "./user-menu";
 import * as Animations from "./user-menu.animations";
 
@@ -58,7 +58,7 @@ describe('UserMenu', () => {
     render(<UserMenu user="John Doe" item="Test" />);
     
     fireEvent.click(screen.getByText("JD"));
-    jest.advanceTimersByTime(100);
+    act(() => { jest.advanceTimersByTime(100) });
 
     expect(showSpy).toBeCalledTimes(1);
   });
@@ -70,7 +70,7 @@ describe('UserMenu', () => {
     fireEvent.click(screen.getByText("JD"));
     fireEvent.click(screen.getByText("JD"));
     
-    jest.advanceTimersByTime(100);
+    act(() => { jest.advanceTimersByTime(100) });
 
     expect(showSpy).toBeCalledTimes(1);
   });
@@ -79,10 +79,10 @@ describe('UserMenu', () => {
     render(<UserMenu user="John Doe" item="Test" />);
     
     fireEvent.click(screen.getByText("JD"));
-    jest.advanceTimersByTime(100);
+    act(() => { jest.advanceTimersByTime(100) });
 
     fireEvent.click(screen.getByText("JD"));
-    jest.advanceTimersByTime(100);
+    act(() => { jest.advanceTimersByTime(100) });
 
     expect(showSpy).toBeCalledTimes(1);
     expect(hideSpy).toBeCalledTimes(1);
