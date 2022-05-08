@@ -1,15 +1,34 @@
 
 import Main from './pages/app/main/main';
 import SetList from './pages/app/set-list/set-list';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useAppSelector } from './redux/store';
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from './redux/store';
 import { Authentication } from './pages/authentication/authentication';
 import { EditSet } from './pages/app/set/edit-set/edit-set';
 import { Dictionary } from './pages/app/dictionary/dictionary';
 import { NewWord } from './pages/app/set/new-word/new-word';
 import { ViewSet } from './pages/app/set/view-set/view-set';
 import { Game } from './pages/app/games/game';
+import { ShowDailyList } from './pages/app/daily-list/show-daily-list/show-daily-list';
+import { LearnDailyList } from './pages/app/daily-list/learn-daily-list/learn-daily-list';
+import { useEffect } from 'react';
+import { setPageBefore404 } from './redux/slices/users/user';
 
+const OpenPageBefore404 = () => {
+  const page = useAppSelector(({ user }) => user.pageBefore404);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (page !== undefined) {
+      navigate(page);
+      dispatch(setPageBefore404(undefined));
+    }
+
+  }, [navigate, page, dispatch]);
+  
+  return <></>
+};
 
 export const App = () => {
   const openLoginPage = useAppSelector(({ user }) => user.loginPage);
@@ -22,6 +41,21 @@ export const App = () => {
         <Route 
           path='/'
           element={<Main />}
+        />
+
+        <Route 
+          path='/daily-list'
+          element={<ShowDailyList />}
+        />
+
+        <Route 
+          path='/daily-list/:page'
+          element={<ShowDailyList />}
+        />
+
+        <Route 
+          path='/learn'
+          element={<LearnDailyList />}
         />
 
         <Route 
@@ -54,6 +88,8 @@ export const App = () => {
           element={<Game />}
         />
       </Routes>
+
+      <OpenPageBefore404 />
     </BrowserRouter>
   );
 } 

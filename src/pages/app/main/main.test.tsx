@@ -24,6 +24,26 @@ describe('Main', () => {
     expect(screen.getByText('Hi User')).toBeInTheDocument();
   });
 
+  it(`should open the daily list page if the 'Show' button is clicked`, async () => {
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true }});
+    render(<Main />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText('Show'));
+
+    expect(screen.getByText('Daily list page')).toBeInTheDocument();
+  })
+
+  it(`should open the learnZ page if the 'Learn' button is clicked`, async () => {
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true }});
+    render(<Main />, { wrapper });
+
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+    fireEvent.click(screen.getByText('Learn'));
+
+    expect(screen.getByText('Learn page')).toBeInTheDocument();
+  })
+
   it(`should open the dictionary page if the dictionary's search button is clicked`, async () => {
     const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
     render(<Main />, { wrapper });

@@ -37,17 +37,6 @@ describe(`FlippingInputCard`, () => {
     tl.mockRestore();
   });
 
-  it(`should render an empty card`, () => {
-    render(<FlippingInputCard onAnswer={() => {}}/>);
-
-    const textbox = screen.getByTestId('flipping-input-card-textbox');
-
-    expect(screen.getByTestId('card-front')).toContainElement(textbox);
-    expect(screen.getByTestId('card-back')).toBeInTheDocument();
-
-    expect(screen.queryByText('AudioIcon')).not.toBeInTheDocument();
-  });
-
   it(`should render the card data`, () => {
     render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
    
@@ -84,6 +73,11 @@ describe(`FlippingInputCard`, () => {
 
     expect(screen.getByTestId('card-front')).not.toContainElement(icon);
     expect(screen.getByTestId('card-back')).toContainElement(icon);
+  });
+
+  it(`shouldn't show an audio icon if the data's audio is undefined`, () => {
+    render(<FlippingInputCard data={{...data, audio: undefined }} onAnswer={() => {}}/>);
+    expect(screen.queryByText('AudioIcon')).not.toBeInTheDocument();
   });
 
   it(`should play an audio track from the data after render`, () => {
@@ -213,9 +207,9 @@ describe(`FlippingInputCard`, () => {
     fireEvent.click(screen.getAllByTestId('card')[1]);
 
     expect(onAnswer).toBeCalledTimes(1);
-    expect(onAnswer).toBeCalledWith(true);
+    expect(onAnswer).toBeCalledWith(1);
   });
-  
+
   it(`should call the onAnswer function if the answer button was clicked and the card is inverted and the input value is equal to the data's translation`, () => {
     const onAnswer = jest.fn();
     render(<FlippingInputCard data={{...data, invert: true}} onAnswer={onAnswer}/>);
@@ -227,7 +221,7 @@ describe(`FlippingInputCard`, () => {
     fireEvent.click(screen.getAllByTestId('card')[1]);
 
     expect(onAnswer).toBeCalledTimes(1);
-    expect(onAnswer).toBeCalledWith(true);
+    expect(onAnswer).toBeCalledWith(1);
   });
 
   it(`should give the first answer as the onResult argument if the answer button was clicked and the user corrects their answer`, () => {
@@ -247,7 +241,7 @@ describe(`FlippingInputCard`, () => {
     fireEvent.click(screen.getAllByTestId('card')[1]);
 
     expect(onAnswer).toBeCalledTimes(1);
-    expect(onAnswer).toBeCalledWith(false);
+    expect(onAnswer).toBeCalledWith(0.08333333333333333);
   });
 
   it(`should display an error message if the answer button was clicked and the input value is not equal to the data's text`, () => {

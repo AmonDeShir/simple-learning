@@ -37,7 +37,7 @@ const asPercent = (value: number, all: number) => {
   return Math.floor(Math.max(all, 0) ? (100 * value) / all : 100)
 }
 
-export const StatisticsCard = ({ all, corrects, wrongs, onClick }: Props) => (
+export const GameStatisticsCard = ({ all, corrects, wrongs, onClick }: Props) => (
   <Box padding="20px 10px" width="90vw" display="flex" justifyContent="center">
     <Card title="Done" fullBorder width="100%" size="md" onClick={onClick}>
       <Box display="flex" alignItems="center">

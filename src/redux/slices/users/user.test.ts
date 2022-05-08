@@ -1,4 +1,4 @@
-import { userReducer, hideLoginPage, openLoginPage, setUserData } from './user';
+import { userReducer, hideLoginPage, openLoginPage, setUserData, setPageBefore404 } from './user';
 
 describe(`users`, () => {
   describe(`setUserData`, () => {
@@ -40,6 +40,20 @@ describe(`users`, () => {
         sync: false,
         name: '',
         loginPage: false
+      });
+    });
+
+    it(`should set pageBefore404`, () => {
+      const response = userReducer(
+        { sync: false, name: '', loginPage: false },
+        setPageBefore404('/')
+      );
+
+      expect(response).toEqual({
+        sync: false,
+        name: '',
+        loginPage: false,
+        pageBefore404: '/'
       });
     });
   })
