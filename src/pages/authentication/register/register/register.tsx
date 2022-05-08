@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Grid, Typography } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useOpenPage } from "animated-router-react";
 import { useForm } from 'react-hook-form'
 import { StyledPaper, StyledForm, StyledTextField, ButtonContainer } from "./register.styles";
 import { Button, Link } from "../../../../components/styles/styles";
+import { YesNoDialog } from "../../../../components/yes-no-dialog/yes-no-dialog";
+import { useYesNoDialog } from "../../../../components/yes-no-dialog/use-yes-no-dialog";
 
 type Option = {
   name: string;
@@ -15,8 +17,20 @@ type Option = {
 
 export const Register = forwardRef<HTMLDivElement>((_, ref) => {
   const [ error, setError ] = useState('');
+  const [ importData, setImportData ] = useState<boolean>();
   const { register, handleSubmit } = useForm<Option>();
+
+  const abortController = useRef(new AbortController());
   const openPage = useOpenPage();
+  
+  const [ registerDialog, openDialog ] = useYesNoDialog((response) => {
+    if (response === 'yes') {
+      setImportData(true);
+    }
+    else {
+      setImportData(false);
+    }
+  })
 
   const onSubmit = handleSubmit(({ email, name, password, repeatPassword }) => {
     setError(``);
@@ -31,14 +45,34 @@ export const Register = forwardRef<HTMLDivElement>((_, ref) => {
       return;
     }
 
-    axios({ url: '/api/v1/auth/register', method: 'POST', data: { email, name, password }})
-    .then(() => {
-      openPage('/authenticate-your-email', { updateHistory: true })
-    })
-    .catch((error) => {
-      setError(error.response?.data?.message ?? 'Registration failed');
-    })
+    axios.post('/api/v1/auth/register', { email, name, password, importData }, { signal: abortController.current.signal })
+      .then(() => {
+        openPage('/authenticate-your-email', { updateHistory: true })
+      })
+      .catch((error) => {
+        setError(error.response?.data?.message ?? 'Registration failed');
+      })
   });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if ( importData !== undefined) {
+          return
+        }
+
+        const { data } = await axios.post('/api/v1/auth/refresh', {}, { signal: abortController.current.signal });
+        const sync = data.sync;
+
+        if (!sync) {
+          openDialog();
+        }
+      } 
+      catch {}
+    })();
+  }, [openDialog, importData]);
+  
+  useEffect(() => () => abortController.current.abort(), []);
 
   return (
     <StyledPaper ref={ref} elevation={10}>
@@ -139,6 +173,8 @@ export const Register = forwardRef<HTMLDivElement>((_, ref) => {
           >Register</Button>
         </ButtonContainer>
       </StyledForm>
+
+      <YesNoDialog {...registerDialog()} message="Do you want to import local data into your new account?"/>
     </StyledPaper>
   );
 });

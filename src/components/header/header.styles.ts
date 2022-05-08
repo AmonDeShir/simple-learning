@@ -20,7 +20,7 @@ export const IconsContainer = styled(Box)<IconsProp>`
 
 export const Icons = styled(Box)<IconsProp>`
   display: flex;
-  padding: 0 10px;
+  padding: 0 20px;
   justify-content: space-between;
   align-items: center;
   z-index: 3;
