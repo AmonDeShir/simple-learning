@@ -5,6 +5,8 @@ import { AnimatedIcon } from '../animated-icon/animated-icon';
 import { BackgroundBox } from '../styles/styles';
 import { Bar, barHeight, Icons, IconsContainer, Title } from './header.styles';
 import { enterFullscreenMode, exitFullscreenMode } from './header.animations';
+import { UserMenu } from "../user-menu/user-menu";
+import { useAppSelector } from "../../redux/store";
 
 type Props = {
   title: string;
@@ -12,6 +14,7 @@ type Props = {
 
 export const Header = ({ title }: Props) => {
   const [ fullscreen, setFullscreen ] = useState(false);
+  const userName = useAppSelector(state => state.user.name);
 
   const matchesPC = useMediaQuery('(min-width:1024px)');
   const matchesTablet = useMediaQuery('(min-width:768px)');
@@ -24,7 +27,7 @@ export const Header = ({ title }: Props) => {
   useEffect(() => {
     const callback = () => {
       const isFullscreen = window.scrollY > height - barHeight;
-      
+ 
       if (fullscreen !== isFullscreen) {
         setFullscreen(isFullscreen);
       }
@@ -56,7 +59,11 @@ export const Header = ({ title }: Props) => {
     >
       <IconsContainer height={height}>
         <Icons ref={iconsRef} height={height}>
-          { window.location.pathname !== '/' && <AnimatedIcon Icon={ArrowBackIcon} onClick={navigate} />}
+          { window.location.pathname !== '/' 
+            ? <AnimatedIcon Icon={ArrowBackIcon} onClick={navigate} /> 
+            : <div></div>
+          }
+          <UserMenu item="" user={userName} />
         </Icons>
       </IconsContainer>
 

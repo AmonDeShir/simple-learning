@@ -1,3 +1,5 @@
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { fireEvent, render, screen } from "@testing-library/react";
 import * as ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import * as Animations from "./header.animations";
@@ -5,6 +7,8 @@ import { Header } from "./header";
 import mediaQuery from 'css-mediaquery';
 import { mockIcon, MockIcon } from "../../utils/mocks/icon-mock";
 import "jest-location-mock";
+import { TestingContainer } from "../../utils/test-utils/testing-container";
+import { PropsWithChildren } from "react";
 
 function createMatchMedia(width: number) {
   return (query: any) => ({
@@ -45,28 +49,58 @@ describe('Header', () => {
   });
 
   it(`should render the title`, () => {
-    render(<Header title="Hello World" />);
+    window.location.pathname = '/test';
+
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
     expect(screen.getByText("Hello World")).toBeInTheDocument();
   })
 
   it(`should render the back button`, () => {
     window.location.pathname = '/test';
 
-    render(<Header title="Hello World" />);
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
     expect(screen.getByText("Back Icon")).toBeInTheDocument();
   });
 
   it(`shouldn't render the back button if the root page is open`, () => {
     window.location.pathname = '/';
 
-    render(<Header title="Hello World" />);
+    const store = configureStore({ reducer: {
+      user: () => ({
+        name: 'Test User',
+      })
+    }});
+    
+    const wrapper = ({ children }: PropsWithChildren<{}>) => (
+      <Provider store={store}>
+        {children}
+      </Provider>
+    );
+
+    render(<Header title="Hello World" />, { wrapper });
+
     expect(screen.queryByText("Back Icon")).not.toBeInTheDocument();
+  });
+
+  it(`should render the user menu`, () => {
+    window.location.pathname = '/test';
+
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
+    expect(screen.getByText("TU")).toBeInTheDocument();
   });
 
   it(`should open previous page if the back button was clicked`, () => {
     window.location.pathname = '/test';
 
-    render(<Header title="Hello World" />);
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
     const backButton = screen.getByText("Back Icon");
     backButton.click();
 
@@ -77,7 +111,9 @@ describe('Header', () => {
     window.location.pathname = '/test';
     window.matchMedia = createMatchMedia(2000) as any;
     
-    render(<Header title="Hello World" />);
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
     fireEvent.scroll(window, { target: { scrollY: 500 } });
 
     expect(enterFullscreenModeSpy).toHaveBeenCalledTimes(1);
@@ -86,7 +122,9 @@ describe('Header', () => {
   it(`should exit fullscreen mode if the page is scrolled back to the background`, () => {
     window.location.pathname = '/test';
     window.matchMedia = createMatchMedia(2000) as any;
-    render(<Header title="Hello World" />);
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
 
     expect(enterFullscreenModeSpy).toHaveBeenCalledTimes(0);
     expect(exitFullscreenModeSpy).toHaveBeenCalledTimes(2);
@@ -101,7 +139,9 @@ describe('Header', () => {
   it(`shouldn't play animations if the scroll operation was too small to reach the anchor value`, () => {
     window.location.pathname = '/test';
     window.matchMedia = createMatchMedia(500) as any;
-    render(<Header title="Hello World" />);
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', loginPage: false, sync: false }})
+    render(<Header title="Hello World" />, { wrapper });
+
 
     expect(enterFullscreenModeSpy).toHaveBeenCalledTimes(0);
     expect(exitFullscreenModeSpy).toHaveBeenCalledTimes(1);
