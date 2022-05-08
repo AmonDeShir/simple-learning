@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { editSetReducer } from "../../redux/slices/edit-set/edit-set";
 import { gameReducer } from "../../redux/slices/game/game";
+import { learnReducer } from "../../redux/slices/learn/learn";
 import { userReducer } from "../../redux/slices/users/user";
 import { RootState } from "../../redux/store"
 import { themeConstructor } from "../../theme";
@@ -77,6 +78,7 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
       user: userReducer,
       editSet: editSetReducer,
       game: gameReducer,
+      learn: learnReducer,
       saveActions: (_, action) => saveAction(reduxActions)(action),
     },
     preloadedState: {
@@ -139,7 +141,7 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
                   path="/learn"
                   element={<Page path={"/learn"} />}
                 />
-
+                
                 <Route path={`/test${args}`} element={<div><FormMock onSubmit={submitSpy}>{children}</FormMock></div>} />
                 <Route path="/" element={<div>Main Page</div>} />   
               </Routes>

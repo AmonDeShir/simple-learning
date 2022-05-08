@@ -64,6 +64,15 @@ export const mocksWords = [
     )
   }),
 
+  rest.get(`/api/v1/words/month-list/-1`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        status: 400,
+        message: 'error'
+      })
+    )
+  }),
 
 
   rest.get(`/api/v1/words/month-list/0`, (req, res, ctx) => {
