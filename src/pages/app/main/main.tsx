@@ -8,7 +8,7 @@ import { SetsCarousel } from "../../../components/sets-carousel/sets-carousel";
 import { useNavigate } from "react-router-dom";
 import { CenterPage, LearnEditContainer, LearnEditSecondContainer, OpenSetListGrid, StyledTypography } from "./main.styles";
 import { SearchFrom } from "../../../components/search-from/search-form";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { useAppSelector } from "../../../redux/store";
 import { SuperMemoPhase } from '../../../super-memo/super-memo.types';
 import { useEffect, useState } from "react";
 import { fetchData } from '../../../api/fetchData';
@@ -30,7 +30,6 @@ const Main = () => {
   const username = useAppSelector(({ user }) =>  user.name);
   const matchesPC = useMediaQuery('(min-width:1024px)');
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   
   const [ data, setData ] = useState<Set[]>([])
   const [ loading, setLoading ] = useState<RegisterLoading>({ state: 'loading', message: '' });
@@ -44,12 +43,12 @@ const Main = () => {
 
     setLoading({ state: 'loading', message: '' });
 
-    fetchData(() => axios.get('/api/v1/sets/', { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get('/api/v1/sets/', { signal: abortController.signal }), navigate)
       .then((res) => loadData(res, setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
 
     return () => abortController.abort();
-  }, [dispatch]);
+  }, [navigate]);
 
   return (
     <CenterPage>

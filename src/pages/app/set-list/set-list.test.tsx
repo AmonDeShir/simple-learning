@@ -78,7 +78,7 @@ describe(`SetList`, () => {
   });
 
   it(`should render page title`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
     
     await screen.findByText(`Loading please wait...`);
@@ -88,7 +88,7 @@ describe(`SetList`, () => {
   });
 
   it(`should render the search result`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
 
     await screen.findByText(`Loading please wait...`);
@@ -99,7 +99,7 @@ describe(`SetList`, () => {
   });
 
   it(`should search and display the search result if the search button is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
 
     await screen.findByText(`Loading please wait...`);
@@ -115,7 +115,7 @@ describe(`SetList`, () => {
   });
 
   it(`should display an error of the search result`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
 
     await screen.findByText(`Loading please wait...`);
@@ -131,7 +131,7 @@ describe(`SetList`, () => {
   });
 
   it(`should open the 'view-set' page if an search result is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
     
     await screen.findByText(`Loading please wait...`);
@@ -144,7 +144,7 @@ describe(`SetList`, () => {
   });
 
   it(`should open the 'edit-set' page and call the editSet action if an 'Edit' icon is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
     
     await screen.findByText(`Loading please wait...`);
@@ -158,7 +158,7 @@ describe(`SetList`, () => {
   });
 
   it(`should open the 'edit-set' page if the 'New set' button is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
     
     await screen.findByText(`Loading please wait...`);
@@ -170,7 +170,7 @@ describe(`SetList`, () => {
   });
 
   it(`shouldn't display the delete icon if the set is protected`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<SetList />, { wrapper });
     
     await screen.findByText(`Loading please wait...`);
@@ -190,7 +190,7 @@ describe(`SetList`, () => {
 
   describe('Delete dialog', () => {
     it(`should show the delete dialog if an delete icon is clicked`, async () => {
-      const { wrapper } = TestingContainer();
+      const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
       render(<SetList />, { wrapper });
       
       await screen.findByText(`Loading please wait...`);
@@ -202,7 +202,7 @@ describe(`SetList`, () => {
     })
   
     it(`should delete set and reload set list array if the 'Yes' button is clicked`, async () => {
-      const { wrapper } = TestingContainer();
+      const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
       render(<SetList />, { wrapper });
 
       await screen.findByText(`Loading please wait...`);
@@ -223,7 +223,7 @@ describe(`SetList`, () => {
     })
 
     it(`should display an error if fetching data after delete failed`, async () => {
-      const { wrapper } = TestingContainer();
+      const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
       axiosDeleteSpy.mockImplementation(() => Promise.reject({}));
       axiosGetSpy.mockImplementationOnce(axiosGetOrigin);
       axiosGetSpy.mockImplementationOnce(() => Promise.reject({}));
@@ -244,7 +244,7 @@ describe(`SetList`, () => {
     })
 
     it(`shouldn't delete items if 'No' button is clicked`, async () => {
-      const { wrapper } = TestingContainer();
+      const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
       render(<SetList />, { wrapper });
 
       await screen.findByText(`Loading please wait...`);

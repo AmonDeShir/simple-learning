@@ -1,12 +1,12 @@
 import axios from "axios";
 import { Grid, Typography, Box } from "@mui/material";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { useOpenPage } from 'animated-router-react';
 import { useForm } from 'react-hook-form'
 import { useAppDispatch } from "../../../redux/store";
-import { hideLoginPage, setUserData } from "../../../redux/slices/users/user";
+import { setUserData } from "../../../redux/slices/users/user";
 import { StyledForm, StyledPaper } from "./log-in.styles";
 import { Button, Link, TextField } from "../../../components/styles/styles";
+import { useNavigate } from "react-router-dom";
 
 type Option = {
   email: string;
@@ -17,7 +17,7 @@ export const LogIn = forwardRef<HTMLDivElement>((_, ref) => {
   const abortController = useRef(new AbortController());
   const [ error, setError ] = useState('');
   const { register, handleSubmit } = useForm<Option>();
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const onSubmit = handleSubmit(({ email, password }) => {
@@ -32,8 +32,7 @@ export const LogIn = forwardRef<HTMLDivElement>((_, ref) => {
       .then(res => res.data.data)
       .then(data => {
         dispatch(setUserData({...data }));
-        dispatch(hideLoginPage());
-        openPage('/', { updateHistory: true });
+        navigate('/');
       })
       .catch((error) => {
         if (error.message !== 'canceled') {
@@ -78,7 +77,7 @@ export const LogIn = forwardRef<HTMLDivElement>((_, ref) => {
               color="primary"
               align="center"
               variant="body2"
-              onClick={() => openPage('/register', { updateHistory: true })}
+              onClick={() => navigate('/auth/register')}
             >Click here</Link>
             
             <Typography
@@ -112,7 +111,7 @@ export const LogIn = forwardRef<HTMLDivElement>((_, ref) => {
               variant="body2"
               color="primary"
               align="center"
-              onClick={() => openPage('/send-email', { updateHistory: true })}
+              onClick={() => navigate('/auth/send-email')}
             >Click here</Link>
 
             <Typography

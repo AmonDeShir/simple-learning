@@ -8,6 +8,10 @@ import { TestingContainer } from "../../../../utils/test-utils/testing-container
 import { EditSet } from "./edit-set";
 
 const state = {
+  user: { 
+    name: 'Test User', 
+    sync: false 
+  },
   editSet: {
     progress: {
       mode: 'loading' as const,
@@ -221,7 +225,7 @@ describe(`EditSet`, () => {
 
   it(`should dispatch the clear action and navigate to the 'set-list' page if the redux's progress mode is set to 'saving' and progress state is set to 'success'`, async () => {
     const progress = { mode: 'saving' as const, state: 'success' as const, message: '' };
-    const { wrapper, reduxActions } = TestingContainer(undefined, { editSet: { ...state.editSet, progress }});
+    const { wrapper, reduxActions } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }, editSet: { ...state.editSet, progress }});
     render(<EditSet />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -247,6 +251,10 @@ describe(`EditSet`, () => {
 
   describe('when the one of the words is edited', () => {
     const state = {
+      user: { 
+        name: 'Test User', 
+        sync: false 
+      },
       editSet: {
         progress: {
           mode: 'loading' as const,

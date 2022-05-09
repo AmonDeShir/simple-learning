@@ -4,12 +4,12 @@ import { hideAnimation, showAnimation } from "./user-menu.animations";
 import { Container, MenuLeft, MenuRight, StyledAvatar, Text } from "./user-menu.styles";
 
 type Props = {
-  user: string;
+  user?: string;
   item: string;
   onItemClick?: () => void;
 }
 
-export const UserMenu = forwardRef<HTMLDivElement, Props>(({ user, item, onItemClick }, ref) => {
+export const UserMenu = forwardRef<HTMLDivElement, Props>(({ user = "", item, onItemClick }, ref) => {
   const name = user.split(' ').map(capitalize).map(part => part[0]).join('');
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isAnimationPlaying, setIsAnimationPlaying] = useState<boolean>(false);

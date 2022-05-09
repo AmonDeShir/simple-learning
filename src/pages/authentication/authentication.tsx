@@ -1,19 +1,16 @@
 import backgroundImage from '../../assets/background.jpg';
-import Navigation, { Route, useOpenPage } from 'animated-router-react';
 import { Box, styled } from "@mui/material";
 import { LogIn } from "./log-in/log-in";
-import { AuthenticateYourEmail } from "./register/authenticate-your-email/authenticate-your-email";
 import { Register } from "./register/register/register";
 import { ResetPasswordMessage } from "./reset-password/reset-password-message/reset-password-message";
 import { ReceiveEmail } from "./reset-password/receive-email/receive-email";
 import { ResetPassword } from "./reset-password/reset-password/reset-password";
 import { SendEmail } from "./reset-password/send-email/send-email";
 import { UseWithoutAccount } from "./use-without-account/use-without-account";
-import { enterRight, exitRight } from './animations';
 import { EmailAuthentication } from './register/email-authentication/email-authentication';
-import { useEffect } from 'react';
-import { useAppDispatch } from '../../redux/store';
-import { setPageBefore404 } from '../../redux/slices/users/user';
+import { SlideUpdate } from '../../components/slide-update/slide-update';
+import { useParams } from 'react-router-dom';
+
 
 const Background = styled(Box)`
   display: flex;
@@ -25,90 +22,45 @@ const Background = styled(Box)`
   background-position: center;
 `;
 
-const Page404 = () => {
-  const openPage = useOpenPage();
-  const dispatch = useAppDispatch();
+export const Authentication = () => {
+  const { page = "/use-without-account", argument = "" } = useParams();
+  
+  const selectPage = () => {
+    switch (page) {
+      case "use-without-account":
+        return <UseWithoutAccount />;
 
-  useEffect(() => {
-    dispatch(setPageBefore404(document.location.pathname))
-    openPage('/', { updateHistory: false });
-  }, [openPage, dispatch]);
+      case "log-in":
+        return <LogIn />;
+
+      case "register":
+        return <Register />;
+
+      case "reset-password":
+        return <ResetPassword token={argument} />;
+
+      case "receive-email":
+        return <ReceiveEmail />;
+
+      case "send-email":
+        return <SendEmail />;
+
+      case "reset-password-message":
+        return <ResetPasswordMessage message={argument} />;
+
+      case "email-authentication":
+        return <EmailAuthentication token={argument} />;
+
+      default: 
+        return <UseWithoutAccount />;
+    }
+  }
 
   return (
-    <>404</>
-  )
+    <Background>
+      <SlideUpdate id={`${page}-${argument}`}>
+        { selectPage() }
+      </SlideUpdate>
+    </Background>
+  );
 }
-
-export const Authentication = () => ( 
-  <Background>
-    <Navigation>
-      <Route
-        path='/404'
-        component={<Page404 />}
-      />
-
-      <Route 
-        path="/"
-        component={<UseWithoutAccount />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/log-in"
-        component={<LogIn />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-        
-      <Route 
-        path="/register"
-        component={<Register />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route
-        path="/email-authentication"
-        component={<EmailAuthentication />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/authenticate-your-email"
-        component={<AuthenticateYourEmail />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/send-email"
-        component={<SendEmail />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/receive-email"
-        component={<ReceiveEmail />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/reset-password"
-        component={<ResetPassword />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-
-      <Route 
-        path="/reset-password-message"
-        component={<ResetPasswordMessage />}
-        enterAnimation={enterRight}
-        exitAnimation={exitRight}
-      />
-    </Navigation>
-  </Background>
-);

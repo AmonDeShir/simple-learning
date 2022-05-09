@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { Typography } from "@mui/material";
 import { forwardRef, useState, useEffect } from "react";
-import { useOpenPage, useNavigationArgument } from 'animated-router-react';
 import { ButtonContainer, StyledForm, StyledPaper } from './email-authentication.styles';
 import { Button } from '../../../../components/styles/styles';
+import { useNavigate } from 'react-router-dom';
 
-export const EmailAuthentication = forwardRef<HTMLDivElement>((_, ref) => {
+export const EmailAuthentication = forwardRef<HTMLDivElement, { token: string }>(({ token }, ref) => {
   const [ message, setMessage ] = useState('');
-  const token = useNavigationArgument<string>();
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -42,7 +41,7 @@ export const EmailAuthentication = forwardRef<HTMLDivElement>((_, ref) => {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => openPage('/log-in', { updateHistory: true })}
+              onClick={() => navigate('/auth/log-in')}
             >Ok</Button>
           </ButtonContainer>
         }

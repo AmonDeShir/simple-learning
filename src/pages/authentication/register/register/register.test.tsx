@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { TestingContainer } from "../../testing-container";
 import { Register } from "./register";
+import { TestingContainer } from "../../../../utils/test-utils/testing-container";
 
 describe(`register`, () => {
   describe(`routing`, () => {
@@ -11,8 +11,8 @@ describe(`register`, () => {
 
       fireEvent.click(screen.getAllByText('Click here')[0]);
       
-      expect(await screen.findByText('Log in page')).toBeInTheDocument();
-    });
+      expect(await screen.findByText('Auth page')).toBeInTheDocument();
+      expect(screen.getByText('log-in')).toBeInTheDocument();    });
   })
 
   describe('register', () => {
@@ -137,9 +137,9 @@ describe(`register`, () => {
       fireEvent.change(repeatPassword, { target: { value: 'password' }});
 
       fireEvent.click(screen.getByText('Register'));
-      await screen.findByText('Authenticate your email page');
 
-      expect(screen.getByText('Authenticate your email page')).toBeInTheDocument();
+      expect(await screen.findByText('Auth page')).toBeInTheDocument();
+      expect(screen.getByText('authenticate-your-email')).toBeInTheDocument();
     })
 
     it(`should display an error if the registration process was unsuccessful`, async () => {
@@ -244,6 +244,7 @@ describe(`register`, () => {
     it(`should send the register request with the importData field set to true if the user clicks on the 'Yes' button`, async () => {
       axiosPostSpy.mockResolvedValueOnce({ data: { sync: false }});
       axiosPostSpy.mockResolvedValueOnce({ data: { sync: false }});
+      axiosPostSpy.mockResolvedValueOnce({ data: { sync: false }});
 
       axiosPostSpy.mockResolvedValueOnce({
         status: 201,
@@ -276,10 +277,10 @@ describe(`register`, () => {
 
       fireEvent.click(screen.getByText('Register'));
 
-      await screen.findByText('Authenticate your email page')
+      await screen.findByText('authenticate-your-email')
 
-      expect(axiosPostSpy).toHaveBeenCalledTimes(3);
-      expect(axiosPostSpy).toHaveBeenNthCalledWith(3, '/api/v1/auth/register', {
+      expect(axiosPostSpy).toHaveBeenCalledTimes(4);
+      expect(axiosPostSpy).toHaveBeenNthCalledWith(4, '/api/v1/auth/register', {
         name: 'user',
         email: 'user@example.com',
         password: 'Password01',
@@ -322,7 +323,7 @@ describe(`register`, () => {
 
       fireEvent.click(screen.getByText('Register'));
 
-      await screen.findByText('Authenticate your email page')
+      await screen.findByText('authenticate-your-email')
 
       expect(axiosPostSpy).toHaveBeenCalledTimes(3);
       expect(axiosPostSpy).toHaveBeenNthCalledWith(3, '/api/v1/auth/register', {

@@ -44,7 +44,7 @@ describe('Dictionary', () => {
   
 
   it(`should render page title`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -53,7 +53,7 @@ describe('Dictionary', () => {
   });
 
   it(`should render the search result`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -68,7 +68,7 @@ describe('Dictionary', () => {
   });
 
   it(`should open the set page if the FileOpen icon of a WordCard component is clicked`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -80,7 +80,7 @@ describe('Dictionary', () => {
   })
 
   it(`should post the save word request to the server if the add icon is clicked`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -109,7 +109,7 @@ describe('Dictionary', () => {
       error: 'error'
     });
 
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -128,7 +128,7 @@ describe('Dictionary', () => {
   });
 
   it(`should search and display the search result if the search button is clicked`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -143,7 +143,7 @@ describe('Dictionary', () => {
   });
 
   it(`should display an error of the search result`, async () => {
-    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer({ 'word': 'word' }, { user: { name: 'User', sync: true } });
     render(<Dictionary />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());

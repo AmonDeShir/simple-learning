@@ -1557,11 +1557,6 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jedmao/location@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@jedmao/location/-/location-3.0.0.tgz#f2b24e937386f95252f3a1fefbf7ca2e0a4b87e9"
-  integrity sha512-p7mzNlgJbCioUYLUEKds3cQG4CHONVFJNYqMe6ocEtENCL/jYmMo1Q3ApwsMmU+L0ZkaDJEyv4HokaByLoPwlQ==
-
 "@jest/console@^27.5.1":
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-27.5.1.tgz#260fe7239602fe5130a94f1aa386eff54b014bba"
@@ -4452,11 +4447,6 @@ ajv@^8.0.0, ajv@^8.6.0, ajv@^8.8.0:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
-
-animated-router-react@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/animated-router-react/-/animated-router-react-0.0.4.tgz#c7da2cdc7669352d0c37db4beb16d240f5684cf4"
-  integrity sha512-BGTcMObQzr4PugW/I7T9hQqKdWJgzZRtbvms0igwD9oy71vKJsr8bjTvLkHuEVYgNF7n+1Y+E6vuOColc8ll/Q==
 
 ansi-align@^3.0.0:
   version "3.0.1"
@@ -9394,7 +9384,7 @@ jest-config@^27.5.1:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-diff@^27.0.1, jest-diff@^27.5.1:
+jest-diff@^27.5.1:
   version "27.5.1"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-27.5.1.tgz#a07f5011ac9e6643cf8a95a462b7b1ecf6680def"
   integrity sha512-m0NvkX55LDt9T4mctTEgnZk3fmEg3NRYutvMPWM/0iPnkFj2wIeF45O1718cMSOFO1vINkqmxqD8vE37uTEbqw==
@@ -9528,14 +9518,6 @@ jest-leak-detector@^27.5.1:
   dependencies:
     jest-get-type "^27.5.1"
     pretty-format "^27.5.1"
-
-jest-location-mock@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/jest-location-mock/-/jest-location-mock-1.0.9.tgz#f4466362423b273e12ca3716467a3d478ce78fa8"
-  integrity sha512-DN/v7Zsa3N4uGgWTCrMrPPxhZORr/4N5gi+u7Tk6sLdORYplrC0//wfFN5FOtx4ZdQzDVfY6rLa4d+wfTKzQHw==
-  dependencies:
-    "@jedmao/location" "^3.0.0"
-    jest-diff "^27.0.1"
 
 jest-matcher-utils@^27.0.0, jest-matcher-utils@^27.5.1:
   version "27.5.1"

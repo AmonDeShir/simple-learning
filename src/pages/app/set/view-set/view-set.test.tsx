@@ -42,7 +42,7 @@ describe(`ViewSet`, () => {
   });
 
   it(`should render the page title`, async () => {
-    const { wrapper } = TestingContainer({ setId: '0102' });
+    const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
     render(<ViewSet />, { wrapper });
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
 
@@ -50,7 +50,7 @@ describe(`ViewSet`, () => {
   });
 
   it(`should load words`, async () => {
-    const { wrapper } = TestingContainer({ setId: '0102' });
+    const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
     render(<ViewSet />, { wrapper });
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
 
@@ -59,7 +59,7 @@ describe(`ViewSet`, () => {
   })
 
   it(`should display an error message if the fetch is unsuccessful`, async () => {
-    const { wrapper } = TestingContainer({ setId: 'error' });
+    const { wrapper } = TestingContainer({ setId: 'error' }, { user: { name: 'Test User', sync: false }});
     render(<ViewSet />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -69,7 +69,7 @@ describe(`ViewSet`, () => {
 
   describe('games', () => {
     it(`should the 'game' page in the flashcards mode if the 'Flashcards' button is clicked`, async () => {
-      const { wrapper } = TestingContainer({ setId: '0102' });
+      const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
       render(<ViewSet />, { wrapper });
       
       await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -80,7 +80,7 @@ describe(`ViewSet`, () => {
     })
 
     it(`should the 'game' page in the writing mode if the 'Writing' button is clicked`, async () => {
-      const { wrapper } = TestingContainer({ setId: '0102' });
+      const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
       render(<ViewSet />, { wrapper });
       
       await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -91,7 +91,7 @@ describe(`ViewSet`, () => {
     })
 
     it(`should the 'game' page in the speller mode if the 'Speller' button is clicked`, async () => {
-      const { wrapper } = TestingContainer({ setId: '0102' });
+      const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
       render(<ViewSet />, { wrapper });
       
       await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -102,7 +102,7 @@ describe(`ViewSet`, () => {
     })
 
     it(`should the 'game' page in the mix mode if the 'Mix' button is clicked`, async () => {
-      const { wrapper } = TestingContainer({ setId: '0102' });
+      const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
       render(<ViewSet />, { wrapper });
       
       await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -114,7 +114,7 @@ describe(`ViewSet`, () => {
   })
 
   it(`should open the 'edit-set' page and call the editSet action if an 'Edit' icon is clicked`, async () => {
-    const { wrapper } = TestingContainer({ setId: '0102' });
+    const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
     render(<ViewSet />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -126,7 +126,7 @@ describe(`ViewSet`, () => {
   });
 
   it(`should render the 'Words in the set' between action buttons if the page is rendered on the pc`, async () => {
-    const { wrapper } = TestingContainer({ setId: '0102' });
+    const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
     window.matchMedia = createMatchMedia(1500) as any;
 
     render(<ViewSet />, { wrapper });
@@ -138,7 +138,7 @@ describe(`ViewSet`, () => {
   })
 
   it(`should render the 'Words in the set' outside of buttons container if the page is rendered on the mobile device`, async () => {
-    const { wrapper } = TestingContainer({ setId: '0102' });
+    const { wrapper } = TestingContainer({ setId: '0102' }, { user: { name: 'Test User', sync: false }});
     window.matchMedia = createMatchMedia(500) as any;
 
     render(<ViewSet />, { wrapper });

@@ -48,12 +48,12 @@ export const ViewSet = () => {
   useEffect(() => {
     const abortController = new AbortController();
       
-    fetchData(() => axios.get(`../api/v1/sets/${setId}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/sets/${setId}`, { signal: abortController.signal }), navigate)
       .then((res) => loadAdvancedData(res, ({ words }: SetData) => words, (words, data) => ({ ...data, words }), setSet, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
 
     return () => abortController.abort();
-  }, [navigate, dispatch, setId]);
+  }, [navigate, setId]);
 
   const editHandler = () => {
     dispatch(editSet(set.id));

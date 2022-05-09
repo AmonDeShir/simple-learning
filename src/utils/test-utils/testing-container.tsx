@@ -142,6 +142,21 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
                   element={<Page path={"/learn"} />}
                 />
                 
+                <Route
+                  path="/auth"
+                  element={<Page path={"/auth"} />}
+                />
+
+                <Route
+                  path="/auth/:page"
+                  element={<Page path={"/auth/:page"} />}
+                />
+
+                <Route
+                  path="/auth/:page/:argument"
+                  element={<Page path={"/auth/:page/:argument"} />}
+                />
+
                 <Route path={`/test${args}`} element={<div><FormMock onSubmit={submitSpy}>{children}</FormMock></div>} />
                 <Route path="/" element={<div>Main Page</div>} />   
               </Routes>

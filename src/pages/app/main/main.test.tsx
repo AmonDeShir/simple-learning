@@ -16,7 +16,7 @@ function createMatchMedia(width: number) {
 
 describe('Main', () => {
   it(`should render the user's name`, async () => {
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true }});
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true }});
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -25,7 +25,7 @@ describe('Main', () => {
   });
 
   it(`should open the daily list page if the 'Show' button is clicked`, async () => {
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true }});
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true }});
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -35,7 +35,7 @@ describe('Main', () => {
   })
 
   it(`should open the learnZ page if the 'Learn' button is clicked`, async () => {
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true }});
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true }});
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -45,7 +45,7 @@ describe('Main', () => {
   })
 
   it(`should open the dictionary page if the dictionary's search button is clicked`, async () => {
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -59,7 +59,7 @@ describe('Main', () => {
   });
 
   it(`should open the set list page if the 'Open set list' button is clicked`, async () => {
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -73,7 +73,7 @@ describe('Main', () => {
   it(`should display the sets carousel component if application is opened on the mobile device`, async () => {
     window.matchMedia = createMatchMedia(500) as any;
 
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -89,7 +89,7 @@ describe('Main', () => {
   it(`should display the sets masonry component if application isn't opened on the mobile device`, async () => {
     window.matchMedia = createMatchMedia(1200) as any;    
     
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -105,7 +105,7 @@ describe('Main', () => {
   it(`should open the set page if the set's card of the sets masonry is clicked`, async () => {
     window.matchMedia = createMatchMedia(1200) as any;    
 
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -119,7 +119,7 @@ describe('Main', () => {
   it(`should open the set page if the set's card of the sets carousel is clicked`, async () => {
     window.matchMedia = createMatchMedia(500) as any;    
 
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: false } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -138,7 +138,7 @@ describe('Main', () => {
       data: undefined
     })
 
-    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', loginPage: false, sync: true } });
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true } });
     render(<Main />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());

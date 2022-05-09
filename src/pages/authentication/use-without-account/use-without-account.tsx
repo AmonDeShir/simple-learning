@@ -1,15 +1,15 @@
 import { Typography } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
-import { useOpenPage } from 'animated-router-react';
 import { useAppDispatch } from "../../../redux/store";
-import { hideLoginPage, setUserData } from "../../../redux/slices/users/user";
+import { setUserData } from "../../../redux/slices/users/user";
 import { ButtonContainer, StyledButton, StyledForm, StyledPaper } from "./use-without-account.styles";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const UseWithoutAccount = forwardRef<HTMLDivElement>((_, ref) => {
   const abortController = useRef(new AbortController());
 
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -17,19 +17,17 @@ export const UseWithoutAccount = forwardRef<HTMLDivElement>((_, ref) => {
       .then(res => res.data.data)
       .then(data => {
         dispatch(setUserData({...data }));
-        dispatch(hideLoginPage());
-        openPage('/', { updateHistory: true });
+        navigate('/');
       })
       .catch(() => {});
-  }, [dispatch, openPage]);
+  }, [dispatch, navigate]);
 
   const createNoSyncAccount = () => {
     axios({ url: '/api/v1/auth/use-no-sync', method: 'POST', signal: abortController.current.signal })
       .then(res => res.data.data)
       .then(data => {
         dispatch(setUserData({...data }));
-        dispatch(hideLoginPage());
-        openPage('/', { updateHistory: true });
+        navigate('/');
       })
   }
 
@@ -60,14 +58,14 @@ export const UseWithoutAccount = forwardRef<HTMLDivElement>((_, ref) => {
             width="small"
             color="primary"
             variant="contained"
-            onClick={() => openPage('/log-in', { updateHistory: true })}
+            onClick={() => navigate('/auth/log-in')}
           >Log in</StyledButton>
           
           <StyledButton
             width="small"
             color="primary"
             variant="contained"
-            onClick={() => openPage('/register', { updateHistory: true })}
+            onClick={() => navigate('/auth/register')}
           >Register</StyledButton>
         </ButtonContainer>
       </StyledForm>

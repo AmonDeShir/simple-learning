@@ -1,12 +1,11 @@
 import { Typography } from "@mui/material";
 import { forwardRef } from "react";
-import { useOpenPage, useNavigationArgument } from 'animated-router-react';
 import { ButtonContainer, StyledForm, StyledPaper } from "./reset-password-message.styles";
 import { Button } from "../../../../components/styles/styles";
+import { useNavigate } from "react-router-dom";
 
-export const ResetPasswordMessage = forwardRef<HTMLDivElement>((_, ref) => {
-  const openPage = useOpenPage();
-  const message = useNavigationArgument<string>();
+export const ResetPasswordMessage = forwardRef<HTMLDivElement, { message: string }>(({ message }, ref) => {
+  const navigate = useNavigate();
 
   return (
     <StyledPaper ref={ref} elevation={10}>
@@ -22,7 +21,7 @@ export const ResetPasswordMessage = forwardRef<HTMLDivElement>((_, ref) => {
             type="submit"
             color="primary"
             variant="contained"
-            onClick={() => openPage('/log-in', { updateHistory: true })}
+            onClick={() => navigate('/auth/log-in')}
           >Ok</Button>
         </ButtonContainer>
       </StyledForm>

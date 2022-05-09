@@ -21,14 +21,14 @@ describe('NewWord', () => {
   });
 
   it(`should render page title`, () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
     
     expect(screen.getByText('New word')).toBeInTheDocument();
   });
 
   it(`should render the page in the 'create' mode`, () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     expect(screen.getByText('Define your definition using the text boxes below (the example fields are optional)')).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('NewWord', () => {
   })
 
   it(`should change the page mode to the 'select' mode if the 'Dictionary' button is clicked`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     fireEvent.click(screen.getByText('Dictionary'));
@@ -49,7 +49,7 @@ describe('NewWord', () => {
   });
 
   it(`should open the 'edit set' page if the 'Cancel' button is clicked`, () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     fireEvent.click(screen.getByText('Cancel'));
@@ -58,7 +58,7 @@ describe('NewWord', () => {
   });
   
   it(`should call the 'addWord' action and open the 'edit set' page if the 'Save' button is clicked`, () => {
-    const { wrapper, reduxActions } = TestingContainer();
+    const { wrapper, reduxActions } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     fireEvent.click(screen.getByText('Save'));
@@ -86,7 +86,7 @@ describe('NewWord', () => {
       return <></>
     })
     
-    const { wrapper, reduxActions } = TestingContainer();
+    const { wrapper, reduxActions } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     fireEvent.click(screen.getByText('Dictionary'));
@@ -124,7 +124,7 @@ describe('NewWord', () => {
       return <></>
     })
     
-    const { wrapper, reduxActions } = TestingContainer();
+    const { wrapper, reduxActions } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
     
     act(() => { edit({
@@ -159,7 +159,7 @@ describe('NewWord', () => {
       return <></>
     })
 
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     act(() => { edit({
@@ -182,7 +182,7 @@ describe('NewWord', () => {
       return <></>
     })
 
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
 
     act(() => { edit({
