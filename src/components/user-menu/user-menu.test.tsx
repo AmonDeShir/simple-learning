@@ -47,7 +47,7 @@ describe('UserMenu', () => {
   it(`should call the onItemClick property if the item is clicked`, () => {
     const onItemClick = jest.fn();
 
-    render(<UserMenu user="John Doe" item="Test" onItemClick={onItemClick} />);
+    render(<UserMenu item="Test" onItemClick={onItemClick} />);
 
     fireEvent.click(screen.getByText("Test"));
 

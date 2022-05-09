@@ -9,7 +9,6 @@ import { Header } from "../../../../components/header/header";
 import { Loading, RegisterLoading } from "../../../../components/loading/loading";
 import { Masonry } from "../../../../components/masonry/masonry";
 import { LearnItem } from "../../../../redux/slices/learn/learn.types";
-import { useAppDispatch } from "../../../../redux/store";
 import { handleLoadingErrors } from "../../../../utils/load-data/load-data";
 import { CenterPage, LearnButton, LearnContainer, StyledTypography } from "./show-daily-list.styles";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,7 +28,6 @@ export const ShowDailyList = () => {
   const dayOfMonth = new Date(data.date).getDate();
   const monthName = new Date(data.date).toLocaleString("en-us", { month: "long" });
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export const ShowDailyList = () => {
 
     setLoading({ state: 'loading', message: '' })
 
-    fetchData(() => axios.get(`/api/v1/words/month-list/${page}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`/api/v1/words/month-list/${page}`, { signal: abortController.signal }), navigate)
       .then(res => loadAdvancedData(res, (data: ServerResponse) => data.days, (days, data) => ({ ...data, days }), setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
 
@@ -51,7 +49,7 @@ export const ShowDailyList = () => {
       abortController.abort();
       setData({ date: 0, days: [[]], isLastPage: false });
     };
-  }, [dispatch, page]);
+  }, [navigate, page]);
 
   const openSetPage = (word: LearnItem) => {
     navigate(`/set/${word.set}`);

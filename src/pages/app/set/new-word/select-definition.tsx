@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchData } from "../../../../api/fetchData";
 import { Loading, RegisterLoading } from "../../../../components/loading/loading";
 import { Masonry } from "../../../../components/masonry/masonry";
@@ -7,7 +8,7 @@ import { SearchFrom } from "../../../../components/search-from/search-form"
 import { UsedInInfoIcon } from "../../../../components/used-in-info-icon/used-in-info-icon";
 import { WordCard } from "../../../../components/word-card/word-card";
 import { WordDataConstructor } from "../../../../redux/slices/edit-set/edit-set.type";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { useAppSelector } from "../../../../redux/store";
 import { handleLoadingErrors, loadData } from "../../../../utils/load-data/load-data";
 import { WordData, WordDataSets } from "../../dictionary/dictionary";
 import { StyledTypography } from "../edit-set/edit-set.styles"
@@ -27,7 +28,7 @@ export const SelectDefinition = ({ word, onSelect }: Props) => {
   const [ loadingDiki, setLoadingDiki ] = useState<RegisterLoading>({ state: 'loading', message: '' });
   const [ loadingSet, setLoadingSet ] = useState<RegisterLoading>({ state: 'loading', message: '' });
   
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -36,16 +37,16 @@ export const SelectDefinition = ({ word, onSelect }: Props) => {
     setLoadingDiki({ state: 'loading', message: '' });
     setLoadingSet({ state: 'loading', message: '' });
 
-    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.signal }), navigate)
       .then((res) => loadData(res, setWords, setLoadingSet, (data) => data.filter(notFromTheSameSet)))
       .catch((e) => handleLoadingErrors(e, setLoadingSet)); 
 
-    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.signal }), navigate)
       .then((res) => loadData(res, setDiki, setLoadingDiki))
       .catch((e) => handleLoadingErrors(e, setLoadingDiki)); 
       
     return () => abortController.abort();
-  }, [dispatch, search, setId])
+  }, [navigate, search, setId])
 
   const handleSelect = (data: WordData, type: 'create' | 'import') => {
     onSelect({ ...data, type, error: {}})

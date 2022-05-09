@@ -8,6 +8,10 @@ import { mockAudio, MockAudio } from "../../../../utils/mocks/audio-mock";
 import { mockTimeline, MockTimeline } from "../../../../utils/mocks/gsap-timeline-mock";
 
 const state = { 
+  user: { 
+    name: 'Test User', 
+    sync: false 
+  },
   learn: {
     progress: {
       mode: 'loading' as const,
@@ -179,7 +183,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     expect(loadDataSpy).toHaveBeenCalledTimes(1);
@@ -195,7 +199,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('Loading please wait...')).toBeInTheDocument();
@@ -210,7 +214,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('There was an error. Please try again')).toBeInTheDocument();
@@ -225,7 +229,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('There is nothing to learn for today, please try again tomorrow or add some words')).toBeInTheDocument();
@@ -255,7 +259,7 @@ describe('LearnDailyList', () => {
         message: ''
       }
     }
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('item 4')).toBeInTheDocument();
@@ -278,7 +282,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
     render(<LearnDailyList />, { wrapper });
 
     fireEvent.click(screen.getByText('Done'));
@@ -497,7 +501,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('1 minute')[0]).toBeInTheDocument();
@@ -518,7 +522,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('10 minutes')[0]).toBeInTheDocument();
@@ -539,7 +543,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('5 hours')[0]).toBeInTheDocument();
@@ -560,7 +564,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('1 day')[0]).toBeInTheDocument();

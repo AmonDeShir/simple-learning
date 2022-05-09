@@ -1,21 +1,20 @@
 import axios from "axios";
 import { Typography } from "@mui/material";
 import { forwardRef, useState } from "react";
-import { useOpenPage, useNavigationArgument } from 'animated-router-react';
 import { useForm } from 'react-hook-form'
 import { Button } from "../../../../components/styles/styles";
 import { ButtonContainer, StyledForm, StyledPaper, StyledTextField } from "./reset-password.styles";
+import { useNavigate } from "react-router-dom";
 
 type Option = {
   password: string;
   repeatPassword: string;
 };
 
-export const ResetPassword = forwardRef<HTMLDivElement>((_, ref) => {
+export const ResetPassword = forwardRef<HTMLDivElement, { token: string }>(({ token }, ref) => {
   const [ error, setError ] = useState('');
-  const token = useNavigationArgument<string>();
   const { register, handleSubmit } = useForm<Option>();
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
 
   const onSubmit = handleSubmit(({ password, repeatPassword }) => {
     setError(``);
@@ -31,16 +30,16 @@ export const ResetPassword = forwardRef<HTMLDivElement>((_, ref) => {
     }
 
     axios({ url: '/api/v1/auth/reset-password', method: 'POST', data: { token, password }})
-    .then(() => {
-      openPage('/reset-password-message', { updateHistory: false, argument: 'Your password was changed successfully.'})
-    })
-    .catch((error) => {
-      setError(error.response?.data?.message ?? 'Operation failed');
+      .then(() => {
+        navigate('/auth/reset-password-message/Your password was changed successfully.')
+      })
+      .catch((error) => {
+        setError(error.response?.data?.message);
 
-      if (error.response?.data.status === 403) {
-        openPage('/reset-password-message', { updateHistory: false, argument: error.response?.data?.message })
-      }
-    })
+        if (error.response?.data.status === 403) {
+          navigate(`/auth/reset-password-message/${error.response?.data?.message ?? 'Operation failed'}`)
+        }
+      })
   });
 
   return (

@@ -6,7 +6,11 @@ import { Game } from "./game";
 import { act } from "react-dom/test-utils";
 import { mockAudio, MockAudio } from "../../../utils/mocks/audio-mock";
 
-const state = { 
+const state = {
+  user: { 
+    name: 'Test User', 
+    sync: false 
+  },
   game: {
     progress: 'loading-success' as const,
     mode: 'mix' as const,

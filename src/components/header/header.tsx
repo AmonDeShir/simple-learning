@@ -7,10 +7,10 @@ import { Bar, barHeight, Icons, IconsContainer, Title } from './header.styles';
 import { enterFullscreenMode, exitFullscreenMode } from './header.animations';
 import { UserMenu } from "../user-menu/user-menu";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { useNavigate } from "react-router-dom";
-import { openLoginPage } from "../../redux/slices/users/user";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchData } from "../../api/fetchData";
 import axios from "axios";
+import { setUserData } from "../../redux/slices/users/user";
 
 type Props = {
   title: string;
@@ -32,8 +32,9 @@ export const Header = ({ title }: Props) => {
   const height = matchesPC ? 350 : 200;
   const barBorderRadius = matchesTablet ? '0' : '25px 25px 0 0';
 
-  const dispatch = useAppDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const callback = () => {
@@ -63,21 +64,30 @@ export const Header = ({ title }: Props) => {
     }
   }, [fullscreen, barBorderRadius])
 
+  useEffect(() => {
+    if (!name) {
+      axios.post('/api/v1/auth/refresh', {}, { signal: abortController.current.signal })
+        .then(res => res.data.data)
+        .then(data => dispatch(setUserData({...data })))
+        .catch(() => navigate('/auth'));
+    }
+  }, [dispatch, name, navigate]);
+
   const openPreviousPage = () => {
     window.history.back();
   }
 
   const handleUserMenuClick = async () => {
     if (sync) {
-      dispatch(openLoginPage());
-      window.location.pathname = '/';
-      await fetchData(() => axios.post('/api/v1/auth/log-out', {}, { signal: abortController.current.signal }), navigate);
+      fetchData(() => axios.post('/api/v1/auth/log-out', {}, { signal: abortController.current.signal }), navigate);
+      navigate('/auth');
     }
     else {
-      dispatch(openLoginPage());
-      window.location.pathname = '/register';
+      navigate('/auth/register');
     }
   };
+
+  useEffect(() => () => abortController.current.abort(), []);
 
   return (
     <BackgroundBox
@@ -88,9 +98,9 @@ export const Header = ({ title }: Props) => {
     >
       <IconsContainer height={height}>
         <Icons ref={iconsRef} height={height}>
-          { window.location.pathname !== '/' 
+          { location.pathname !== '/' 
             ? <AnimatedIcon Icon={ArrowBackIcon} onClick={openPreviousPage} /> 
-            : <div></div>
+            : <div {...{ "data-testid": 'header--spacer' }}></div>
           }
           
           <UserMenu 

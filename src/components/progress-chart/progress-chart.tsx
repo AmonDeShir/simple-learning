@@ -1,9 +1,9 @@
 import { useMediaQuery } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { fetchData } from '../../api/fetchData';
-import { useAppDispatch } from '../../redux/store';
 import { handleLoadingErrors, loadData } from '../../utils/load-data/load-data';
 import { useRect } from '../../utils/use-rect/use-rect';
 import { Card } from '../card/card';
@@ -23,17 +23,17 @@ export const ProgressChart = () => {
   const [ data, setData ] = useState<ChartData[]>([])
   const [ loading, setLoading ] = useState<RegisterLoading>({ state: 'loading', message: '' });
 
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const abortController = new AbortController();
     
-    fetchData<ChartData[]>(() => axios.get('/api/v1/sets/progress', { signal: abortController.signal }), dispatch)
+    fetchData<ChartData[]>(() => axios.get('/api/v1/sets/progress', { signal: abortController.signal }), navigate)
       .then((res) => loadData(res, setData, setLoading, undefined, true))
       .catch((e) => handleLoadingErrors(e, setLoading));
 
     return () => abortController.abort();
-  }, [dispatch]);
+  }, [navigate]);
 
   return (
     <Card ref={ref} title="Learning Progress" size="xl">

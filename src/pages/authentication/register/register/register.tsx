@@ -1,12 +1,12 @@
 import axios from "axios";
 import { Grid, Typography } from "@mui/material";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { useOpenPage } from "animated-router-react";
 import { useForm } from 'react-hook-form'
 import { StyledPaper, StyledForm, StyledTextField, ButtonContainer } from "./register.styles";
 import { Button, Link } from "../../../../components/styles/styles";
 import { YesNoDialog } from "../../../../components/yes-no-dialog/yes-no-dialog";
 import { useYesNoDialog } from "../../../../components/yes-no-dialog/use-yes-no-dialog";
+import { useNavigate } from "react-router-dom";
 
 type Option = {
   name: string;
@@ -21,7 +21,7 @@ export const Register = forwardRef<HTMLDivElement>((_, ref) => {
   const { register, handleSubmit } = useForm<Option>();
 
   const abortController = useRef(new AbortController());
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
   
   const [ registerDialog, openDialog ] = useYesNoDialog((response) => {
     if (response === 'yes') {
@@ -47,7 +47,7 @@ export const Register = forwardRef<HTMLDivElement>((_, ref) => {
 
     axios.post('/api/v1/auth/register', { email, name, password, importData }, { signal: abortController.current.signal })
       .then(() => {
-        openPage('/authenticate-your-email', { updateHistory: true })
+        navigate('/auth/authenticate-your-email')
       })
       .catch((error) => {
         setError(error.response?.data?.message ?? 'Registration failed');
@@ -118,7 +118,7 @@ export const Register = forwardRef<HTMLDivElement>((_, ref) => {
               color="primary"
               align="center"
               variant="body2"
-              onClick={() => openPage('/log-in', { updateHistory: true })}
+              onClick={() => navigate('/auth/log-in')}
             >Click here</Link>
             
             <Typography

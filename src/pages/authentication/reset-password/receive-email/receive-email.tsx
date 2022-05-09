@@ -1,11 +1,11 @@
 import { Typography } from "@mui/material";
-import { useOpenPage } from 'animated-router-react';
 import { forwardRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../../../components/styles/styles";
 import { ButtonContainer, StyledForm, StyledPaper } from "./receive-email.styles";
 
 export const ReceiveEmail = forwardRef<HTMLDivElement>((_, ref) => {
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
 
   return (
     <StyledPaper ref={ref} elevation={10}>
@@ -21,7 +21,7 @@ export const ReceiveEmail = forwardRef<HTMLDivElement>((_, ref) => {
             type="submit"
             color="primary"
             variant="contained"
-            onClick={() => openPage('/log-in', { updateHistory: true })}
+            onClick={() => navigate('/auth/log-in')}
           >Ok</Button>
         </ButtonContainer>
       </StyledForm>

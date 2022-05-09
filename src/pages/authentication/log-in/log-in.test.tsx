@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TestingContainer } from "../testing-container";
 import { LogIn } from "./log-in";
+import { TestingContainer } from '../../../utils/test-utils/testing-container';
 
 describe(`log-in`, () => {
   const axiosGetOrigin = axios.get;
@@ -27,7 +27,8 @@ describe(`log-in`, () => {
 
       fireEvent.click(screen.getAllByText('Click here')[0]);
 
-      expect(await screen.findByText('Register page')).toBeInTheDocument();
+      expect(await screen.findByText('Auth page')).toBeInTheDocument();
+      expect(screen.getByText('register')).toBeInTheDocument();
     });
 
     it(`should open the password reset page if the user clicks the 'Click here to reset it' link`, async () => {
@@ -36,7 +37,8 @@ describe(`log-in`, () => {
 
       fireEvent.click(screen.getAllByText('Click here')[1]);
 
-      expect(await screen.findByText('Send email page')).toBeInTheDocument();
+      expect(await screen.findByText('Auth page')).toBeInTheDocument();
+      expect(screen.getByText('send-email')).toBeInTheDocument();
     })
   })
   
@@ -153,9 +155,7 @@ describe(`log-in`, () => {
         sync: true,
       });
 
-      expect(reduxActions['user/hideLoginPage']).toEqual({
-        type: 'user/hideLoginPage',
-      });
+      expect(await screen.findByText('Main Page')).toBeInTheDocument();
     })
   })
 })

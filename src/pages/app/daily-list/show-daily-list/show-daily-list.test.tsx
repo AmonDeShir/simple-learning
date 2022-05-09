@@ -35,7 +35,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`should render the toady list`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -51,7 +51,7 @@ describe('ShowDailyList', () => {
       message: 'error'
     });
 
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -68,7 +68,7 @@ describe('ShowDailyList', () => {
       }
     });
 
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -79,7 +79,7 @@ describe('ShowDailyList', () => {
 
 
   it(`should render the next days`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -94,7 +94,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`shouldn't render a day when it has no items`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -126,7 +126,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`should open the set page if the user clicks on the "File Icon" button of the Today's item`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -140,7 +140,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`should open the set page if the user clicks on the "File Icon" button of the month's item`, async () => {
-    const { wrapper } = TestingContainer();
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -154,7 +154,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`should open the /daily-list page if the page param is less than zero`, async () => {
-    const { wrapper } = TestingContainer({ page: "-1" });
+    const { wrapper } = TestingContainer({ page: "-1" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -163,7 +163,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`shouldn't render the toady list if the page param is greater than zero`, async () => {
-    const { wrapper } = TestingContainer({ page: "1" });
+    const { wrapper } = TestingContainer({ page: "1" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -183,7 +183,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`should open the "learn" page if the learn button is clicked`, async () => {
-    const { wrapper } = TestingContainer({ page: "0" });
+    const { wrapper } = TestingContainer({ page: "0" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -193,7 +193,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`should open the previous daily list page if the previous button is clicked`, async () => {
-    const { wrapper } = TestingContainer({ page: "1" });
+    const { wrapper } = TestingContainer({ page: "1" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -204,7 +204,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`should open the next daily list page if the next button is clicked`, async () => {
-    const { wrapper } = TestingContainer({ page: "0" });
+    const { wrapper } = TestingContainer({ page: "0" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -215,7 +215,7 @@ describe('ShowDailyList', () => {
   })
 
   it(`should disable the previous button if the page param is equal to zero`, async () => {
-    const { wrapper } = TestingContainer({ page: "0" });
+    const { wrapper } = TestingContainer({ page: "0" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
@@ -224,7 +224,7 @@ describe('ShowDailyList', () => {
   });
 
   it(`should disable the next button if the current page is the last page`, async () => {
-    const { wrapper } = TestingContainer({ page: "1" });
+    const { wrapper } = TestingContainer({ page: "1" }, { user: { name: 'Test User', sync: false }});
     render(<ShowDailyList />, { wrapper });
 
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());

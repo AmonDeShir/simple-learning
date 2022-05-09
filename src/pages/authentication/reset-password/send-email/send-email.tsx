@@ -1,10 +1,10 @@
 import axios from "axios";
 import {Grid, Typography } from "@mui/material";
-import { useOpenPage } from 'animated-router-react';
 import { forwardRef, useState } from "react";
 import { useForm } from 'react-hook-form'
 import { Button, TextField } from "../../../../components/styles/styles";
 import { ButtonContainer, StyledForm, StyledPaper } from "./send-email.styles";
+import { useNavigate } from "react-router-dom";
 
 type Option = {
   email: string;
@@ -13,7 +13,7 @@ type Option = {
 export const SendEmail = forwardRef<HTMLDivElement>((_, ref) => {
   const [ error, setError ] = useState('');
   const { register, handleSubmit } = useForm<Option>();
-  const openPage = useOpenPage();
+  const navigate = useNavigate();
 
   const onSubmit = handleSubmit(({ email }) => {
     setError(``);
@@ -25,7 +25,7 @@ export const SendEmail = forwardRef<HTMLDivElement>((_, ref) => {
 
     axios({ url: '/api/v1/auth/send-password-reset-email', method: 'POST', data: { email }})
     .then(() => {
-      openPage('/receive-email', { updateHistory: true })
+      navigate('/auth/receive-email')
     })
     .catch((error) => {
       setError(error.response?.data?.message ?? 'Operation failed');
@@ -65,7 +65,7 @@ export const SendEmail = forwardRef<HTMLDivElement>((_, ref) => {
               color="primary"
               align="center"
               variant="body2"
-              onClick={() => openPage('/register', { updateHistory: true })}
+              onClick={() => navigate('/auth/register')}
             >Click here</Typography>
             
             <Typography

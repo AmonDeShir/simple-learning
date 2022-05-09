@@ -231,8 +231,22 @@ export const mocksAuth = [
     if (token === 'INVALID-RESET-PASSWORD-TOKEN-WITHOUT-JSON') {
       return res(
         ctx.status(403),
+        ctx.json({
+          status: 403,
+          message: undefined
+        })
       )
     }
+
+    if (token === 'INVALID-RESET-TOKEN-USER-NOT-FOUND') {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          status: 404,
+          message: "User not found"
+        })
+      )
+    }  
 
     return res(
       ctx.status(403),

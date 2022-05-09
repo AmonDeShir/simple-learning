@@ -1,21 +1,17 @@
-import { Dispatch } from "@reduxjs/toolkit";
-import { ExtractDispatchExtensions } from "@reduxjs/toolkit/dist/tsHelpers";
 import axios, { AxiosPromise } from "axios";
-import { openLoginPage } from "../redux/slices/users/user";
+import { NavigateFunction } from "react-router-dom";
 
-type DispatchType = ExtractDispatchExtensions<any> & Dispatch<any>;
-
-export async function fetchData<T = any>(request: () => AxiosPromise<{ status: number, data: T }>, dispatch: DispatchType){
+export async function fetchData<T = any>(request: () => AxiosPromise<{ status: number, data: T }>, navigate: NavigateFunction){
   const { status, data, message } = await tryDoRequest<T>(request);
 
   if (status === 401) {
     const refresh = await refreshToken();
 
-    if (refresh) {
+    if (refresh !== false) {
       return await tryDoRequest<T>(request);
     }
     else {
-      dispatch(openLoginPage());
+      navigate('/auth')
     }
   }
 

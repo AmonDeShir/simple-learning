@@ -52,10 +52,10 @@ const SetList = () => {
   useEffect(() => {
     setLoading({ state: 'loading', message: '' })
 
-    fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), dispatch)
+    fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), navigate)
       .then(res => loadData(res, setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
-  }, [dispatch, search]);
+  }, [navigate, search]);
 
   const editHandler = (item: MasonryItem) => {
     dispatch(editSet(item.id));
@@ -70,9 +70,9 @@ const SetList = () => {
   const deleteHandler = async (item: MasonryItem) => {
     setLoading({ state: 'loading', message: '' });
     
-    await fetchData(() => axios.delete(`/api/v1/sets/${item.id}`, { signal: abortController.current.signal }), dispatch)
+    await fetchData(() => axios.delete(`/api/v1/sets/${item.id}`, { signal: abortController.current.signal }), navigate)
     
-    await fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), dispatch)
+    await fetchData(() => axios.get(`/api/v1/sets/search/${search}`, { signal: abortController.current.signal }), navigate)
       .then(res => loadData(res, setData, setLoading))
       .catch(e => handleLoadingErrors(e, setLoading));
   }

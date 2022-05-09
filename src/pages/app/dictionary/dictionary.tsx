@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchData } from '../../../api/fetchData';
 import { Loading, RegisterLoading } from '../../../components/loading/loading';
 import { handleLoadingErrors, loadData } from '../../../utils/load-data/load-data';
-import { useAppDispatch } from '../../../redux/store';
 
 export type WordData = {
   word: string;
@@ -50,30 +49,28 @@ export const Dictionary = () => {
   const [ loadingDiki, setLoadingDiki ] = useState<RegisterLoading>({ state: 'loading', message: '' });
   const [ loadingSet, setLoadingSet ] = useState<RegisterLoading>({ state: 'loading', message: '' });
 
-
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {    
     setLoadingDiki({ state: 'loading', message: '' });
     setLoadingSet({ state: 'loading', message: '' });
 
-    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), navigate)
       .then((res) => loadData(res, setWords, setLoadingSet))
       .catch((e) => handleLoadingErrors(e, setLoadingSet));
 
-    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.current.signal }), dispatch)
+    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.current.signal }), navigate)
       .then((res) => loadData(res, setDiki, setLoadingDiki))
       .catch((e) => handleLoadingErrors(e, setLoadingDiki));
 
-  }, [dispatch, search]);
+  }, [navigate, search]);
 
   
   const saveWord = async (word: WordData) => {
     setLoadingSet({ state: 'loading', message: '' });
 
-    await fetchData(() => axios.post(`../api/v1/user/save-word`, { word }, { signal: abortController.current.signal }), dispatch);
-    await fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), dispatch)
+    await fetchData(() => axios.post(`../api/v1/user/save-word`, { word }, { signal: abortController.current.signal }), navigate);
+    await fetchData(() => axios.get(`../api/v1/words/search/${search}`, { signal: abortController.current.signal }), navigate)
       .then((res) => loadData(res, setWords, setLoadingSet))
       .catch((e) => handleLoadingErrors(e, setLoadingSet));
   };

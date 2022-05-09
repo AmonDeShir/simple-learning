@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { TestingContainer } from "../testing-container";
+import { TestingContainer } from "../../../utils/test-utils/testing-container";
 import { UseWithoutAccount } from "./use-without-account";
 
 describe('UseWithoutAccount', () => {
@@ -8,7 +8,9 @@ describe('UseWithoutAccount', () => {
     render(<UseWithoutAccount />, { wrapper });
 
     fireEvent.click(screen.getByText('Log in'));
-    expect(await screen.findByText('Log in page')).toBeInTheDocument();
+
+    expect(await screen.findByText('Auth page')).toBeInTheDocument();
+    expect(screen.getByText('log-in')).toBeInTheDocument();
   });
 
   it(`should open the 'register' page if the user clicks 'Register' button`, async () => {
@@ -16,7 +18,9 @@ describe('UseWithoutAccount', () => {
     render(<UseWithoutAccount />, { wrapper });
 
     fireEvent.click(screen.getByText('Register'));
-    expect(await screen.findByText('Register page')).toBeInTheDocument();
+
+    expect(await screen.findByText('Auth page')).toBeInTheDocument();
+    expect(screen.getByText('register')).toBeInTheDocument();
   });
 
   it(`should open app if the user clicks 'Use without account' button`, async () => {
@@ -30,10 +34,6 @@ describe('UseWithoutAccount', () => {
     expect(reduxActions['user/setUserData'].payload).toEqual({
       name: "Anonymous",
       sync: false,
-    });
-
-    expect(reduxActions['user/hideLoginPage']).toEqual({
-      type: 'user/hideLoginPage',
     });
   });
 
@@ -50,10 +50,6 @@ describe('UseWithoutAccount', () => {
         name: "TestUser",
         sync: true,
       });
-
-      expect(reduxActions['user/hideLoginPage']).toEqual({
-        type: 'user/hideLoginPage',
-      });
     });
 
     it(`should automatically log in the user if there is a cookie with a valid locally token in the user's browser`, async () => {
@@ -68,10 +64,6 @@ describe('UseWithoutAccount', () => {
         name: "Anonymous",
         sync: false,
       });
-
-      expect(reduxActions['user/hideLoginPage']).toEqual({
-        type: 'user/hideLoginPage',
-      });
     })
 
     it(`shouldn't automatically log in the user if there isn't a cookie with a valid locally or refresh token in the user's browser`, async () => {
@@ -82,7 +74,6 @@ describe('UseWithoutAccount', () => {
       await new Promise(resolve => setTimeout(resolve, 10));
 
       expect(reduxActions['user/setUserData']).toBeUndefined();
-      expect(reduxActions['user/hideLoginPage']).toBeUndefined();
     });
   });
 })

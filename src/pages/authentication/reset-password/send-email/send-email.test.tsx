@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { TestingContainer } from "../../testing-container";
+import { TestingContainer } from "../../../../utils/test-utils/testing-container";
 import { SendEmail } from "./send-email";
 
 describe('SendEmail', () => {
@@ -9,7 +9,8 @@ describe('SendEmail', () => {
 
     fireEvent.click(screen.getAllByText('Click here')[0]);
 
-    expect(await screen.findByText('Register page')).toBeInTheDocument();
+    expect(await screen.findByText('Auth page')).toBeInTheDocument();
+    expect(await screen.findByText('register')).toBeInTheDocument();
   });
 
   it(`should display an error if the email textfield is empty`, async () => {
@@ -61,6 +62,7 @@ describe('SendEmail', () => {
     
     fireEvent.click(screen.getByText('Done'));
 
-    expect(await screen.findByText('Receive email page')).toBeInTheDocument();
+    expect(await screen.findByText('Auth page')).toBeInTheDocument();
+    expect(await screen.findByText('receive-email')).toBeInTheDocument();
   })
 })

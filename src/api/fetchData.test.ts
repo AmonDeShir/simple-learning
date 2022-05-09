@@ -1,11 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { store } from "../redux/store";
 import { fetchData } from "./fetchData";
 
 describe('fetchData', () => {
   let spyGet: jest.SpyInstance<Promise<unknown>, [url: string, config?: AxiosRequestConfig]>;
   let spyPost: jest.SpyInstance<Promise<unknown>, [url: string, data?: any, config?: AxiosRequestConfig]>;
-  const dispatch = jest.fn();
+  const navigate = jest.fn();
 
   beforeAll(() => {
     spyGet = jest.spyOn(axios, 'get');
@@ -15,7 +14,7 @@ describe('fetchData', () => {
   beforeEach(() => {
     spyGet.mockClear();
     spyPost.mockClear();
-    dispatch.mockClear();
+    navigate.mockClear();
   })
 
   afterAll(() => {
@@ -30,7 +29,7 @@ describe('fetchData', () => {
     });
 
     const request = () => axios.get('/api/v1/users');
-    const { status, data } = await fetchData(request, dispatch);
+    const { status, data } = await fetchData(request, navigate);
 
     expect(status).toBe(200);
     expect(data).toEqual('data');
@@ -45,7 +44,7 @@ describe('fetchData', () => {
     });
 
     const request = () => axios.get('/api/v1/users');
-    const { status, data } = await fetchData(request, dispatch);
+    const { status, data } = await fetchData(request, navigate);
 
     expect(status).toBe(200);
     expect(data).toEqual('data');
@@ -61,7 +60,7 @@ describe('fetchData', () => {
     spyPost.mockResolvedValue({ status: 200 });
 
     const request = () => axios.get('/api/v1/users');
-    const { status, data } = await fetchData(request, dispatch);
+    const { status, data } = await fetchData(request, navigate);
 
     expect(spyGet).toBeCalledTimes(2);
     expect(spyPost).toBeCalledTimes(1);
@@ -77,17 +76,17 @@ describe('fetchData', () => {
     spyPost.mockRejectedValueOnce({ response: { status: 404 }});
 
     const request = () => axios.get('/api/v1/users');
-    await fetchData(request, dispatch);
+    await fetchData(request, navigate);
 
-    expect(dispatch).toBeCalledTimes(1);
-    expect(dispatch).toBeCalledWith({ type: 'user/openLoginPage', payload: undefined });
+    expect(navigate).toBeCalledTimes(1);
+    expect(navigate).toBeCalledWith('/auth');
   });
 
   it(`should return the status 400 if the status of the axios's response is undefined`, async () => {
     spyGet.mockRejectedValueOnce({ response: undefined });
 
     const request = () => axios.get('/api/v1/users');
-    const { status } = await fetchData(request, dispatch);
+    const { status } = await fetchData(request, navigate);
 
     expect(status).toBe(400);
   });
