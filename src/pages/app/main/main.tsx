@@ -29,6 +29,8 @@ type Set = {
 const Main = () => {
   const username = useAppSelector(({ user }) =>  user.name);
   const matchesPC = useMediaQuery('(min-width:1024px)');
+  const matchesSmallPhone = useMediaQuery('(max-width:400px)');
+
   const navigate = useNavigate();
   
   const [ data, setData ] = useState<Set[]>([])
@@ -101,7 +103,7 @@ const Main = () => {
           color="primary"
           variant="contained"
           onClick={() => navigate('/set-list')}
-        >Open set list</Button>
+        >{matchesSmallPhone ? "Set list" : "Open set list"}</Button>
       </OpenSetListGrid>
     </CenterPage>
   );

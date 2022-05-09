@@ -69,6 +69,16 @@ describe('Main', () => {
     expect(screen.getByText('Set list page')).toBeInTheDocument();
   });
 
+  it(`should display the shorter version of the open set list button text the screen width is less than 400px`, async () => {
+    window.matchMedia = createMatchMedia(400) as any;
+
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
+    render(<Main />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    expect(screen.getByText('Set list')).toBeInTheDocument();
+  });
 
   it(`should display the sets carousel component if application is opened on the mobile device`, async () => {
     window.matchMedia = createMatchMedia(500) as any;
