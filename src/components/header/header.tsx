@@ -79,7 +79,7 @@ export const Header = ({ title }: Props) => {
 
   const handleUserMenuClick = async () => {
     if (sync) {
-      fetchData(() => axios.post('/api/v1/auth/log-out', {}, { signal: abortController.current.signal }), navigate);
+      await fetchData(() => axios.post('/api/v1/auth/log-out', {}, { signal: abortController.current.signal }), navigate);
       navigate('/auth');
     }
     else {

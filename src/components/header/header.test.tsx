@@ -95,7 +95,7 @@ describe('Header', () => {
 
             <Route
               path="/test" 
-              element={<div>DDD</div>}
+              element={<div></div>}
             />
           </Routes>
 
@@ -176,7 +176,7 @@ describe('Header', () => {
     expect(screen.getByText('register')).toBeInTheDocument();
   });
 
-  it(`should do a log-out request and dispatch the openLoginPage action if the 'Log out' text is clicked`, () => {
+  it(`should do a log-out request and dispatch the openLoginPage action if the 'Log out' text is clicked`, async () => {
     axiosPostSpy.mockResolvedValue({
       status: 200,
       message: 'success'
@@ -186,6 +186,8 @@ describe('Header', () => {
     render(<Header title="Hello World" />, { wrapper });
 
     fireEvent.click(screen.getByText("Log out"));
+
+    await screen.findByText('Auth page');
 
     expect(axiosPostSpy).toHaveBeenCalledWith('/api/v1/auth/log-out', {}, expect.any(Object));
     expect(screen.getByText('Auth page')).toBeInTheDocument();
