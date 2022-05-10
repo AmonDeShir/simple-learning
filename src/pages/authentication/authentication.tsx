@@ -10,6 +10,7 @@ import { UseWithoutAccount } from "./use-without-account/use-without-account";
 import { EmailAuthentication } from './register/email-authentication/email-authentication';
 import { SlideUpdate } from '../../components/slide-update/slide-update';
 import { useParams } from 'react-router-dom';
+import { AuthenticateYourEmail } from './register/authenticate-your-email/authenticate-your-email';
 
 
 const Background = styled(Box)`
@@ -48,6 +49,9 @@ export const Authentication = () => {
       case "reset-password-message":
         return <ResetPasswordMessage message={argument} />;
 
+      case "authenticate-your-email":
+        return <AuthenticateYourEmail />;
+        
       case "email-authentication":
         return <EmailAuthentication token={argument} />;
 
