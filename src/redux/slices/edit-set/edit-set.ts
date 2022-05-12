@@ -75,10 +75,13 @@ export const createSet = createAsyncThunk<void, undefined, ThunkConfig>(
       words: state.words.map(convertWord),
     };
 
-    const hasErrors = state.words.every(({ error }) => Object.keys(error).length > 0);
 
-    if (hasErrors) {
-      throw new Error('Some definitions contain errors!')
+    if (state.words.length > 0) {
+      const hasErrors = state.words.every(({ error }) => Object.keys(error).length > 0);
+
+      if (hasErrors) {
+        throw new Error('Some definitions contain errors!')
+      }
     }
     
     let result: { status: number };

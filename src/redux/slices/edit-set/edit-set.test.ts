@@ -524,6 +524,19 @@ describe(`createSet`, () => {
     expect(result.type).toEqual('editSet/createSet/rejected');
   });
 
+  it(`should allow to save an empty set`, async () => {
+    const state = {
+      editSet: {
+        title: 'New set',
+        words: []
+      }
+    } as any;
+
+    const result = await createSet()(() => ({} as any), () => state as any, {});
+
+    expect(result.type).toEqual('editSet/createSet/fulfilled');
+  })
+
   it(`should do a put request if the state id is defined`, async () => {
     const state = {
       editSet: {
