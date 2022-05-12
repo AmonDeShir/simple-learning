@@ -122,28 +122,28 @@ export const LearnDailyList = () => {
           <ButtonContainer>
             <Grow in={showButtons} timeout={250}>
               <Box>
-                <SquareButton variant="contained" items={2} onClick={() => handleAnswer(0)}>Again</SquareButton>
+                <SquareButton variant="contained" items={4} onClick={() => handleAnswer(0)}>Again</SquareButton>
                 <Typography align="center">{calcNextRepetition(0)}</Typography>
               </Box>
             </Grow>
     
             <Grow in={showButtons} timeout={250}>
               <Box>
-                <SquareButton variant="contained" items={2} onClick={() => handleAnswer(0.4)}>Good</SquareButton>
+                <SquareButton variant="contained" items={4} onClick={() => handleAnswer(0.4)}>Good</SquareButton>
                 <Typography align="center">{calcNextRepetition(1)}</Typography>
               </Box>
             </Grow>
     
             <Grow in={showButtons} timeout={250}>
               <Box>
-                <SquareButton variant="contained" items={2} onClick={() => handleAnswer(0.8)}>Easy</SquareButton>
+                <SquareButton variant="contained" items={4} onClick={() => handleAnswer(0.8)}>Easy</SquareButton>
                 <Typography align="center">{calcNextRepetition(2)}</Typography>
               </Box>
             </Grow>
 
             <Grow in={showButtons} timeout={250}>
               <Box>
-                <SquareButton variant="contained" items={2} onClick={() => handleAnswer(1)}>Very Easy</SquareButton>
+                <SquareButton variant="contained" items={4} onClick={() => handleAnswer(1)}>Very Easy</SquareButton>
                 <Typography align="center">{calcNextRepetition(3)}</Typography>
               </Box>
             </Grow>
