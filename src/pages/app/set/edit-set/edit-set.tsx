@@ -35,7 +35,7 @@ export const EditSet = () => {
 
   useEffect(() => {
     if (progress.mode === 'loading' && progress.state === 'success') {
-      document.body.scrollTo(0, document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     }
   }, [progress])
 

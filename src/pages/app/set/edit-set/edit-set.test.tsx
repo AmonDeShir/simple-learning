@@ -49,7 +49,7 @@ describe(`EditSet`, () => {
     audio = mockAudio();
     deleteIcon = mockIcon(DeleteIcon, 'delete icon');
     closeIcon = mockIcon(CloseIcon, 'close icon');
-    document.body.scrollTo = scrollSpy;
+    window.scrollTo = scrollSpy;
   });
 
   beforeEach(() => {
@@ -61,7 +61,7 @@ describe(`EditSet`, () => {
     audio.mockRestore();
     deleteIcon.mockRestore();
     closeIcon.mockRestore();
-    (document.body.scrollTo as any) = undefined;
+    (window.scrollTo as any) = undefined;
   });
 
   it(`should render page title`, async () => {
