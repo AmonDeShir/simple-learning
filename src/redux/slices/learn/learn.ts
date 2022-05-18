@@ -5,6 +5,10 @@ import { superMemo } from '../../../super-memo/super-memo';
 import { LearnItem, LoadResult } from './learn.types';
 
 type State = {
+  inGameSavingProgress: {
+    state: 'loading' | 'error' | 'done';
+    message: string;
+  },
   progress: {
     mode: 'saving' | 'loading' | 'done';
     state: 'loading' | 'error' | 'empty' | 'success';
@@ -34,6 +38,10 @@ type ThunkConfig = {
 }
 
 const DefaultState: State = {
+  inGameSavingProgress: {
+    state: 'done',
+    message: 'Save learning progress'
+  },
   progress: {
     mode: 'loading',
     state: 'loading',
@@ -64,6 +72,23 @@ export const loadData = createAsyncThunk<LoadResult, undefined, ThunkConfig>(
 
 export const saveProgress = createAsyncThunk<void, undefined, ThunkConfig>(
   'learnSlice/saveProgress',
+  async (_, thunk) => {
+    const data = thunk.getState().learn.items.map(item => ({
+      id: item.id,
+      progress: item.progress,
+      mode: item.mode,
+    }));
+
+    const res = await fetchData(() => axios.put(`/api/v1/words/daily-list`, { data }), thunk.dispatch);
+    
+    if (res.status !== 200) {
+      throw new Error('Operation failed');
+    }
+  }
+)
+
+export const saveProgressInGame = createAsyncThunk<void, undefined, ThunkConfig>(
+  'learnSlice/saveProgressInGame',
   async (_, thunk) => {
     const data = thunk.getState().learn.items.map(item => ({
       id: item.id,
@@ -217,6 +242,27 @@ const learnSlice = createSlice({
         mode: 'saving',
         state: 'success',
         message: ''
+      }
+    });
+
+    builder.addCase(saveProgressInGame.pending, (state) => {
+      state.inGameSavingProgress = {
+        state: 'loading',
+        message: 'Saving...'
+      }
+    });
+
+    builder.addCase(saveProgressInGame.rejected, (state) => {
+      state.inGameSavingProgress = {
+        state: 'error',
+        message: 'There was an error. Please try again'
+      }
+    });
+
+    builder.addCase(saveProgressInGame.fulfilled, (state) => {
+      state.inGameSavingProgress = {
+        state: 'done',
+        message: 'Save learning progress'
       }
     });
 

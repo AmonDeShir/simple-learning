@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { Box } from "@mui/material";
+import { Button } from '../../../../components/styles/styles';
 
 export const CenterPage = styled(Box)`
   display: flex;
@@ -37,4 +38,10 @@ export const ButtonContainer = styled(Box)`
   width: 90%;
   max-width: 1000px;
   padding: 20px 0;
+`;
+
+export const SaveProgressButton = styled(Button)`
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 `;

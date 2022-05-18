@@ -10,14 +10,14 @@ import { Progress } from "../../../../components/progress/progress";
 import { SlideUpdate } from "../../../../components/slide-update/slide-update";
 import { SquareButton } from "../../../../components/styles/styles";
 import { GameItem } from "../../../../redux/slices/game/game.type";
-import { answer, loadData, saveProgress } from "../../../../redux/slices/learn/learn";
+import { answer, loadData, saveProgress, saveProgressInGame } from "../../../../redux/slices/learn/learn";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { superMemo } from "../../../../super-memo/super-memo";
 import { CenterPage } from "../show-daily-list/show-daily-list.styles";
-import { ButtonContainer, CardContainer, ProgressContainer } from "./learn-daily-list.styles";
+import { ButtonContainer, CardContainer, ProgressContainer, SaveProgressButton } from "./learn-daily-list.styles";
 
 export const LearnDailyList = () => {
-  const { statistics, item, items, done, learning, remaining, progress } = useAppSelector((state) => state.learn);
+  const { statistics, item, items, done, learning, remaining, progress, inGameSavingProgress } = useAppSelector((state) => state.learn);
   const [ showButtons, setShowButtons ] = useState(false);
 
   const navigate = useNavigate();
@@ -148,6 +148,13 @@ export const LearnDailyList = () => {
               </Box>
             </Grow>
           </ButtonContainer>
+          <SaveProgressButton
+            color="primary"
+            onClick={() => { dispatch(saveProgressInGame()) }} 
+            disabled={inGameSavingProgress.state === 'loading'}
+          >
+            {inGameSavingProgress.message}
+          </SaveProgressButton>
         </>
       </Loading>
     </CenterPage>
