@@ -1,8 +1,12 @@
 import axios from "axios";
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
-import { learnReducer, answer, loadData, saveProgress } from "./learn";
+import { learnReducer, answer, loadData, saveProgress, saveProgressInGame } from "./learn";
  
 const DefaultState = {
+  inGameSavingProgress: {
+    state: 'done' as const,
+    message: 'Save learning progress'
+  },
   progress: {
     mode: 'loading' as const,
     state: 'loading' as const,
@@ -19,6 +23,10 @@ const DefaultState = {
 }
 
 const stateAfterLoad = {
+  inGameSavingProgress: {
+    state: 'done' as const,
+    message: 'Save learning progress'
+  },
   progress: {
     mode: 'loading' as const,
     state: 'success' as const,
@@ -84,6 +92,10 @@ const stateAfterLoad = {
 }
 
 const state = {
+  inGameSavingProgress: {
+    state: 'done' as const,
+    message: 'Save learning progress'
+  },
   progress: {
     mode: 'loading' as const,
     state: 'success' as const,
@@ -241,8 +253,6 @@ const state = {
   }
 }
 
-
-
 describe(`learnSlice`, () => {
   beforeAll(() => {
     jest.useFakeTimers();
@@ -396,6 +406,47 @@ describe(`learnSlice`, () => {
       }
     })
   });
+
+  describe(`saveProgressInGame`, () => {
+    it(`should set the inGameSavingProgress' state to 'loading' when the learning progress is sending to server`, () => {
+      expect(learnReducer(undefined, {
+        type: `learnSlice/saveProgressInGame/pending`,
+        payload: undefined
+      })).toEqual({
+        ...DefaultState,
+        inGameSavingProgress: {
+          state: 'loading',
+          message: 'Saving...'
+        }
+      })
+    });
+  
+    it(`should set the inGameSavingProgress' state to 'error' when the sending progress operation failed`, () => {
+      expect(learnReducer(undefined, {
+        type: `learnSlice/saveProgressInGame/rejected`,
+        payload: undefined
+      })).toEqual({
+        ...DefaultState,
+        inGameSavingProgress: {
+          state: 'error',
+          message: 'There was an error. Please try again'
+        }
+      })
+    });
+
+    it(`should set state to 'done' when the sending progress operation was successful`, () => {
+      expect(learnReducer(undefined, {
+        type: `learnSlice/saveProgressInGame/fulfilled`,
+        payload: undefined
+      })).toEqual({
+        ...DefaultState,
+        inGameSavingProgress: {
+          state: 'done',
+          message: 'Save learning progress'
+        }
+      })
+    });
+  })
 
   describe(`updateItemProgress`, () => {
     it(`should update the item's progress`, () => {
@@ -849,6 +900,84 @@ describe(`learn/saveProgress`, () => {
 
     const result = await saveProgress()(dispatch, getState, {});
     expect(result.type).toEqual('learnSlice/saveProgress/rejected');
+  });
+});
+
+describe(`learn/saveProgressInGame`, () => {
+  let putSpy: jest.SpyInstance;
+  const dispatch: any = () => {};
+  const getState: any = () => ({ learn: stateAfterLoad });
+
+  beforeAll(() => {
+    putSpy = jest.spyOn(axios, 'put');
+  });
+
+  beforeEach(() => {
+    putSpy.mockClear();
+  });
+
+  afterAll(() => {
+    putSpy.mockRestore();
+  });
+  
+  it(`should send the state data`, async () => {
+    putSpy.mockResolvedValue({
+      status: 200,
+      message: 'success'
+    });
+
+    const result = await saveProgressInGame()(dispatch, getState, {});
+
+    expect(putSpy).toBeCalledWith(`/api/v1/words/daily-list`, {
+      data: [
+        {
+          id: '1',
+          mode: 'flashcard',
+          progress: {
+            eFactor: 2.5,
+            interval: 0,
+            intervalBeforeLearning: 0,
+            phase: "learning",
+            nextRepetition: 1
+          },
+        },
+        {
+          id: '2',
+          mode: 'writing',
+          progress: {
+            eFactor: 2.5,
+            interval: 0,
+            intervalBeforeLearning: 0,
+            phase: "learning",
+            nextRepetition: 1
+          },
+        },
+        {
+          id: '3',
+          mode: 'information',
+          progress: {
+            eFactor: 2.5,
+            interval: 0,
+            intervalBeforeLearning: 0,
+            phase: "learning",
+            nextRepetition: 1
+          },
+        },
+      ]
+    });
+
+    expect(result).toEqual({
+      type: `learnSlice/saveProgressInGame/fulfilled`,
+      payload: undefined,
+      meta: expect.any(Object)
+    });
+  });
+
+  it(`should throw an error if the status of the response is other than 200`, async () => {
+    putSpy.mockRejectedValue({ status: 500 });
+
+    const result = await saveProgressInGame()(dispatch, getState, {});
+    expect(result.type).toEqual('learnSlice/saveProgressInGame/rejected');
   });
 });
 

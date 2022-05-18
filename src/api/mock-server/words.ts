@@ -95,5 +95,13 @@ export const mocksWords = [
     )
   }),
 
-
+  rest.put(`/api/v1/words/daily-list`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        status: 200,
+        message: 'success',
+      })
+    );
+  }),
 ];

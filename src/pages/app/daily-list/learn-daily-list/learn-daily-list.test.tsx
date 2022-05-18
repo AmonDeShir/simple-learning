@@ -7,12 +7,16 @@ import { act } from "react-dom/test-utils";
 import { mockAudio, MockAudio } from "../../../../utils/mocks/audio-mock";
 import { mockTimeline, MockTimeline } from "../../../../utils/mocks/gsap-timeline-mock";
 
-const state = { 
-  user: { 
-    name: 'Test User', 
-    sync: false 
+const state = {
+  user: {
+    name: 'Test User',
+    sync: false
   },
   learn: {
+    inGameSavingProgress: {
+      state: 'done' as const,
+      message: 'Save learning progress'
+    },
     progress: {
       mode: 'loading' as const,
       state: 'success' as const,
@@ -116,7 +120,7 @@ const state = {
         nextRepetition: 1651860990727,
       },
     }
-  }  
+  }
 }
 
 describe('LearnDailyList', () => {
@@ -157,7 +161,7 @@ describe('LearnDailyList', () => {
     audio.mockClear();
     timelineSpy.mockClear();
   });
-  
+
   afterAll(() => {
     loadDataSpy.mockRestore();
     saveProgressSpy.mockRestore();
@@ -174,7 +178,7 @@ describe('LearnDailyList', () => {
     expect(loadDataSpy).toHaveBeenCalledTimes(1);
   });
 
-  it(`should dispatch the saveProgress action of the mode of the progress is 'done'`, () => {
+  it(`should dispatch the saveProgress action if the mode of the progress is 'done'`, () => {
     const learnState = {
       progress: {
         mode: 'done' as const,
@@ -183,12 +187,11 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
-    expect(loadDataSpy).toHaveBeenCalledTimes(1);
+    expect(saveProgressSpy).toHaveBeenCalledTimes(1);
   });
-
 
   it(`should display a loading message if the state of the progress is 'loading'`, () => {
     const learnState = {
@@ -199,7 +202,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('Loading please wait...')).toBeInTheDocument();
@@ -214,7 +217,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('There was an error. Please try again')).toBeInTheDocument();
@@ -229,7 +232,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('There is nothing to learn for today, please try again tomorrow or add some words')).toBeInTheDocument();
@@ -259,7 +262,7 @@ describe('LearnDailyList', () => {
         message: ''
       }
     }
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
     expect(screen.getByText('item 4')).toBeInTheDocument();
@@ -282,7 +285,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState }});
+    const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, ...learnState } });
     render(<LearnDailyList />, { wrapper });
 
     fireEvent.click(screen.getByText('Done'));
@@ -354,7 +357,7 @@ describe('LearnDailyList', () => {
     fireEvent.click(screen.getByText('Item 3'));
     fireEvent.click(screen.getByText('Translation 3'));
 
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(1);
   });
@@ -368,7 +371,7 @@ describe('LearnDailyList', () => {
       }
     }
 
-    const AnswerMock = (props: { onAnswer: (value: number) => void, data: { text: string }}) => (
+    const AnswerMock = (props: { onAnswer: (value: number) => void, data: { text: string } }) => (
       <div onClick={() => props.onAnswer(1)}>{props.data.text}</div>
     );
 
@@ -377,9 +380,9 @@ describe('LearnDailyList', () => {
 
     const { wrapper } = TestingContainer(undefined, learnState);
     render(<LearnDailyList />, { wrapper });
- 
+
     fireEvent.click(screen.getByText('item 2'));
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(1);
     flippingCardSpy.mockRestore();
@@ -420,7 +423,7 @@ describe('LearnDailyList', () => {
     fireEvent.click(screen.getByText('Item 1'));
     fireEvent.click(screen.getByText('Again'));
 
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(0);
   });
@@ -440,7 +443,7 @@ describe('LearnDailyList', () => {
     fireEvent.click(screen.getByText('Item 1'));
     fireEvent.click(screen.getByText('Good'));
 
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(0.4);
   });
@@ -460,7 +463,7 @@ describe('LearnDailyList', () => {
     fireEvent.click(screen.getByText('Item 1'));
     fireEvent.click(screen.getByText('Easy'));
 
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(0.8);
   });
@@ -480,7 +483,7 @@ describe('LearnDailyList', () => {
     fireEvent.click(screen.getByText('Item 1'));
     fireEvent.click(screen.getByText('Very Easy'));
 
-    act(() => { jest.advanceTimersByTime(250)});
+    act(() => { jest.advanceTimersByTime(250) });
 
     expect(answerSpy).toBeCalledWith(1);
   });
@@ -501,7 +504,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items } });
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('1 minute')[0]).toBeInTheDocument();
@@ -522,7 +525,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items } });
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('10 minutes')[0]).toBeInTheDocument();
@@ -543,7 +546,7 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items } });
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('5 hours')[0]).toBeInTheDocument();
@@ -564,11 +567,45 @@ describe('LearnDailyList', () => {
         ...state.learn.items.slice(1),
       ];
 
-      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items }});
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, items } });
       render(<LearnDailyList />, { wrapper });
 
       expect(screen.getAllByText('1 day')[0]).toBeInTheDocument();
     })
-    
+  });
+
+  describe('SaveProgressButton', () => {
+    it(`should display the button`, () => {
+      const { wrapper } = TestingContainer(undefined, state);
+      render(<LearnDailyList />, { wrapper });
+
+      expect(screen.getByText('Save learning progress')).toBeInTheDocument();
+    })
+
+    it(`should dispatch the 'saveProgressInGame' action if the button is clicked`, async () => {
+      const { wrapper, reduxActions } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn } });
+      render(<LearnDailyList />, { wrapper });
+
+      fireEvent.click(screen.getByText('Save learning progress'));
+      await screen.findByText('Saving...');
+
+      expect(reduxActions['learnSlice/saveProgressInGame/pending']).toEqual({
+        type: 'learnSlice/saveProgressInGame/pending',
+        meta: expect.any(Object),
+        payload: undefined,
+      });
+    })
+
+    it(`should disable the button if the inGameSavingProgress' state is 'loading'`, () => {
+      const inGameSavingProgress = {
+        state: 'loading' as const,
+        message: 'Saving...'
+      };
+
+      const { wrapper } = TestingContainer(undefined, { user: state.user, learn: { ...state.learn, inGameSavingProgress } });
+      render(<LearnDailyList />, { wrapper });
+
+      expect(screen.getByText('Saving...')).toBeDisabled();
+    });
   });
 })
