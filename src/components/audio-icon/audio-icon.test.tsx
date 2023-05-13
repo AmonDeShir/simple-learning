@@ -36,8 +36,11 @@ describe('AudioIcon', () => {
     render(<AudioIcon src="/test-audio" />);
 
     fireEvent.click(screen.getByText('icon'));
-
     expect(audio.play).toBeCalledTimes(0);
+
+    act(() => audio.loaded());
+    fireEvent.click(screen.getByText('icon'));
+    expect(audio.play).toBeCalledTimes(1);
   });
 
   it(`should pause the audio if it's playing and the component is unmounted`, async () => {
