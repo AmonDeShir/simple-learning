@@ -76,6 +76,11 @@ export const App = () => {
         />
 
         <Route
+          path='/new-word/:lang'
+          element={<NewWord />}
+        />
+
+        <Route
           path='/game/:mode/:setId'
           element={<Game />}
         />

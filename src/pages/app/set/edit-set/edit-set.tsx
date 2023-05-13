@@ -133,7 +133,7 @@ export const EditSet = () => {
               type="submit"
               color="primary"
               variant="contained"
-              onClick={() => navigate('/new-word')}
+              onClick={() => navigate(words.length === 0 ? '/new-word' : `/new-word/${words[0].language}`)}
             >
               New Word
             </Button>

@@ -1,8 +1,11 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { TestingContainer } from "../../../utils/test-utils/testing-container";
 import Main from "./main";
 import mediaQuery from 'css-mediaquery';
 import * as fetchData from "../../../api/fetchData";
+import { SearchFrom } from "../../../components/search-from/search-form";
+import { LanguageOption } from "../../../components/search-menu/serach-menu";
+import { EditSet } from "../set/edit-set/edit-set";
 
 function createMatchMedia(width: number) {
   return (query: any) => ({
@@ -14,7 +17,23 @@ function createMatchMedia(width: number) {
   });
 }
 
+jest.mock("../../../components/search-from/search-form");
+
 describe('Main', () => {
+  let mockSearchForm = SearchFrom as jest.MockedFunction<typeof SearchFrom>;
+  let searchFormSubmit = (vale: string, from?: LanguageOption, to?: LanguageOption) => {};
+
+  beforeEach(() => {
+    mockSearchForm.mockImplementation((props) => {
+      searchFormSubmit = props.onSubmit ?? (() => {});
+      return (<div>title={props.title ?? "undefined"} label={props.label ?? "undefined"} defaultValue={props.defaultValue ?? "undefined"}</div>);
+    });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it(`should render the user's name`, async () => {
     const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true }});
     render(<Main />, { wrapper });
@@ -34,7 +53,7 @@ describe('Main', () => {
     expect(screen.getByText('Daily list page')).toBeInTheDocument();
   })
 
-  it(`should open the learnZ page if the 'Learn' button is clicked`, async () => {
+  it(`should open the learn page if the 'Learn' button is clicked`, async () => {
     const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: true }});
     render(<Main />, { wrapper });
 
@@ -50,13 +69,58 @@ describe('Main', () => {
     
     await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
   
-    const input = screen.getByTestId('search-text-field');
-    fireEvent.change(input, { target: { value: 'word' } });
-    fireEvent.click(screen.getByText('Search'));
+    act(() => { searchFormSubmit("word")});
 
     expect(screen.getByText('Dictionary page')).toBeInTheDocument();
     expect(screen.getByText('word')).toBeInTheDocument();
   });
+
+
+  it(`should open the dictionary page with from and to parameters`, async () => {
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
+    render(<Main />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    act(() => { searchFormSubmit("word", "English", "Interslavic")});
+
+    expect(screen.getByText('Dictionary page')).toBeInTheDocument();
+    expect(screen.getByText('word')).toBeInTheDocument();
+
+    expect(screen.getByText('from=English&to=Interslavic')).toBeInTheDocument();
+
+  });
+
+  it(`should open the dictionary page with the 'from' parameter`, async () => {
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
+    render(<Main />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    act(() => { searchFormSubmit("word", "English", undefined)});
+
+    expect(screen.getByText('Dictionary page')).toBeInTheDocument();
+    expect(screen.getByText('word')).toBeInTheDocument();
+
+    expect(screen.getByText('from=English')).toBeInTheDocument();
+
+  });
+
+  it(`should open the dictionary page with the 'to' parameter`, async () => {
+    const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });
+    render(<Main />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    act(() => { searchFormSubmit("word", undefined, "Interslavic")});
+
+    expect(screen.getByText('Dictionary page')).toBeInTheDocument();
+    expect(screen.getByText('word')).toBeInTheDocument();
+
+    expect(screen.getByText('to=Interslavic')).toBeInTheDocument();
+
+  });
+
 
   it(`should open the set list page if the 'Open set list' button is clicked`, async () => {
     const { wrapper } = TestingContainer(undefined, { user: { name: 'User', sync: false } });

@@ -26,6 +26,7 @@ const state = {
         id: '0_0_1',
         word: 'word 1',
         meaning: 'meaning 1',
+        language: "English" as const,
         error: {}
       },
       {
@@ -33,6 +34,7 @@ const state = {
         id: '0_0_2',
         word: 'word 2',
         meaning: 'meaning 2',
+        language: "English" as const,
         error: {}
       }
     ],
@@ -170,6 +172,32 @@ describe(`EditSet`, () => {
     expect(screen.getByText('New word page')).toBeInTheDocument();
   });
 
+  it(`should open the 'new word' page with the language of the first word`, async () => {
+    const { wrapper } = TestingContainer(undefined, state);
+    render(<EditSet />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    fireEvent.click(screen.getByText('New Word'));
+
+    expect(screen.getByText('New word page')).toBeInTheDocument();
+    expect(screen.getByText('English')).toBeInTheDocument();
+
+  });
+
+  it(`should open the 'new word' page without the language parameter if there is no words in the set`, async () => {
+    const { wrapper } = TestingContainer(undefined, {...state, editSet: { ...state.editSet, words: [] }});
+    render(<EditSet />, { wrapper });
+    
+    await waitFor(() => expect(screen.queryByText('Loading please wait...')).not.toBeInTheDocument());
+
+    fireEvent.click(screen.getByText('New Word'));
+
+    expect(screen.getByText('New word page')).toBeInTheDocument();
+    expect(screen.queryByText('English')).not.toBeInTheDocument();
+
+  });
+
   it(`should disable the 'Save' button if the set has errors`, () => {
     const { wrapper } = TestingContainer(undefined, {
       ...state,
@@ -182,6 +210,7 @@ describe(`EditSet`, () => {
             id: '0_0_3',
             word: 'word 3',
             meaning: '',
+            language: "English" as const,
             error: {
               meaning: 'This field is required.'
             }
@@ -270,6 +299,7 @@ describe(`EditSet`, () => {
             word: 'created word',
             meaning: 'meaning 1',
             error: {},
+            language: "English" as const,
             usedIn: [
               {
                 id: '1',
@@ -287,6 +317,7 @@ describe(`EditSet`, () => {
             word: 'edited word',
             meaning: 'meaning 2',
             error: {},
+            language: "English" as const,
             usedIn: [
               {
                 id: '1',
@@ -303,6 +334,7 @@ describe(`EditSet`, () => {
             id: '0_0_3',
             word: 'imported word 1',
             meaning: 'meaning 3',
+            language: "English" as const,
             error: {},
           },
           {
@@ -310,6 +342,7 @@ describe(`EditSet`, () => {
             id: '0_0_4',
             word: 'imported word 2',
             meaning: 'meaning 4',
+            language: "English" as const,
             error: {},
             usedIn: []
           },
@@ -318,6 +351,7 @@ describe(`EditSet`, () => {
             id: '0_0_5',
             word: 'imported word 3',
             meaning: 'meaning 5',
+            language: "English" as const,
             error: {},
             usedIn: [
               {

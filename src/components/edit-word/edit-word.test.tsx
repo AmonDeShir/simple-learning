@@ -1,3 +1,4 @@
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import { EditWord } from "./edit-word";
 
@@ -7,6 +8,7 @@ const data = {
     id: '',
     word: 'test',
     meaning: 'test meaning',
+    language: "English" as const,
     firstExample: {
       example: 'example 1',
       translation: 'translation 1',
@@ -23,6 +25,7 @@ const data = {
     id: '',
     word: 'test',
     meaning: 'test meaning',
+    language: "English" as const,
     error: {},
   }
 };
@@ -33,6 +36,7 @@ describe(`EditWord`, () => {
 
     expect(screen.getByTestId('word-text-field')).toHaveValue(data.word.word);
     expect(screen.getByTestId('translation-text-field')).toHaveValue(data.word.meaning);
+    expect(screen.getByTestId('language-text-field')).toHaveValue(data.word.language);
     expect(screen.getByTestId('first-example-text-field')).toHaveValue(data.word.firstExample.example);
     expect(screen.getByTestId('first-example-translation-text-field')).toHaveValue(data.word.firstExample.translation);
     expect(screen.getByTestId('second-example-text-field')).toHaveValue(data.word.secondExample.example);
@@ -44,6 +48,7 @@ describe(`EditWord`, () => {
 
     expect(screen.getByTestId('word-text-field')).toHaveValue(data.word.word);
     expect(screen.getByTestId('translation-text-field')).toHaveValue(data.word.meaning);
+    expect(screen.getByTestId('language-text-field')).toHaveValue(data.word.language);
     expect(screen.getByTestId('first-example-text-field')).toHaveValue('');
     expect(screen.getByTestId('first-example-translation-text-field')).toHaveValue('');
     expect(screen.getByTestId('second-example-text-field')).toHaveValue('');
@@ -69,6 +74,8 @@ describe(`EditWord`, () => {
 
     const word = screen.getByTestId('word-text-field');
     const meaning = screen.getByTestId('translation-text-field');
+    const language = screen.getByTestId('language-text-field');
+
     const firstExample = screen.getByTestId('first-example-text-field');
     const firstExampleTranslation = screen.getByTestId('first-example-translation-text-field');
     const secondExample = screen.getByTestId('second-example-text-field');
@@ -88,8 +95,15 @@ describe(`EditWord`, () => {
       meaning: 'new value',
     });
 
-    fireEvent.change(firstExample, { target: { value: 'new value' }});
+    fireEvent.change(language, { target: { value: 'Polish' }});
     expect(onEdit).toHaveBeenCalledTimes(3);
+    expect(onEdit).toHaveBeenCalledWith({
+      ...data.word,
+      language: 'Polish',
+    });
+
+    fireEvent.change(firstExample, { target: { value: 'new value' }});
+    expect(onEdit).toHaveBeenCalledTimes(4);
     expect(onEdit).toHaveBeenCalledWith({
       ...data.word,
       firstExample: {
@@ -99,7 +113,7 @@ describe(`EditWord`, () => {
     });
 
     fireEvent.change(firstExampleTranslation, { target: { value: 'new value' }});
-    expect(onEdit).toHaveBeenCalledTimes(4);
+    expect(onEdit).toHaveBeenCalledTimes(5);
     expect(onEdit).toHaveBeenCalledWith({
       ...data.word,
       firstExample: {
@@ -109,7 +123,7 @@ describe(`EditWord`, () => {
     });
 
     fireEvent.change(secondExample, { target: { value: 'new value' }});
-    expect(onEdit).toHaveBeenCalledTimes(5);
+    expect(onEdit).toHaveBeenCalledTimes(6);
     expect(onEdit).toHaveBeenCalledWith({
       ...data.word,
       secondExample: {
@@ -119,7 +133,7 @@ describe(`EditWord`, () => {
     });
 
     fireEvent.change(secondExampleTranslation, { target: { value: 'new value' }});
-    expect(onEdit).toHaveBeenCalledTimes(6);
+    expect(onEdit).toHaveBeenCalledTimes(7);
     expect(onEdit).toHaveBeenCalledWith({
       ...data.word,
       secondExample: {

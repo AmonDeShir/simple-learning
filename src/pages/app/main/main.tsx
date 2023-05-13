@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from '../../../api/fetchData';
 import { Loading, RegisterLoading } from "../../../components/loading/loading";
 import { handleLoadingErrors, loadData } from "../../../utils/load-data/load-data";
+import { LanguageOption } from "../../../components/search-menu/serach-menu";
 
 type Set = {
   id: string;
@@ -36,8 +37,20 @@ const Main = () => {
   const [ data, setData ] = useState<Set[]>([])
   const [ loading, setLoading ] = useState<RegisterLoading>({ state: 'loading', message: '' });
 
-  const openDictionary = (search: string) => {
-    navigate(`/dictionary/${search}`);
+  const openDictionary = (search: string, from?: LanguageOption, to?: LanguageOption) => {
+    let query = '';
+
+    if (from || to) {
+      query = `?${from ? 'from=' + from : ''}`;
+
+      if (query.length > 1 && to) {
+        query += '&'
+      }
+
+      query += to ? 'to=' + to : '';
+    };
+    
+    navigate(`/dictionary/${search}${query}`);
   }
 
   useEffect(() => {

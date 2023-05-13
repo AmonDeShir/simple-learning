@@ -36,6 +36,46 @@ describe('NewWord', () => {
     expect(screen.getByText('Dictionary')).toBeInTheDocument();
   })
 
+  it(`should load laguage from page parameter`, () => {
+    const { wrapper, reduxActions } = TestingContainer({ "lang": "Interslavic" }, { user: { name: 'Test User', sync: false }});
+    render(<NewWord />, { wrapper });
+
+    fireEvent.click(screen.getByText('Save'));
+
+    expect(reduxActions['editSet/addWord']).toEqual({
+      type: 'editSet/addWord',
+      payload: {
+        word: 'New Word',
+        meaning: 'Translation',
+        type: 'create',
+        language: "Interslavic",
+        error: {},
+      },
+    });
+
+    expect(screen.getByText('Edit set page')).toBeInTheDocument();
+  })
+
+  it(`should set language to english if language from page parameter is invalid`, () => {
+    const { wrapper, reduxActions } = TestingContainer({ "lang": "Error" }, { user: { name: 'Test User', sync: false }});
+    render(<NewWord />, { wrapper });
+
+    fireEvent.click(screen.getByText('Save'));
+
+    expect(reduxActions['editSet/addWord']).toEqual({
+      type: 'editSet/addWord',
+      payload: {
+        word: 'New Word',
+        meaning: 'Translation',
+        type: 'create',
+        language: "English",
+        error: {},
+      },
+    });
+
+    expect(screen.getByText('Edit set page')).toBeInTheDocument();
+  })
+
   it(`should change the page mode to the 'select' mode if the 'Dictionary' button is clicked`, async () => {
     const { wrapper } = TestingContainer(undefined, { user: { name: 'Test User', sync: false }});
     render(<NewWord />, { wrapper });
@@ -69,6 +109,7 @@ describe('NewWord', () => {
         word: 'New Word',
         meaning: 'Translation',
         type: 'create',
+        language: "English",
         error: {},
       },
     });
@@ -94,6 +135,7 @@ describe('NewWord', () => {
     act(() => { select({
       word: 'Selected word',
       meaning: 'Translation',
+      language: 'English',
       type: 'import',
       error: {}
     })});
@@ -106,6 +148,7 @@ describe('NewWord', () => {
       payload: {
         word: 'Selected word',
         meaning: 'Translation',
+        language: 'English',
         type: 'import',
         error: {}
       },
@@ -131,6 +174,7 @@ describe('NewWord', () => {
       word: 'Edited word',
       meaning: 'Translation',
       type: 'create',
+      language: 'English',
       error: {}
     })});
 
@@ -141,6 +185,7 @@ describe('NewWord', () => {
       payload: {
         word: 'Edited word',
         meaning: 'Translation',
+        language: 'English',
         type: 'create',
         error: {}
       },
@@ -165,6 +210,7 @@ describe('NewWord', () => {
     act(() => { edit({
       word: '',
       meaning: 'Translation',
+      language: 'English',
       type: 'create',
       error: {}
     })});
@@ -188,6 +234,7 @@ describe('NewWord', () => {
     act(() => { edit({
       word: 'word 1',
       meaning: '',
+      language: 'English',
       type: 'create',
       error: {}
     })});

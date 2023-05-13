@@ -1,3 +1,4 @@
+import { MenuItem } from "@mui/material";
 import { WordData } from "../../redux/slices/edit-set/edit-set.type";
 import { Card } from "../card/card";
 import { SectionTitle, StyledTextField } from "./edit-word.styles";
@@ -15,7 +16,7 @@ export const EditWord = ({
   margin,
   onEdit
 }: Props) => {
-  const { word, meaning, firstExample, secondExample, error } = data;
+  const { word, meaning, language, firstExample, secondExample, error } = data;
 
   type EditKeys = Exclude<keyof WordData, 'firstExample' | 'secondExample'> | "first_example" | "first_translation" | "second_example" | "second_translation";
 
@@ -54,6 +55,19 @@ export const EditWord = ({
         onChange={(e) => handleEdit(e.target.value, 'word')}
         inputProps={{ "data-testid": "word-text-field" }}
       />
+
+      <StyledTextField 
+        variant="standard" 
+        value={language} 
+        label="Language"
+        onChange={(e) => handleEdit(e.target.value, 'language')}
+        inputProps={{ "data-testid": "language-text-field" }}
+        select
+      >
+        <MenuItem value="Interslavic">Interslavic</MenuItem>
+        <MenuItem value="Polish">Polish</MenuItem>
+        <MenuItem value="English">English</MenuItem>
+      </StyledTextField>
 
       <StyledTextField
         type="text"
