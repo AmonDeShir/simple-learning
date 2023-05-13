@@ -11,12 +11,14 @@ export const setsData = [
       {
           "id": "id_0_1",
           "word": "word 1",
-          "meaning": "meaning 1"
+          "meaning": "meaning 1",
+          "language": "English"
       },
       {
           "id": "id_0_2",
           "word": "word 2",
-          "meaning": "meaning 2"
+          "meaning": "meaning 2",
+          "language": "English"
       },
     ]
   },
@@ -32,12 +34,14 @@ export const setsData = [
       {
           "id": "id_1_1",
           "word": "word 2",
-          "meaning": "meaning 2"
+          "meaning": "meaning 2",
+          "language": "English"
       },
       {
           "id": "id_1_2",
           "word": "word 3",
-          "meaning": "meaning 3"
+          "meaning": "meaning 3",
+          "language": "English"
       },
     ]
   },
@@ -53,12 +57,14 @@ export const setsData = [
       {
           "id": "id_2_1",
           "word": "word 4",
-          "meaning": "meaning 4"
+          "meaning": "meaning 4",
+          "language": "English"
       },
       {
           "id": "id_2_2",
           "word": "word 5",
-          "meaning": "meaning 5"
+          "meaning": "meaning 5",
+          "language": "English"
       },
     ]
   },
@@ -74,12 +80,14 @@ export const setsData = [
       {
           "id": "id_3_1",
           "word": "word 6",
-          "meaning": "meaning 6"
+          "meaning": "meaning 6",
+          "language": "English"
       },
       {
           "id": "id_3_2",
           "word": "word 7",
-          "meaning": "meaning 7"
+          "meaning": "meaning 7",
+          "language": "English"
       },
     ]
   },

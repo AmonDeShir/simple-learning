@@ -1,3 +1,5 @@
+import { Language } from "../edit-set/edit-set.type";
+
 export type WordData = {
   id: string,
   word: string,
@@ -51,4 +53,5 @@ export type LoadResult = {
   mode: GameType;
   id: string;
   items: GameItem[];
+  languages: Language[],
 }

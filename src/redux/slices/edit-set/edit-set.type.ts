@@ -1,10 +1,15 @@
 
+export type Language = "Interslavic" | "Polish" | "English";
+
+export const AvailableLangauges = ["Interslavic", "Polish", "English"];
+
 export type WordData = {
   type: 'create' | 'edit' | 'import',
   id: string,
   word: string,
   meaning: string,
   error: ErrorWord
+  language: Language,
   firstExample?: {
     example: string;
     translation: string;

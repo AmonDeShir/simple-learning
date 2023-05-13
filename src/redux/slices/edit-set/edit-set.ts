@@ -51,6 +51,7 @@ const convertWord = (word: WordData) => {
     return {
       word: word.word,
       meaning: word.meaning,
+      language: word.language,
       firstExample: convertExample(word.firstExample),
       secondExample: convertExample(word.secondExample),
     }
@@ -60,6 +61,7 @@ const convertWord = (word: WordData) => {
     id: word.id,
     word: word.word,
     meaning: word.meaning,
+    language: word.language,
     firstExample: convertExample(word.firstExample),
     secondExample: convertExample(word.secondExample),
   }
@@ -145,6 +147,7 @@ const editSetSlice = createSlice({
 
       word.word = action.payload.word;
       word.meaning = action.payload.meaning;
+      word.language = action.payload.language;
       word.firstExample = action.payload.firstExample;
       word.secondExample = action.payload.secondExample;
       word.type = action.payload.type;
@@ -215,6 +218,7 @@ const editSetSlice = createSlice({
         firstExample: word.firstExample,
         secondExample: word.secondExample,
         usedIn: word.usedIn,
+        language: word.language,
         type: 'import',
         error: {},
       }));

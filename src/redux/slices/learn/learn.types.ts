@@ -1,4 +1,5 @@
 import { SuperMemoOutput } from "../../../super-memo/super-memo.types";
+import { Language } from "../edit-set/edit-set.type";
 
 export type LearnItem = {
   id: string;
@@ -13,4 +14,7 @@ export type LearnItem = {
   mode: 'flashcard' | 'writing' | 'information';
 }
 
-export type LoadResult = Omit<LearnItem, "inGameId">[];
+export type LoadResult = {
+  languages: Language[];
+  cards: Omit<LearnItem, "inGameId">[]
+}

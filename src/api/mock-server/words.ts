@@ -14,6 +14,17 @@ export const mocksWords = [
     )
   }),
 
+  rest.get(`/api/v1/words/search/interslavic`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        status: 200,
+        data: wordSearchResult,
+      })
+    )
+  }),
+
+
   rest.get(`/api/v1/words/search/New%20Word`, (req, res, ctx) => {
     return res(
       ctx.status(200),

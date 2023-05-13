@@ -19,6 +19,7 @@ const common = {
   id: '0_1',
   word: 'Word',
   meaning: 'Translation',
+  language: "English" as const,
   error: {}
 }
 

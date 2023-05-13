@@ -12,6 +12,7 @@ const state = {
       type: 'create' as const,
       word: 'word 1',
       meaning: 'meaning 1',
+      language: 'English' as const,
       firstExample: {
         example: 'example 1',
         translation: 'translation 1',
@@ -23,6 +24,7 @@ const state = {
       type: 'import' as const,
       word: 'word 2',
       meaning: 'meaning 2',
+      language: 'English' as const,
       firstExample: {
         example: 'example 2',
         translation: 'translation 2',
@@ -34,6 +36,7 @@ const state = {
       type: 'edit' as const,
       word: 'word 3',
       meaning: 'meaning 3',
+      language: 'English' as const,
       firstExample: {
         example: 'example 3',
         translation: 'translation 3',
@@ -86,6 +89,7 @@ describe(`editSetSlice`, () => {
           type: 'create',
           word: 'word',
           meaning: 'meaning',
+          language: 'English',
           firstExample: {
             example: 'example',
             translation: 'translation',
@@ -106,6 +110,7 @@ describe(`editSetSlice`, () => {
               example: 'example',
               translation: 'translation',
             },
+            language: "English",
             error: {}
           }],
           progress: {
@@ -133,6 +138,7 @@ describe(`editSetSlice`, () => {
                 example: 'example 1',
                 translation: 'translation 1',
               },
+              language: "English",
               error: {}
             },
             {
@@ -144,6 +150,7 @@ describe(`editSetSlice`, () => {
                 example: 'example 3',
                 translation: 'translation 3',
               },
+              language: "English",
               error: {}
             }
           ],
@@ -171,7 +178,8 @@ describe(`editSetSlice`, () => {
           secondExample: {
             example: 'example 4',
             translation: 'translation 4',
-          }
+          },
+          language: "English",
         };
 
         expect(editSetReducer(state, { type: `editSet/editWord`, payload: word })).toEqual({
@@ -188,6 +196,7 @@ describe(`editSetSlice`, () => {
                 example: 'example 4',
                 translation: 'translation 4',
               },
+              language: "English",
               error: {}
             } 
           ].sort((a, b) => a.id.localeCompare(b.id))
@@ -204,7 +213,8 @@ describe(`editSetSlice`, () => {
           secondExample: {
             example: 'example 4',
             translation: 'translation 4',
-          }
+          },
+          language: "English",
         };
 
         expect(editSetReducer(state, { type: `editSet/editWord`, payload: word })).toEqual({
@@ -221,6 +231,7 @@ describe(`editSetSlice`, () => {
                 example: 'example 4',
                 translation: 'translation 4',
               },
+              language: "English",
               error: {
                 word: 'This filed is required.'
               }
@@ -296,6 +307,7 @@ describe(`editSetSlice`, () => {
               example: 'example 6',
               translation: 'translation 6',
             },
+            language: "English",
             error: {}
           },
         ],
@@ -344,6 +356,7 @@ describe(`editSetSlice`, () => {
                 example: 'example 6',
                 translation: 'translation 6',
               },
+              language: "English",
               secondExample: undefined,
               usedIn: undefined,
               error: {}
@@ -405,6 +418,7 @@ describe(`createSet`, () => {
             example: 'example 1',
             translation: 'translation 1',
           },
+          language: "English",
           error: {}
         },
         {
@@ -416,6 +430,7 @@ describe(`createSet`, () => {
             example: 'example 2',
             translation: 'translation 2',
           },
+          language: "English",
         },
         {
           id: "0_3",
@@ -430,6 +445,7 @@ describe(`createSet`, () => {
             example: 'example 4',
             translation: 'translation 4',
           },
+          language: "English",
         },
       ],
       progress: {
@@ -475,6 +491,7 @@ describe(`createSet`, () => {
               example: 'example 1',
               translation: 'translation 1',
             },
+            language: "English",
           },
           {
             id: '0_2',
@@ -484,6 +501,7 @@ describe(`createSet`, () => {
               example: 'example 2',
               translation: 'translation 2',
             },
+            language: "English",
           },
           "0_3",
         ]
@@ -504,6 +522,7 @@ describe(`createSet`, () => {
             type: 'create' as const,
             word: '',
             meaning: 'meaning 1',
+            language: "English",
             error: {
               word: 'This field is required',
             }
@@ -548,6 +567,7 @@ describe(`createSet`, () => {
             type: 'import' as const,
             word: 'word 1',
             meaning: 'meaning 1',
+            language: "English",
             error: {},
           },
         ]
@@ -582,6 +602,7 @@ describe(`createSet`, () => {
             type: 'import' as const,
             word: 'word 1',
             meaning: 'meaning 1',
+            language: "English",
             error: {},
           },
         ]

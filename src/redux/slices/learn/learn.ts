@@ -3,6 +3,7 @@ import axios from 'axios';
 import { fetchData } from '../../../api/fetchData';
 import { superMemo } from '../../../super-memo/super-memo';
 import { LearnItem, LoadResult } from './learn.types';
+import { Language } from '../edit-set/edit-set.type';
 
 type State = {
   inGameSavingProgress: {
@@ -18,10 +19,11 @@ type State = {
   done: string[];
   learning: string[];
   remaining: string[];
-    
+  
   itemIndex: number;
   getItemsFrom: 'learning' | 'remaining';
   item: string;
+  languages: Language[],
   statistics: { 
     [item: string]: {
       answers: (number)[];
@@ -54,6 +56,7 @@ const DefaultState: State = {
   itemIndex: 0,
   getItemsFrom: 'remaining',
   item: '',
+  languages: [],
   statistics: {}
 }
 
@@ -283,7 +286,7 @@ const learnSlice = createSlice({
     });
 
     builder.addCase(loadData.fulfilled, (state, action) => {
-      if (action.payload.length === 0) {
+      if (action.payload.cards.length === 0) {
         state.progress = {
           mode: 'loading',
           state: 'empty',
@@ -299,10 +302,10 @@ const learnSlice = createSlice({
         message: ''
       };
 
-      state.items = action.payload.map(item => ({ ...item, inGameId: `${item.id}--0` }));
-      state.remaining = action.payload.map(item => item.id);
+      state.items = action.payload.cards.map(item => ({ ...item, inGameId: `${item.id}--0` }));
+      state.remaining = action.payload.cards.map(item => item.id);
+      state.languages = action.payload.languages;
       state.done = [];
-      state.learning = [];
       
       state.item = state.items[0].id;
       state.itemIndex = 0;

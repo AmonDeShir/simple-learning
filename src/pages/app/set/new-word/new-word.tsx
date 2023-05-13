@@ -1,25 +1,29 @@
 import { Typography } from "@mui/material"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Header } from "../../../../components/header/header"
 import { Button } from "../../../../components/styles/styles"
 import { addWord } from "../../../../redux/slices/edit-set/edit-set"
-import { requiredFields, WordDataConstructor } from "../../../../redux/slices/edit-set/edit-set.type"
+import { AvailableLangauges, Language, requiredFields, WordDataConstructor } from "../../../../redux/slices/edit-set/edit-set.type"
 import { useAppDispatch } from "../../../../redux/store"
 import { CenterPage, SaveCancelContainer, TextWithButton } from "../edit-set/edit-set.styles"
 import { CreateDefinition } from "./create-definition"
 import { Container } from "./new-word.styles"
 import { SelectDefinition } from "./select-definition"
 
-
 export const NewWord = () => {
+  const params = useParams();
   const [ selectMode, setSelectMode ] = useState(false);
   const [ hasError, setHasError ] = useState(false);
+
+  const language = AvailableLangauges.includes(params.lang ?? "") ? params.lang as Language : "English";
+
   const [ data, setData ] = useState<WordDataConstructor>({
     word: 'New Word',
     meaning: 'Translation',
     type: 'create',
     error: {},
+    language,
   });
 
   const dispatch = useAppDispatch();

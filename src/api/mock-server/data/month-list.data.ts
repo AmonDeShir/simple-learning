@@ -8,6 +8,7 @@ export const MonthListData = (page: number) => ({
         "set": 'set 1',
         "text": "Item 1",
         "translation": "Translation 1",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,
@@ -24,6 +25,7 @@ export const MonthListData = (page: number) => ({
         "wordId": "627417bdf49e7eefd044b0ca",
         "text": "Item 2",
         "translation": "Translation 2",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,
@@ -42,6 +44,7 @@ export const MonthListData = (page: number) => ({
         "wordId": "627417bdf49e7eefd044b0ca",
         "text": "Item 3",
         "translation": "Translation 3",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,
@@ -57,6 +60,7 @@ export const MonthListData = (page: number) => ({
         "set": 'set 4',
         "text": "Item 4",
         "translation": "Translation 4",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,
@@ -75,6 +79,7 @@ export const MonthListData = (page: number) => ({
         "wordId": "627417bdf49e7eefd044b0cb",
         "text": "Item 5",
         "translation": "Translation 5",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,
@@ -91,6 +96,7 @@ export const MonthListData = (page: number) => ({
         "wordId": "627417bdf49e7eefd044b0cb",
         "text": "Item 6",
         "translation": "Translation 6",
+        "language": "English",
         "progress": {
           "eFactor": 2.5,
           "interval": 0,

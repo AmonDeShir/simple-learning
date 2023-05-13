@@ -41,7 +41,7 @@ export const SelectDefinition = ({ word, onSelect }: Props) => {
       .then((res) => loadData(res, setWords, setLoadingSet, (data) => data.filter(notFromTheSameSet)))
       .catch((e) => handleLoadingErrors(e, setLoadingSet)); 
 
-    fetchData(() => axios.get(`../api/v1/diki/search/${search}`, { signal: abortController.signal }), navigate)
+    fetchData(() => axios.get(`../api/v1/dictionary/search/${search}`, { signal: abortController.signal }), navigate)
       .then((res) => loadData(res, setDiki, setLoadingDiki))
       .catch((e) => handleLoadingErrors(e, setLoadingDiki)); 
       

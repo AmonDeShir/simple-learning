@@ -1,6 +1,7 @@
 import axios from "axios";
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { learnReducer, answer, loadData, saveProgress, saveProgressInGame } from "./learn";
+import { Language } from "../edit-set/edit-set.type";
  
 const DefaultState = {
   inGameSavingProgress: {
@@ -19,6 +20,7 @@ const DefaultState = {
   itemIndex: 0,
   getItemsFrom: 'remaining',
   item: '',
+  languages: [],
   statistics: {}
 }
 
@@ -88,6 +90,7 @@ const stateAfterLoad = {
   itemIndex: 0,
   getItemsFrom: 'remaining',
   item: '1',
+  languages: ["Polish", "English"] as Language[],
   statistics: {}
 }
 
@@ -237,6 +240,7 @@ const state = {
   itemIndex: 0,
   getItemsFrom: 'remaining' as const,
   item: '1',
+  languages: ["Polish", "English"] as Language[],
   statistics: {
     "4": {
       answers: [0.5, 1],
@@ -336,7 +340,7 @@ describe(`learnSlice`, () => {
   it(`should set state to 'empty' when the items array of the fetched data is an empty array`, () => {
     expect(learnReducer(undefined, {
       type: `learnSlice/loadData/fulfilled`,
-      payload: []
+      payload: { cards: [], langauges: [] }
     })).toEqual({
       ...DefaultState,
       progress: {
@@ -350,53 +354,56 @@ describe(`learnSlice`, () => {
   it(`should set state to 'success' when the fetching data operation was successful`, () => {
     expect(learnReducer(undefined, {
       type: `learnSlice/loadData/fulfilled`,
-      payload: [
-        {
-          id: '1',
-          text: 'item 1',
-          translation: 'translation 1',
-          invert: false,
-          set: 'set_id_0',
-          mode: 'flashcard' as const,
-          progress: {
-            eFactor: 2.5,
-            interval: 0,
-            intervalBeforeLearning: 0,
-            phase: "learning" as const,
-            nextRepetition: 1
+      payload: {
+        cards: [
+          {
+            id: '1',
+            text: 'item 1',
+            translation: 'translation 1',
+            invert: false,
+            set: 'set_id_0',
+            mode: 'flashcard' as const,
+            progress: {
+              eFactor: 2.5,
+              interval: 0,
+              intervalBeforeLearning: 0,
+              phase: "learning" as const,
+              nextRepetition: 1
+            },
           },
-        },
-        {
-          id: '2',
-          text: 'item 2',
-          translation: 'translation 2',
-          invert: false,
-          set: 'set_id_0',
-          mode: 'writing' as const,
-          progress: {
-            eFactor: 2.5,
-            interval: 0,
-            intervalBeforeLearning: 0,
-            phase: "learning" as const,
-            nextRepetition: 1
+          {
+            id: '2',
+            text: 'item 2',
+            translation: 'translation 2',
+            invert: false,
+            set: 'set_id_0',
+            mode: 'writing' as const,
+            progress: {
+              eFactor: 2.5,
+              interval: 0,
+              intervalBeforeLearning: 0,
+              phase: "learning" as const,
+              nextRepetition: 1
+            },
           },
-        },
-        {
-          id: '3',
-          text: 'item 3',
-          translation: 'translation 3',
-          invert: false,
-          set: 'set_id_0',
-          mode: 'information' as const,
-          progress: {
-            eFactor: 2.5,
-            interval: 0,
-            intervalBeforeLearning: 0,
-            phase: "learning" as const,
-            nextRepetition: 1
+          {
+            id: '3',
+            text: 'item 3',
+            translation: 'translation 3',
+            invert: false,
+            set: 'set_id_0',
+            mode: 'information' as const,
+            progress: {
+              eFactor: 2.5,
+              interval: 0,
+              intervalBeforeLearning: 0,
+              phase: "learning" as const,
+              nextRepetition: 1
+            },
           },
-        },
-      ],
+        ],
+        languages: ["Polish", "English"]
+      }
     })).toEqual({
       ...stateAfterLoad,
       progress: {

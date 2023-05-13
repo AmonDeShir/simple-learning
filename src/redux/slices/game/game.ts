@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction, Dispatch } from '@reduxjs
 import axios from 'axios';
 import { fetchData } from '../../../api/fetchData';
 import { GameItem, GameType, LoadResult } from './game.type';
+import { Language } from '../edit-set/edit-set.type';
 
 type State = {
   progress: 'idle' | 'loading-pending' | 'loading-success' | 'loading-error' | 'done';
@@ -15,6 +16,7 @@ type State = {
   item: string;
   itemIndex: number;
   getItemsFrom: 'incorrect' | 'remaining';
+  languages: Language[],
   statistics: {
     correct: GameItem[];
     incorrect: GameItem[];
@@ -40,6 +42,7 @@ const DefaultState: State = {
   item: '',
   itemIndex: 0,
   getItemsFrom: 'remaining',
+  languages: [],
   statistics: {
     correct: [],
     incorrect: [],
@@ -188,6 +191,7 @@ const gameSlice = createSlice({
       state.incorrect = [];
       
       state.item = state.items[0]?.id ?? '';
+      state.languages = action.payload.languages;
       state.itemIndex = 0;
       state.getItemsFrom = 'remaining';
       state.statistics = {

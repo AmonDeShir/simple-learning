@@ -1,6 +1,6 @@
 import axios from "axios";
 import { gameReducer, answer, loadSet } from "./game";
-
+import { Language } from "../../slices/edit-set/edit-set.type";
 
 const DefaultState = {
   progress: 'idle' as const,
@@ -13,6 +13,7 @@ const DefaultState = {
   item: '',
   itemIndex: 0,
   getItemsFrom: 'remaining' as const,
+  languages: [] as Language[],
   statistics: {
     correct: [],
     incorrect: [],
@@ -58,6 +59,7 @@ const stateAfterLoad = {
   item: '0_1',
   itemIndex: 0,
   getItemsFrom: 'remaining' as const,
+  languages: ["Polish", "English"] as Language[],
   statistics: {
     correct: [],
     incorrect: [],
@@ -129,6 +131,7 @@ const state = {
   item: '0_1',
   itemIndex: 0,
   getItemsFrom: 'remaining' as const,
+  languages: ["Polish", "English"] as Language[],
   statistics: {
     correct: [
       {
@@ -191,6 +194,7 @@ describe(`gameSlice`, () => {
       payload: {
         mode: 'mix',
         id: 'set_id',
+        languages: ["Polish", "English"],
         items: [
           {
             id: '0_1',
@@ -287,7 +291,7 @@ describe(`gameSlice`, () => {
         item: '0_5',
         correct: ['0_4'],
         incorrect: ['0_6'],
-        remaining: ['0_5', '0_1', '0_2', '0_3'],
+        remaining: ['0_1', '0_2', '0_3', '0_5'],
         statistics: expect.any(Object),
       });
     })

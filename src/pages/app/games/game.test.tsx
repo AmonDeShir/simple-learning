@@ -5,6 +5,7 @@ import { TestingContainer } from "../../../utils/test-utils/testing-container";
 import { Game } from "./game";
 import { act } from "react-dom/test-utils";
 import { mockAudio, MockAudio } from "../../../utils/mocks/audio-mock";
+import { Language } from "../../../redux/slices/edit-set/edit-set.type";
 
 const state = {
   user: { 
@@ -15,6 +16,7 @@ const state = {
     progress: 'loading-success' as const,
     mode: 'mix' as const,
     setId: '0102',
+    languages: ["English", "Polish"] as Language[],
     items: [
       {
         id: '1',
