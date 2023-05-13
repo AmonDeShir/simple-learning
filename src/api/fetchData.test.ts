@@ -90,4 +90,22 @@ describe('fetchData', () => {
 
     expect(status).toBe(400);
   });
+
+  it(`should return error.string if error is an object`, async () => {
+    spyGet.mockRejectedValueOnce({ message: "Not found" });
+
+    const request = () => axios.get('/api/v1/users');
+    const { message } = await fetchData(request, navigate);
+
+    expect(message).toEqual('Not found');
+  })
+
+  it(`should return error if error is a string`, async () => {
+    spyGet.mockRejectedValueOnce("Not found");
+
+    const request = () => axios.get('/api/v1/users');
+    const { message } = await fetchData(request, navigate);
+
+    expect(message).toEqual('Not found');
+  })
 })
