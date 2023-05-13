@@ -27,3 +27,7 @@ export const CardContainer = styled('div')`
   align-items: center;
   backface-visibility: hidden;
 `
+
+export const TextFieldContainer = styled('div')`
+  position: relative;
+`;

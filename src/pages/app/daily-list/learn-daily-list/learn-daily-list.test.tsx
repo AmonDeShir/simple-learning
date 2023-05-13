@@ -6,6 +6,7 @@ import { LearnDailyList } from "./learn-daily-list";
 import { act } from "react-dom/test-utils";
 import { mockAudio, MockAudio } from "../../../../utils/mocks/audio-mock";
 import { mockTimeline, MockTimeline } from "../../../../utils/mocks/gsap-timeline-mock";
+import { Language } from "../../../../redux/slices/edit-set/edit-set.type";
 
 const state = {
   user: {
@@ -110,6 +111,7 @@ const state = {
     itemIndex: 2,
     getItemsFrom: 'remaining' as const,
     item: '1',
+    languages: ["Polish", "English"] as Language[],
     statistics: {
       "4": {
         answers: [1, 1],

@@ -38,7 +38,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should render the card data`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
    
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -52,7 +52,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should render the inverted card data`, () => {
-    render(<FlippingInputCard data={{...data, invert: true}} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true}} onAnswer={() => {}}/>);
    
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -66,7 +66,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`shouldn't show an audio icon on the front side of the card if the data's mode is 'writing'`, () => {
-    render(<FlippingInputCard data={{...data, mode: 'writing' }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, mode: 'writing' }} onAnswer={() => {}}/>);
 
     expect(screen.getAllByText('AudioIcon').length).toEqual(1);
     const icon = screen.getAllByText('AudioIcon')[0];
@@ -76,12 +76,12 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`shouldn't show an audio icon if the data's audio is undefined`, () => {
-    render(<FlippingInputCard data={{...data, audio: undefined }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, audio: undefined }} onAnswer={() => {}}/>);
     expect(screen.queryByText('AudioIcon')).not.toBeInTheDocument();
   });
 
   it(`should play an audio track from the data after render`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     expect(audio.play).toBeCalledTimes(1);
@@ -89,21 +89,21 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`shouldn't play an audio track from the data after render if it's an inverted card`, () => {
-    render(<FlippingInputCard data={{...data, invert: true }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true }} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     expect(audio.play).not.toBeCalled();
   });
 
   it(`shouldn't play an audio track from the data after render if it's an writing card`, () => {
-    render(<FlippingInputCard data={{...data, mode: 'writing' }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, mode: 'writing' }} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     expect(audio.play).not.toBeCalled();
   });
 
   it(`should play an audio track if card was flipped to the back side`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -113,7 +113,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`shouldn't play an audio track if card was flipped to the back side and it's an inverted card`, () => {
-    render(<FlippingInputCard data={{...data, invert: true}} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true}} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -122,7 +122,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should play an audio track if card was flipped to the back side and it is an writing card`, () => {
-    render(<FlippingInputCard data={{...data, mode: "writing" }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, mode: "writing" }} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -132,7 +132,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should play an audio track if card was flipped to the front side`,  () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -143,7 +143,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should play an audio track if card was flipped to the front side and it's an writing card`, () => {
-    render(<FlippingInputCard data={{...data, mode: 'writing'}} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, mode: 'writing'}} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -154,7 +154,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`shouldn't play an audio track if card was flipped to the front side and it's an inverted card`, () => {
-    render(<FlippingInputCard data={{...data, invert: true }} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true }} onAnswer={() => {}}/>);
     act(() => { audio.loaded() });
 
     fireEvent.click(screen.getAllByText('Answer')[1]);
@@ -164,7 +164,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should compare the input value with the data's text and display the result on the card's back side`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -182,7 +182,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should compare the input value with the data's translation and display the result on the card's back side if it's an inverted card`, () => {
-    render(<FlippingInputCard data={{...data, invert: true}} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true}} onAnswer={() => {}}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -198,7 +198,7 @@ describe(`FlippingInputCard`, () => {
 
   it(`should call the onAnswer function if the answer button was clicked and the input value is equal to the data's text`, () => {
     const onAnswer = jest.fn();
-    render(<FlippingInputCard data={data} onAnswer={onAnswer}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={onAnswer}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -212,7 +212,7 @@ describe(`FlippingInputCard`, () => {
 
   it(`should call the onAnswer function if the answer button was clicked and the card is inverted and the input value is equal to the data's translation`, () => {
     const onAnswer = jest.fn();
-    render(<FlippingInputCard data={{...data, invert: true}} onAnswer={onAnswer}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true}} onAnswer={onAnswer}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -226,7 +226,7 @@ describe(`FlippingInputCard`, () => {
 
   it(`should give the first answer as the onResult argument if the answer button was clicked and the user corrects their answer`, () => {
     const onAnswer = jest.fn();
-    render(<FlippingInputCard data={data} onAnswer={onAnswer}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={onAnswer}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -245,7 +245,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should display an error message if the answer button was clicked and the input value is not equal to the data's text`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -257,7 +257,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should display an error message if the answer button was clicked and the card is inverted and the input value is not equal to the data's translation`, () => {
-    render(<FlippingInputCard data={{...data, invert: true}} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={{...data, invert: true}} onAnswer={() => {}}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -269,7 +269,7 @@ describe(`FlippingInputCard`, () => {
   });
 
   it(`should hide the error message if the wrong answer was corrected`, () => {
-    render(<FlippingInputCard data={data} onAnswer={() => {}}/>);
+    render(<FlippingInputCard languages={[]} data={data} onAnswer={() => {}}/>);
 
     const textbox = screen.getByTestId('flipping-input-card-textbox');
 
@@ -285,4 +285,16 @@ describe(`FlippingInputCard`, () => {
 
     expect(screen.queryByText('Copy: Question')).not.toBeInTheDocument();
   });
+
+  it ('should add special letter to texbox when extral letter component is clicked', () => {
+    render(<FlippingInputCard languages={["Polish"]} data={data} onAnswer={() => {}}/>);
+
+    const textbox = screen.getByTestId('flipping-input-card-textbox') as HTMLInputElement;
+    fireEvent.change(textbox, { target: { value: 'answer ' } });
+
+    fireEvent.click(screen.getByText("ę"));
+    fireEvent.click(screen.getByText("ł"));
+
+    expect(textbox.value).toEqual("answer ęł");
+  })
 });

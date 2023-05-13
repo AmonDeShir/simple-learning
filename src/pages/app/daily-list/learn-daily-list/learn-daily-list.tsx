@@ -17,7 +17,7 @@ import { CenterPage } from "../show-daily-list/show-daily-list.styles";
 import { ButtonContainer, CardContainer, ProgressContainer, SaveProgressButton } from "./learn-daily-list.styles";
 
 export const LearnDailyList = () => {
-  const { statistics, item, items, done, learning, remaining, progress, inGameSavingProgress } = useAppSelector((state) => state.learn);
+  const { statistics, item, items, done, learning, remaining, progress, languages, inGameSavingProgress } = useAppSelector((state) => state.learn);
   const [ showButtons, setShowButtons ] = useState(false);
 
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ export const LearnDailyList = () => {
                   )
                   : (
                     (inputData.mode === 'writing')
-                    ? <FlippingInputCard data={inputData} onAnswer={handleAnswer} />
+                    ? <FlippingInputCard languages={languages} data={inputData} onAnswer={handleAnswer} />
                     : <FlippingCard data={inputData} onFlip={handleFlip} />
                   )
                 }

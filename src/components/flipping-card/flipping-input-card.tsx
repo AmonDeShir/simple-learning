@@ -3,19 +3,23 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GameItem } from "../../redux/slices/game/game.type";
 import { AudioIcon } from '../audio-icon/audio-icon';
 import { Card } from '../card/card';
-import { CardContainer, FlippingContainer, Side } from "./flipping-card.styles";
+import { CardContainer, FlippingContainer, Side, TextFieldContainer } from "./flipping-card.styles";
 import { Button, StandardTextField } from '../styles/styles';
 import { CompareTexts } from '../compare-texts/compare-texts';
 import { flipAnimation } from './flipping-card.animations';
+import { Language } from '../../redux/slices/edit-set/edit-set.type';
+import { DiacriticButtons } from '../diacritic-buttons/diacritic-buttons';
 
 type Props = {
   data: GameItem;
+  languages: Language[]; 
   onAnswer: (value: number) => void;
 }
 
-export const FlippingInputCard = ({ data, onAnswer }: Props) => {
+export const FlippingInputCard = ({ data, languages, onAnswer }: Props) => {
   const [isFlipped, setFlipped] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
   const audio = useMemo(() => new Audio(data.audio), [data.audio]);
 
   const [ answerText, setAnswerText ] = useState('');
@@ -88,6 +92,11 @@ export const FlippingInputCard = ({ data, onAnswer }: Props) => {
     return () => audio.removeEventListener('loadeddata', event);
   }, [audio, data.invert, data.mode]);
 
+  const addLetter = (letter: string) => {
+    setAnswerText((text) => text + letter);
+    input.current!.focus();
+  }
+
   return (
     <FlippingContainer ref={containerRef} width="90vw">
       <Side side="front" {...{ "data-testid": 'card-front' }}>
@@ -99,15 +108,22 @@ export const FlippingInputCard = ({ data, onAnswer }: Props) => {
           icons={data.mode !== 'writing' ? audioIcon('white') : undefined}
         >
           <CardContainer>
-            <StandardTextField 
-              variant='standard' 
-              label="Answer"
-              value={answerText}
-              onChange={handleInputChange}
-              error={errorMode}
-              helperText={errorMode ? `Copy: ${text}` : ''}
-              inputProps={{ "data-testid": "flipping-input-card-textbox" }}
-            />
+            <TextFieldContainer>
+              <DiacriticButtons
+                languages={languages}
+                onClick={addLetter}
+              />
+              <StandardTextField 
+                variant='standard' 
+                label="Answer"
+                value={answerText}
+                onChange={handleInputChange}
+                error={errorMode}
+                helperText={errorMode ? `Copy: ${text}` : ''}
+                inputProps={{ "data-testid": "flipping-input-card-textbox" }}
+                inputRef={input}
+              />
+            </TextFieldContainer>
 
             <Button variant='contained' onClick={flip}>Answer</Button>
           </CardContainer>

@@ -16,7 +16,7 @@ import { Loading, RegisterLoading } from "../../../components/loading/loading";
 
 export const Game = () => {
   const params = useParams();
-  const { setId, mode, statistics, item, items, correct, incorrect, remaining, progress } = useAppSelector((state) => state.game);
+  const { setId, mode, statistics, item, items, languages, correct, incorrect, remaining, progress } = useAppSelector((state) => state.game);
   const [ showButtons, setShowButtons ] = useState(false);
 
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ export const Game = () => {
                   )
                   : (
                     (inputData.mode in TextGameItemMode)
-                    ? <FlippingInputCard data={inputData} onAnswer={handleAnswer} />
+                    ? <FlippingInputCard languages={languages} data={inputData} onAnswer={handleAnswer} />
                     : <FlippingCard data={inputData} onFlip={(side) => setShowButtons(side === 'back')} />
                   )
                 }
