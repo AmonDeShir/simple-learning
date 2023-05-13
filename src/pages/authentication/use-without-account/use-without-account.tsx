@@ -5,6 +5,8 @@ import { setUserData } from "../../../redux/slices/users/user";
 import { ButtonContainer, StyledButton, StyledForm, StyledPaper } from "./use-without-account.styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { InputWithMenu } from "../../../components/input-with-menu/input-with-menu";
+import { TextField } from "../../../components/styles/styles";
 
 export const UseWithoutAccount = forwardRef<HTMLDivElement>((_, ref) => {
   const abortController = useRef(new AbortController());
