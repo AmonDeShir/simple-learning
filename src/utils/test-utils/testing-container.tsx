@@ -2,7 +2,7 @@ import { capitalize, createTheme, ThemeProvider } from "@mui/material";
 import { configureStore } from "@reduxjs/toolkit";
 import { FormEventHandler, PropsWithChildren, useEffect } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { editSetReducer } from "../../redux/slices/edit-set/edit-set";
 import { gameReducer } from "../../redux/slices/game/game";
 import { learnReducer } from "../../redux/slices/learn/learn";
@@ -36,12 +36,14 @@ const OpenTestPage = (props: { argument?: { [key: string]: string } }) => {
 const Page = ({path}: { path: string }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const args = useParams();
+  const query = useSearchParams();
   const text = capitalize(path.split('/:')[0].replace('/', '').replaceAll('-', ' '));
 
   return (
     <div>
       <p>{text} page</p>
       <p>{Object.values(args).join(" - ")}</p>
+      <div>{Object.keys(query).map((item) => <p key={item}>{query[item as any].toString()}</p>)}</div>
     </div>
   )
 };
@@ -120,6 +122,11 @@ export const TestingContainer = (navigation?: { [key: string]: string }, state?:
                 <Route 
                   path="/new-word"
                   element={<Page path={"/new-word"} />}
+                />
+
+                <Route
+                  path='/new-word/:lang'
+                  element={<Page path={"/new-word/:lang"} />}
                 />
 
                 <Route 
