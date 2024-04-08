@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: images.tar
-          path: release/images.tar
+          path: images.tar
 
   release:
     needs: [build]
