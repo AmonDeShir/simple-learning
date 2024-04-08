@@ -25,7 +25,7 @@ jobs:
         run: docker images
       -
         name: Save Docker images to tar
-        run: docker save -o images.tar simple-learning-web:latest simple-learning-node:latest
+        run: docker save -o images.tar simple-learning_web:latest simple-learning_node:latest
       - 
         name: Upload tar artifact
         uses: actions/upload-artifact@v2
