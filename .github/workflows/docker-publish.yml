@@ -1,0 +1,63 @@
+name: Docker Image Publish
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v2
+      - 
+        name: Build Docker images
+        run: docker-compose build
+      -
+        name: Save Docker images to tar
+        run: docker save -o images.tar sl-web sl-node
+      - 
+        name: Upload tar artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: images.tar
+          path: release/images.tar
+          
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Download all artifacts
+        uses: actions/download-artifact@v2
+      -
+        name: Display structure of downloaded files
+        run: ls -R
+      -
+        name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Simple Learning ${{ github.sha }}
+          draft: true
+          prerelease: false'
+      - 
+        name: Upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: images.tar/images.tar
+          asset_name: images.zitarp
+          asset_content_type: application/tar
