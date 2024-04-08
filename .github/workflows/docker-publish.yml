@@ -29,7 +29,10 @@ jobs:
         with:
           name: images.tar
           path: release/images.tar
-          
+      -
+        name: Show result
+        run: docker images
+
   release:
     needs: [build]
     runs-on: ubuntu-latest
