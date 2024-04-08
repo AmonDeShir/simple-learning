@@ -21,6 +21,9 @@ jobs:
         name: Build Docker images
         run: docker-compose build
       -
+        name: Show result
+        run: docker images
+      -
         name: Save Docker images to tar
         run: docker save -o images.tar simple-learning-web:latest simple-learning-node:latest
       - 
@@ -29,9 +32,6 @@ jobs:
         with:
           name: images.tar
           path: release/images.tar
-      -
-        name: Show result
-        run: docker images
 
   release:
     needs: [build]
