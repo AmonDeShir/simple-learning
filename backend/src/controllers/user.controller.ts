@@ -1,7 +1,7 @@
 import { Response } from "express";
-import { SetDao } from "../dao/set.dao";
-import { UsersDao } from "../dao/user.dao";
-import { WordDao } from "../dao/word.dao";
+import { SetDao } from "../models/set.model";
+import { UsersDao } from "../models/user.model";
+import { WordDao } from "../models/word.model";
 import { AuthenticatedRequest } from "../middlewares/auth-guard.middleware";
 import { WordConstructor } from "../types/word.type";
 

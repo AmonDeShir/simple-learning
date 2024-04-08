@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { Config } from "../config/config";
-import { UsersDao } from "../dao/user.dao";
+import { UsersDao } from "../models/user.model";
 import { Errors } from "../utils/error";
 import { JWT } from "../utils/jwt";
 import { AuthenticatedRequest } from "../middlewares/auth-guard.middleware";

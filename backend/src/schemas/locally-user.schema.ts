@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { LocallyUser } from '../types/locally-user.type';
 
-const schema = new Schema<LocallyUser, {}, {}>({
+export const locallyUserSchema = new Schema<LocallyUser, {}, {}>({
   locallyToken: { type: String, required: false },
   sets: [{ type: String, default: [] }],
   savedWords: { type: String, default: "" },
@@ -14,5 +14,3 @@ const schema = new Schema<LocallyUser, {}, {}>({
     }
   }]
 });
-
-export const locallyUserModel = model('LocallyUser', schema);

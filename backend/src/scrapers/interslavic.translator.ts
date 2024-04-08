@@ -1,4 +1,4 @@
-import { translationEnModel, translationIsvModel, TranslationModel, translationPlModel, wordListModel } from '../models/translation.model';
+import { translationEnDao, translationIsvDao, TranslationDao, translationPlDao, wordListDao } from '../schemas/translation.schema';
 import { Language } from '../types/languages.type';
 import { SearchResult } from '../types/search.type';
 
@@ -116,15 +116,15 @@ export namespace InterslavicTranslator {
 
     switch(from) {
       case "Interslavic":
-        resultId.push(...(await findIds(translationIsvModel, text)));
+        resultId.push(...(await findIds(translationIsvDao, text)));
         break;
 
       case "English":
-        resultId.push(...(await findIds(translationEnModel, text)));
+        resultId.push(...(await findIds(translationEnDao, text)));
         break;
 
       case "Polish":
-        resultId.push(...(await findIds(translationPlModel, text)));
+        resultId.push(...(await findIds(translationPlDao, text)));
         break;
 
       default:
@@ -134,7 +134,7 @@ export namespace InterslavicTranslator {
     return (await Promise.all(resultId.map(findResult(from, to)))).flatMap(data => data);
   }
 
-  async function findIds(model: TranslationModel, text: string) {
+  async function findIds(model: TranslationDao, text: string) {
     const translations = await model.find({ translations: text });
   
     return translations.map(({ wordId }) => wordId);
@@ -142,7 +142,7 @@ export namespace InterslavicTranslator {
 
   function findResult(from: "Polish" | "Interslavic" | "English", to: "Polish" | "Interslavic" | "English"): (target: string) => Promise<SearchResult[]> {
     return async (targetId: string) => {
-      let word = await wordListModel.findById(targetId);
+      let word = await wordListDao.findById(targetId);
 
       if (!word) {
         return [];
