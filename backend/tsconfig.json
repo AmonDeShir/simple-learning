@@ -39,6 +39,5 @@
       "./node_modules/@types"
     ]
   },
-  "include": ["src", "healthcheck.js"],
-  
+  "include": ["src"],
 }
