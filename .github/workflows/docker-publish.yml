@@ -22,7 +22,7 @@ jobs:
         run: docker-compose build
       -
         name: Save Docker images to tar
-        run: docker save -o images.tar sl-web sl-node
+        run: docker save -o images.tar simple-learning-web:latest simple-learning-node:latest
       - 
         name: Upload tar artifact
         uses: actions/upload-artifact@v2
