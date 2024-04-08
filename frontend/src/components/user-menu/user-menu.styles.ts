@@ -75,6 +75,7 @@ export const Text = styled('div')`
   line-height: 70px;
   text-align: center;
   font-weight: bold;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   font-size: 20px;
   user-select: none;
   transition: transform 0.2s ease-in-out;

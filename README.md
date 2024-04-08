@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+## Description
+The application is for learning languages (Polish, English, Interslavic). It combines an online dictionary with games similar to those found on Quizlet and utilizes the SuperMemo learning algorithm (modified version by ANKI).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The application utilizes Google Text-to-Speech for generating pronunciation of the stored words.
 
-## Available Scripts
+## Why?
+During my final year of high school, I was preparing for the English final exam. I used three different applications to aid my studies: Diki for word lookup, Quizlet for learning, and Anki for keeping word memorized. This meant that for every new word, I had to input it three times, not to mention adding example sentences. It became tedious, and as a result, I often skip adding new words to my study list. I decided to change this by creating a simple application to simplify the process. Since I already planned to develop something substantial in React to test my frontend skills in a real project, it seemed like the perfect opportunity.
 
-In the project directory, you can run:
+## Stack
+- **Frontend**: Typescript + React.js + Redux + MUI + GSAP
+- **Backend**: Typescript + Express.js + MongoDB
 
-### `yarn start`
+## Production use  
+This application is not intended for daily use. I wrote it to improve my frontend skills. I am quite happy of the overall look of the application as well as the quality of the frontend code I wrote. However, the backend is a complete mess. I wrote it with zero knowledge of web application programming (it was my first experience with express.js), and it doesn't even have a single test. It likely contains numerous vulnerabilities. For this reason, I cannot guarantee that the data you enter into this application will not leak or be deleted.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How to use it?
+Do you want to test it? Check the working instance on http://sl.puragl.xyz
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+App is dockerized, so you can easily host your own instance:
+1. Clone this repo:
+```bash
+git clone https://github.com/AmonDeShir/simple-learning.git
+cd ./simple-learning
+```
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Create env file
+```bash
+mkdir ./backend/secret
+cp .env.example .env
+```
+3. Adjust .env file
+4. Create service-account-file.json (googleapis)
+5. Build docker image
+```bash
+docker compose build
+```
+6. Start app
+```bash
+docker compose up -d
+```
+7. Go to http://localhost to test your own instance of simple-learning.
