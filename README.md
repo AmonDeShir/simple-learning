@@ -26,15 +26,16 @@ cd ./simple-learning
 2. Create env file
 ```bash
 mkdir ./backend/secret
-cp ./backend/.env.example ./backend/secret/.env
+cp .env.example .env
 ```
-3. Adjust ./backend/secret/.env file
-4. Build docker image
+3. Adjust .env file
+4. Create service-account-file.json (googleapis)
+5. Build docker image
 ```bash
 docker compose build
 ```
-5. Start app
+6. Start app
 ```bash
 docker compose up -d
 ```
-6. Go to http://localhost to test your own instance of simple-learning.
+7. Go to http://localhost to test your own instance of simple-learning.
