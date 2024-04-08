@@ -1,4 +1,4 @@
-import { LearningProgressType } from './learning-progress.model';
+import { LearningProgressType } from './learning-progress.schema';
 
 export const ExampleType = {
   example: { type: String, required: true },

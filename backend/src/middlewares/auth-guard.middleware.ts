@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Document } from "mongoose";
 import { Config } from "../config/config";
-import { UsersDao } from "../dao/user.dao";
+import { UsersDao } from "../models/user.model";
 import { LocallyUser } from "../types/locally-user.type";
 import { User } from "../types/user.type";
 import { Errors } from "../utils/error";

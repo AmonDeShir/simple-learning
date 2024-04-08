@@ -1,4 +1,4 @@
-import { LearningPhase } from "../models/learning-progress.model";
+import { LearningPhase } from "../schemas/learning-progress.schema";
 
 export type LearningProgress = {
   eFactor: number;
